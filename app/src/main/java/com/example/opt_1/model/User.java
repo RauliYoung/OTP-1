@@ -1,4 +1,4 @@
-package com.example.opt_1;
+package com.example.opt_1.model;
 
 public class User {
 
