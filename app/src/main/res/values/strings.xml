@@ -52,4 +52,5 @@
     <string name="logout">LogOut</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="firstname">FirstName</string>
 </resources>
