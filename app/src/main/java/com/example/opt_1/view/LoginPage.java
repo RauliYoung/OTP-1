@@ -39,6 +39,8 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 controller.getLoginInfo(usernameField.getText().toString(), passwordField.getText().toString());
+                Intent intent = new Intent(LoginPage.this, Main_Page.class);
+                startActivity(intent);
             }
         });
 
