@@ -1,25 +1,22 @@
 package com.example.opt_1.model;
 
-public class User {
+public class User implements IModel{
 
-    private final int userID;
     private String firstName;
     private String lastName;
     private String username;
     private String email;
     private String password;
 
-    public User(int userID, String firstName, String lastName, String username, String email, String password){
-        this.userID = userID;
+    public User( String firstName, String lastName, String username, String email, String password){
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
     }
-
-    public int getUserID() {
-        return userID;
+    public User(){
     }
 
     public String getFirstName() {
@@ -55,5 +52,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public void processLogin(String username, String password) {
+
+    }
+
+    @Override
+    public void getRegisterInfo(String email, String username, String password) {
+
     }
 }
