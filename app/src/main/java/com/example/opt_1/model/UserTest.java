@@ -9,4 +9,9 @@ public class UserTest implements IModel {
         System.out.println(password);
     }
 
+    @Override
+    public void getRegisterInfo(String email, String username, String password) {
+
+    }
+
 }
