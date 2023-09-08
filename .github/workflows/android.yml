@@ -30,7 +30,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
@@ -41,4 +41,4 @@ jobs:
           script: |
              pwd
              ls -a
-             ./gradlew connectedCheck
+             gradlew connectedCheck
