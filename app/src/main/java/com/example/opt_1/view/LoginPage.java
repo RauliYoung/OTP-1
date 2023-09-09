@@ -46,12 +46,14 @@ public class LoginPage extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.getLoginInfo(usernameField.getText().toString(), passwordField.getText().toString());
-               authlistener = new FirebaseAuth.AuthStateListener(){
+                controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
+                controller.userLogin();
+                authlistener = new FirebaseAuth.AuthStateListener(){
                     @Override
                     public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if(user!=null && firebaseAuth.getCurrentUser()!=null){
+                            System.out.println("USERLOGGED IN: " + user.getEmail());
                             Intent intent = new Intent(LoginPage.this, Main_Page.class);
                             startActivity(intent);
                             finish();
@@ -68,7 +70,6 @@ public class LoginPage extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.setLoginInformation(usernameField.getText().toString(),passwordField.getText().toString());
                 Intent intent = new Intent(LoginPage.this, RegisterPage.class);
                 startActivity(intent);
             }

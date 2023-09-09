@@ -58,7 +58,11 @@ public class DAO implements IDAO{
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        System.out.println(auth.getCurrentUser()+" LOGGED IN");
+                        if (auth.getCurrentUser() == null){
+                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
+                        }else {
+                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
+                        }
                     }
 
                 });

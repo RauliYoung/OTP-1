@@ -1,35 +1,31 @@
 package com.example.opt_1.control;
 
-
-import android.content.Intent;
-
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.IModel;
 import com.example.opt_1.model.User;
-import com.example.opt_1.model.UserTest;
-import com.example.opt_1.view.LoginPage;
-import com.example.opt_1.view.Main_Page;
-import com.google.firebase.auth.FirebaseAuth;
-
 public class Controller implements IModeltoView,IViewtoModel{
 
     private IModel model = new User();
     private IDAO database = new DAO();
 
+    private String loginInfoUsername;
+    private String loginInfoPassword;
+
     @Override
-    public void userLogintestback() {
+    public void userLogin() {
+        database.loginUser(loginInfoUsername,loginInfoPassword);
+    }
+
+    @Override
+    public void getLoginInfo() {
 
     }
 
     @Override
-    public void getLoginInfo(String username, String password) {
-        database.loginUser(username,password);
-    }
-
-    @Override
-    public void setLoginInformation(String usernameInput, String password) {
-
+    public void setLoginInformation(String usernameInput, String passwordInput) {
+        loginInfoPassword = passwordInput;
+        loginInfoUsername = usernameInput;
     }
 
     @Override
