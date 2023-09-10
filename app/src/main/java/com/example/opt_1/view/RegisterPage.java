@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.opt_1.model.RegistrationCallBack;
 
 public class RegisterPage extends AppCompatActivity {
     private Button registerButton;
@@ -44,17 +44,21 @@ public class RegisterPage extends AppCompatActivity {
             email = emailField.getText().toString();
 
             if (checkValidCharacterLenght(firstName, lastName, userName) && checkPasswordLength(password)) {
-                controller.setRegisterInformation(firstName, lastName, userName, password, email);
-
-                if (controller.getRegisterInfo()) {
-                    Intent intent = new Intent(RegisterPage.this, LoginPage.class);
-                    startActivity(intent);
-                } else {
-                    System.out.println("EMAIL IS IN A WRONG FORMAT");
-                }
+                controller.setRegisterInformation(firstName, lastName, userName, password, email, new RegistrationCallBack() {
+                    @Override
+                    public void onRegistrationComplete(boolean success) {
+                        if (success) {
+                            System.out.println("Register was a Success Moving back to login screen");
+                            Intent intent = new Intent(RegisterPage.this, LoginPage.class);
+                            startActivity(intent);
+                        }else {
+                            System.out.println("EMAIL IS IN A WRONG FORMAT");
+                        }
+                    }
+                });
 
             } else {
-                System.out.println("INVALID INPUTS/MAX LENGHT CHARACTERS IN FIELD 11");
+                System.out.println("INVALID INPUTS/MAX LENGHT OF CHARACTERS IN FEILD IS 11 CHARS");
             }
         }
     });

@@ -12,7 +12,7 @@ public class UserTest {
     private IModel user;
     @Before
     public void initializeUser(){
-        user = new User("testi","testi","testi","testi4@testi.com","testitesti6");
+        user = new User("testi","testi","testi","testi4@testi.com","testitesti6",null);
     }
     @Test
     public void getFirstName() {

@@ -3,6 +3,7 @@ package com.example.opt_1.control;
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.IModel;
+import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
 import com.google.android.gms.tasks.Task;
 
@@ -26,8 +27,6 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     @Override
     public Boolean getRegisterInfo() {
-        System.out.println("REGISTERERRORCHECK" + database.getRegisterErrorCheck());
-
         return database.getRegisterErrorCheck();
     }
 
@@ -38,7 +37,7 @@ public class Controller implements IModeltoView,IViewtoModel{
     }
 
     @Override
-    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email) {
-        database.createUser(new User(firstName,lastName,username,email,password));
+    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, RegistrationCallBack callback) {
+        database.createUser(new User(firstName,lastName,username,email,password,callback),callback);
     }
 }

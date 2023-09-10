@@ -26,33 +26,29 @@ public class DAO implements IDAO{
 
    private boolean taskResult;
     @Override
-    public void createUser(User user) {
+    public void createUser(User user,RegistrationCallBack callback) {
 
         auth.createUserWithEmailAndPassword(user.getEmail().trim(), user.getPassword())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            try {
-                                throw Objects.requireNonNull(task.getException());
-                            } catch (FirebaseAuthInvalidCredentialsException err) {
-                                System.out.println("BAD EMAIL FOR AUTH ACC");
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-
-                        } else {
-                            db.collection("users")
-                                    .add(user)
-                                    .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                                    .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
-                            System.out.println("AUTHUSERCREATED " + task.getResult());
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        try {
+                            throw Objects.requireNonNull(task.getException());
+                        } catch (FirebaseAuthInvalidCredentialsException err) {
+                            System.out.println("BAD EMAIL FOR AUTH ACC");
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
 
-                        taskResult = task.isSuccessful();
-                        System.out.println("TASKRESULT" + taskResult);
-                    }
+                    } else {
+                        db.collection("users")
+                                .add(user)
+                                .addOnSuccessListener(documentReference -> {
+                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                })
+                                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
 
+                    }
+                    callback.onRegistrationComplete(task.isSuccessful());
                 });
 
 
@@ -70,6 +66,7 @@ public class DAO implements IDAO{
 //                });
 
 }
+
 
     @Override
     public void loginUser(String email, String password) {
