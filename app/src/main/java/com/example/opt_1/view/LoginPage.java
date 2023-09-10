@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,7 +42,6 @@ public class LoginPage extends AppCompatActivity {
         //LoginPage Fields
         usernameField = findViewById(R.id.loginUserNameInput);
         passwordField = findViewById(R.id.loginPasswordInput);
-
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

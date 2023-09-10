@@ -8,11 +8,15 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class DAO implements IDAO{
 
@@ -20,22 +24,37 @@ public class DAO implements IDAO{
    private FirebaseAuth auth = FirebaseAuth.getInstance();
    private FirebaseUser fireUser = auth.getCurrentUser();
 
+   private boolean taskResult;
     @Override
-    public void createUser(User user){
+    public void createUser(User user) {
+
         auth.createUserWithEmailAndPassword(user.getEmail().trim(), user.getPassword())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            try {
+                                throw Objects.requireNonNull(task.getException());
+                            } catch (FirebaseAuthInvalidCredentialsException err) {
+                                System.out.println("BAD EMAIL FOR AUTH ACC");
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
 
-                        db.collection("users")
-                                .add(user)
-                                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
-                        System.out.println("AUTHUSERCREATED "+ task.getResult());
+                        } else {
+                            db.collection("users")
+                                    .add(user)
+                                    .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
+                                    .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                            System.out.println("AUTHUSERCREATED " + task.getResult());
+                        }
 
+                        taskResult = task.isSuccessful();
+                        System.out.println("TASKRESULT" + taskResult);
                     }
 
                 });
+
 
 //     Query qs = db.collection("users").whereEqualTo("email",user.getEmail());
 //        db.collection("users")
@@ -67,7 +86,10 @@ public class DAO implements IDAO{
 
                 });
     }
-
+    @Override
+    public Boolean getRegisterErrorCheck() {
+        return taskResult;
+    }
     @Override
     public void updateData() {
 

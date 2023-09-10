@@ -4,6 +4,8 @@ import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.IModel;
 import com.example.opt_1.model.User;
+import com.google.android.gms.tasks.Task;
+
 public class Controller implements IModeltoView,IViewtoModel{
 
     private IModel model = new User();
@@ -23,6 +25,13 @@ public class Controller implements IModeltoView,IViewtoModel{
     }
 
     @Override
+    public Boolean getRegisterInfo() {
+        System.out.println("REGISTERERRORCHECK" + database.getRegisterErrorCheck());
+
+        return database.getRegisterErrorCheck();
+    }
+
+    @Override
     public void setLoginInformation(String usernameInput, String passwordInput) {
         loginInfoPassword = passwordInput;
         loginInfoUsername = usernameInput;
@@ -30,7 +39,6 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email) {
-        System.out.println(firstName + " " + lastName + " " + username + " "+ password + " "+ email);
         database.createUser(new User(firstName,lastName,username,email,password));
     }
 }
