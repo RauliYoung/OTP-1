@@ -1,5 +1,6 @@
 package com.example.opt_1.control;
 
 public interface IModeltoView {
- void userLogintestback();
+ void getLoginInfo();
+ Boolean getRegisterInfo();
 }

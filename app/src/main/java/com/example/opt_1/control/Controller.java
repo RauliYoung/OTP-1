@@ -1,36 +1,43 @@
 package com.example.opt_1.control;
 
-
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.IModel;
+import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
-import com.example.opt_1.model.UserTest;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.Task;
 
 public class Controller implements IModeltoView,IViewtoModel{
 
     private IModel model = new User();
     private IDAO database = new DAO();
 
+    private String loginInfoUsername;
+    private String loginInfoPassword;
+
     @Override
-    public void userLogintestback() {
+    public void userLogin() {
+        database.loginUser(loginInfoUsername,loginInfoPassword);
+    }
+
+    @Override
+    public void getLoginInfo() {
 
     }
 
     @Override
-    public void getLoginInfo(String username, String password) {
-        model.processLogin(username,password);
+    public Boolean getRegisterInfo() {
+        return database.getRegisterErrorCheck();
     }
 
     @Override
-    public void setLoginInformation(String usernameInput, String password) {
-
+    public void setLoginInformation(String usernameInput, String passwordInput) {
+        loginInfoPassword = passwordInput;
+        loginInfoUsername = usernameInput;
     }
 
     @Override
-    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email) {
-        System.out.println(firstName + " " + lastName + " " + username + " "+ password + " "+ email);
-        database.createUser(new User(firstName,lastName,username,password,email));
+    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, RegistrationCallBack callback) {
+        database.createUser(new User(firstName,lastName,username,email,password,callback),callback);
     }
 }

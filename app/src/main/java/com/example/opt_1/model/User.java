@@ -8,7 +8,7 @@ public class User implements IModel{
     private String email;
     private String password;
 
-    public User( String firstName, String lastName, String username, String email, String password){
+    public User( String firstName, String lastName, String username, String email, String password, RegistrationCallBack callback){
 
         this.firstName = firstName;
         this.lastName = lastName;

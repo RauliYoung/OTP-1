@@ -29,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:hint="@string/firstname" />
+                android:hint="@string/firstname"
+                android:maxLength="11"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +80,7 @@
                 android:id="@+id/registerEmailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autoLink="email"
                 android:hint="@string/email" />
 
         </com.google.android.material.textfield.TextInputLayout>
