@@ -3,6 +3,7 @@ package com.example.opt_1.model;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public interface IDAO {
     void createUser(User user, RegistrationCallBack callBack) ;
@@ -11,6 +12,6 @@ public interface IDAO {
     void updateData();
     void createNewGroup(Group group);
     FirebaseFirestore getDatabase();
-
+    Boolean handleTask(Task<QuerySnapshot> task);
     FirebaseAuth getUser();
 }

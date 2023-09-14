@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.Objects;
@@ -93,6 +94,15 @@ public class DAO implements IDAO{
     @Override
     public FirebaseFirestore getDatabase() {
         return db;
+    }
+
+    @Override
+    public Boolean handleTask(Task<QuerySnapshot> task) {
+        if (task.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
