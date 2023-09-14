@@ -7,31 +7,6 @@
     tools:context=".view.Main_Page">
 
 
-    <LinearLayout
-        android:layout_width="414dp"
-        android:layout_height="506dp"
-        android:gravity="center|center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/flFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/flFragment"
-        tools:ignore="MissingConstraints,VisualLintBounds">
-
-        <Button
-            android:id="@+id/logOut_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginRight="15dp"
-            android:backgroundTint="#C62727"
-            android:scaleY="1.5"
-            android:text="@string/logout"
-            android:textColorLink="#C6C0C0" />
-
-    </LinearLayout>
-
     <FrameLayout
         android:id="@+id/flFragment"
         android:layout_width="match_parent"
@@ -50,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"/>
+        app:menu="@menu/bottom_nav_menu" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

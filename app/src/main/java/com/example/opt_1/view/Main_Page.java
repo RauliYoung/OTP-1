@@ -14,14 +14,19 @@ import com.example.opt_1.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Main_Page extends AppCompatActivity  implements BottomNavigationView.OnItemSelectedListener {
-    private Button logOutButton;
     BottomNavigationView bottomNavigationView;
 
+    ActivityFragment activityFrag;
+    GroupFragment groupFrag;
+    HomeFragment homeFrag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-        logOutButton = findViewById(R.id.logOut_Button);
+
+        homeFrag = new HomeFragment();
+        groupFrag = new GroupFragment();
+        activityFrag = new ActivityFragment();
 
         bottomNavigationView
                 = findViewById(R.id.bottomNavigationView);
@@ -30,43 +35,32 @@ public class Main_Page extends AppCompatActivity  implements BottomNavigationVie
                 .setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
-
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Main_Page.this, LoginPage.class);
-                startActivity(intent);
-            }
-        });
     }
-    ActivityFragment activityFrag = new ActivityFragment();
-    GroupFragment groupFrag = new GroupFragment();
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = 0;
 
         if (item.getItemId() == R.id.groups){
-            id = 1;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flFragment,groupFrag)
+                    .commit();
+            return true;
         }else if(item.getItemId() == R.id.activity){
-            id = 2;
-        }
-
-        switch (id) {
-            case 1:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flFragment,groupFrag)
-                        .commit();
-                return true;
-
-            case 2:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flFragment, activityFrag)
-                        .commit();
-                return true;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flFragment, activityFrag)
+                    .commit();
+            return true;
+        } else if (item.getItemId() == R.id.home) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flFragment, homeFrag  )
+                    .commit();
+            return true;
         }
         return false;
+
     }
 
     }
