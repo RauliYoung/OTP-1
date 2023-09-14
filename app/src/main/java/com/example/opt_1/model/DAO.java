@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -14,12 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.Filter;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Objects;
 
@@ -94,6 +92,19 @@ public class DAO implements IDAO{
     @Override
     public void updateData() {
 
+    }
+
+    @Override
+    public void createNewGroup(Group group) {
+        group.setGroupOwner(auth.getCurrentUser().getUid());
+        CollectionReference groupRef = db.collection("groups");
+        System.out.println("DAO group: " + group);
+//        groupRef.add(group).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentReference> task) {
+//                System.out.println(task.isSuccessful());
+//            }
+//        });
     }
 
 //Example for putting users to collection.

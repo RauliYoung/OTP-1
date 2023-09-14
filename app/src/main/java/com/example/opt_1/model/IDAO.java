@@ -7,4 +7,5 @@ public interface IDAO {
     void loginUser(String email, String password);
     Boolean getRegisterErrorCheck();
     void updateData();
+    void createNewGroup(Group group);
 }

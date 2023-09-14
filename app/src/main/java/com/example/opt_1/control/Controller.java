@@ -1,15 +1,15 @@
 package com.example.opt_1.control;
 
 import com.example.opt_1.model.DAO;
+import com.example.opt_1.model.Group;
 import com.example.opt_1.model.IDAO;
-import com.example.opt_1.model.IModel;
+import com.example.opt_1.model.IGroup;
+import com.example.opt_1.model.IUser;
 import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
-import com.google.android.gms.tasks.Task;
 
 public class Controller implements IModeltoView,IViewtoModel{
 
-    private IModel model = new User();
     private IDAO database = new DAO();
 
     private String loginInfoUsername;
@@ -50,4 +50,11 @@ public class Controller implements IModeltoView,IViewtoModel{
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, RegistrationCallBack callback) {
         database.createUser(new User(firstName,lastName,username,email,password,callback),callback);
     }
+
+    @Override
+    public void makeNewGroup(String groupName) {
+
+        database.createNewGroup(new Group(groupName, ""));
+    }
+
 }

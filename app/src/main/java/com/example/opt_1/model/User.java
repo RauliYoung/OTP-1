@@ -1,6 +1,6 @@
 package com.example.opt_1.model;
 
-public class User implements IModel{
+public class User implements IUser {
 
     private String firstName;
     private String lastName;
