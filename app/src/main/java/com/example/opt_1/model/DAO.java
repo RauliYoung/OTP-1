@@ -103,10 +103,4 @@ public class DAO implements IDAO{
         db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group, SetOptions.merge());
         //groupRef.add(group).addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()));
     }
-
-//Example for putting users to collection.
-     /*   db.collection("users")
-                .add(user)
-                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e))*/;
 }

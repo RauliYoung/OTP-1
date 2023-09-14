@@ -54,13 +54,7 @@ public class Controller implements IModeltoView,IViewtoModel{
     @Override
     public void makeNewGroup(String groupName) {
 
-        User mikko = new User("testi1@testi.fi","testi1", "testi1", "testi1", "testi1");
-        User kalle = new User("Kalle@mail.com", "Kalle", "kalanen", "kallenSalassan", "kalle1");
-        Group a = new Group(groupName);
-        a.getGroup().add(mikko);
-        a.getGroup().add(kalle);
 
-        database.createNewGroup(a);
     }
 
 }
