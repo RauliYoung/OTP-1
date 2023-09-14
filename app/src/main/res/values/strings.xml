@@ -54,4 +54,5 @@
     <string name="password">Password</string>
     <string name="firstname">FirstName</string>
     <string name="start_activity">Start Activity</string>
+    <string name="datahere">Datahere</string>
 </resources>

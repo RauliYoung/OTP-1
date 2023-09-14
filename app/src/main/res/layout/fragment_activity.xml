@@ -8,13 +8,21 @@
     android:backgroundTint="#FFFFFF"
     tools:context=".view.Main_Page" >
 
-    <TextView
-        android:id="@+id/activity_datatext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Datahere"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+    <LinearLayout
+        android:layout_width="424dp"
+        android:layout_height="581dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/activity_StartActivityButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/activity_datatext"
+            android:layout_width="wrap_content"
+            android:layout_height="104dp"
+            android:text="@string/datahere" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/activity_StartActivityButton"
