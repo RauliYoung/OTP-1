@@ -37,12 +37,12 @@ public class Group implements IGroup{
         return groupOwner;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "Group{" +
                 "groupName='" + groupName + '\'' +
                 ", groupOwner='" + groupOwner + '\'' +
+                ", group=" + group +
                 '}';
     }
 }
