@@ -78,11 +78,16 @@ public class Controller implements IModeltoView,IViewtoModel {
                         User groupOwner = document.toObject(User.class);
                         //TODO Take this user to group owner
                         voittaja.getGroup().add(groupOwner);
+                        voittaja.setGroupOwner(groupOwner.getUsername());
+                        voittaja.setGroupName(groupName);
+                        System.out.println("ONNISTUI!!!");
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
+        //database.createNewGroup(voittaja);
+        System.out.println("Voittaja: " + voittaja);
     }
 }

@@ -84,9 +84,8 @@ public class DAO implements IDAO{
     public void createNewGroup(Group group) {
         group.setGroupOwner(auth.getCurrentUser().getEmail());
         CollectionReference groupRef = db.collection("groups");
-        System.out.println("DAO group: " + group);
         db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group, SetOptions.merge());
-        //groupRef.add(group).addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()));
+
     }
 
     @Override
