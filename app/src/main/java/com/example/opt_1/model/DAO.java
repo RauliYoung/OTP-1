@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.Objects;
 
@@ -96,10 +97,10 @@ public class DAO implements IDAO{
 
     @Override
     public void createNewGroup(Group group) {
-        group.setGroupOwner(auth.getCurrentUser().getUid());
+        group.setGroupOwner(auth.getCurrentUser().getEmail());
         CollectionReference groupRef = db.collection("groups");
         System.out.println("DAO group: " + group);
-        db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group);
+        db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group, SetOptions.merge());
         //groupRef.add(group).addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()));
     }
 

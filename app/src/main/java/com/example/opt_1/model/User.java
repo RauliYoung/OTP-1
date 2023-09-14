@@ -16,9 +16,17 @@ public class User implements IUser {
         this.email = email;
         this.password = password;
     }
-    public User(){
+
+    public User( String firstName, String lastName, String username, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
+    public User(){
+    }
     public String getFirstName() {
         return firstName;
     }
