@@ -55,21 +55,6 @@ public class DAO implements IDAO{
                     }
                     callback.onRegistrationComplete(task.isSuccessful());
                 });
-
-
-//     Query qs = db.collection("users").whereEqualTo("email",user.getEmail());
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                            System.out.println(document.getData() + "TÄSSÄ DATAA");
-//                        }
-//                    } else {
-//                        System.out.println("EIHÄN TÄSTÄ TULLUT MITÄÄN");
-//                    }
-//                });
-
 }
 
 
@@ -104,5 +89,15 @@ public class DAO implements IDAO{
         System.out.println("DAO group: " + group);
         db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group, SetOptions.merge());
         //groupRef.add(group).addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()));
+    }
+
+    @Override
+    public FirebaseFirestore getDatabase() {
+        return db;
+    }
+
+    @Override
+    public FirebaseAuth getUser() {
+        return auth;
     }
 }

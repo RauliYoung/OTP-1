@@ -7,6 +7,9 @@ import com.example.opt_1.model.IGroup;
 import com.example.opt_1.model.IUser;
 import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class Controller implements IModeltoView,IViewtoModel{
 
@@ -43,8 +46,10 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     @Override
     public void makeNewGroup(String groupName) {
-
-
+        DocumentReference doc = database.getDatabase().collection("users").document(database.getUser().getCurrentUser().getUid());
+       doc.get().addOnCompleteListener(document -> {
+           System.out.println(document.getResult().getData());
+        });
     }
 
 }
