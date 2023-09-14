@@ -73,7 +73,7 @@ public class Controller implements IModeltoView,IViewtoModel {
         database.getDatabase().collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
+                if(database.handleTask(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         User groupOwner = document.toObject(User.class);
                         //TODO Take this user to group owner
@@ -81,13 +81,14 @@ public class Controller implements IModeltoView,IViewtoModel {
                         voittaja.setGroupOwner(groupOwner.getUsername());
                         voittaja.setGroupName(groupName);
                         System.out.println("ONNISTUI!!!");
+                        database.createNewGroup(voittaja);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
-        //database.createNewGroup(voittaja);
+
         System.out.println("Voittaja: " + voittaja);
     }
 }
