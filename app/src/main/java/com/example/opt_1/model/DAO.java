@@ -99,12 +99,8 @@ public class DAO implements IDAO{
         group.setGroupOwner(auth.getCurrentUser().getUid());
         CollectionReference groupRef = db.collection("groups");
         System.out.println("DAO group: " + group);
-//        groupRef.add(group).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentReference> task) {
-//                System.out.println(task.isSuccessful());
-//            }
-//        });
+        db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group);
+        //groupRef.add(group).addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()));
     }
 
 //Example for putting users to collection.
