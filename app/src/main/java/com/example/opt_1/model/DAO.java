@@ -14,7 +14,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Objects;
 
@@ -46,7 +51,6 @@ public class DAO implements IDAO{
                                     Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                                 })
                                 .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
-
                     }
                     callback.onRegistrationComplete(task.isSuccessful());
                 });

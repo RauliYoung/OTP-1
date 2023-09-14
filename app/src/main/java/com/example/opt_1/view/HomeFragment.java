@@ -23,9 +23,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_home,container,false);
         logOutButton = (Button) v.findViewById(R.id.logOut_Button);
-        System.out.println(v + "OLEN VIEW");
-        System.out.println(logOutButton + "OLEN BUTTON");
-        System.out.println("OLEN FRAGMENTTI?");
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -21,6 +21,16 @@ public class Controller implements IModeltoView,IViewtoModel{
     }
 
     @Override
+    public void startActivity() {
+        System.out.println("Activity Starting!");
+    }
+
+    @Override
+    public void stopActivity() {
+        System.out.println("Activity Stopping!");
+    }
+
+    @Override
     public void getLoginInfo() {
 
     }

@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Main_Page extends AppCompatActivity  implements BottomNavigationView.OnItemSelectedListener {
     BottomNavigationView bottomNavigationView;
-
     ActivityFragment activityFrag;
     GroupFragment groupFrag;
     HomeFragment homeFrag;
