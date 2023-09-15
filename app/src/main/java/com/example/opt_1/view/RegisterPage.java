@@ -1,5 +1,6 @@
 package com.example.opt_1.view;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -78,6 +79,7 @@ public class RegisterPage extends AppCompatActivity {
             return false;
         }
     }
+
     public Boolean checkPasswordLength(String password){
         int minpass = 5;
         int maxpass = 11;
