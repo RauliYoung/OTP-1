@@ -13,8 +13,13 @@ import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.Objects;
 
 public class Controller implements IModeltoView,IViewtoModel {
 
@@ -85,6 +90,25 @@ public class Controller implements IModeltoView,IViewtoModel {
                                 System.out.println("Error while creating a group");
                             }
                         });
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void joinToGroup(String groupOwnerEmail) {
+        //Etsi firestoresta ryhmä email-osoitteella
+        //Yritä liittyä ryhmään, jos käyttäjä ei ole jo ryhmässä.
+        DocumentReference docRef = database.getDatabase().collection("groups").document(groupOwnerEmail);
+        System.out.println("Controller: " + docRef.getId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Group group = document.toObject(Group.class);
                     }
                 }
             }

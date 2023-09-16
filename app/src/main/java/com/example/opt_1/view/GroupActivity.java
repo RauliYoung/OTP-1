@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class GroupActivity extends AppCompatActivity {
 
-    private Button addGroup;
+    private Button addGroup, joinGroup;
     private EditText groupNameInputfield;
     private Controller controller;
     private Boolean isActivated = false;
@@ -27,9 +27,12 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+        //Init controller
         controller = new Controller();
-
+        //Get button references
         addGroup = findViewById(R.id.addGroupButton);
+        joinGroup = findViewById(R.id.joinGroupButton);
+        //Get inputfield reference
         groupNameInputfield = findViewById(R.id.groupNameInput);
         groupNameInputfield.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -47,11 +50,19 @@ public class GroupActivity extends AppCompatActivity {
 
                 }
             }
-        });addGroup.setOnClickListener(new View.OnClickListener() {
+        });
+        addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 groupName = groupNameInputfield.getText().toString();
                 controller.makeNewGroup(groupName);
+            }
+        });
+        joinGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String groupOwnerEmail = groupNameInputfield.getText().toString();
+                controller.joinToGroup(groupOwnerEmail);
             }
         });
     }

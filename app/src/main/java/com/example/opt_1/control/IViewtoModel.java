@@ -10,4 +10,5 @@ public interface IViewtoModel {
     void stopActivity();
     void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback);
     void makeNewGroup(String groupName);
+    void joinToGroup(String groupOwnerEmail);
 }

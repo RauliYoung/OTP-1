@@ -108,11 +108,6 @@ public class DAO implements IDAO{
                 }
             }
         });
-
-
-//        db.collection("groups").document(auth.getCurrentUser().getEmail())
-//                    .set(group, SetOptions.merge());
-//            callback.onSucceed(true);
     }
 
     @Override
