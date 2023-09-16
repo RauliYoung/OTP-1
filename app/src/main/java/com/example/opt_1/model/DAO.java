@@ -30,7 +30,6 @@ public class DAO implements IDAO{
 
    private FirebaseFirestore db = FirebaseFirestore.getInstance();
    private FirebaseAuth auth = FirebaseAuth.getInstance();
-   private FirebaseUser fireUser = auth.getCurrentUser();
 
    private boolean taskResult;
     @Override
@@ -54,6 +53,9 @@ public class DAO implements IDAO{
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
                                     callback.onSucceed(task.isSuccessful());
+                                    System.out.println("Is signed in: " + auth.getCurrentUser().getEmail());
+                                    auth.signOut();
+                                    System.out.println("Is signed in: " + auth.getCurrentUser());
                                 })
                                 .addOnFailureListener(e -> callback.onFailure());
                     }

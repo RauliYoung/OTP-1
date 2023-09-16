@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -52,5 +54,11 @@ public class GroupActivity extends AppCompatActivity {
                 controller.makeNewGroup(groupName);
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("Suljetaan sovellus");
     }
 }
