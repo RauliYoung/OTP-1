@@ -2,7 +2,9 @@ package com.example.opt_1.control;
 
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
+import com.example.opt_1.model.ILocationCheck;
 import com.example.opt_1.model.IModel;
+import com.example.opt_1.model.LocationCheck;
 import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
 import com.google.android.gms.tasks.Task;
@@ -11,6 +13,8 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     private IModel model = new User();
     private IDAO database = new DAO();
+
+    private ILocationCheck locationCheck = new LocationCheck();
 
     private String loginInfoUsername;
     private String loginInfoPassword;
@@ -22,6 +26,8 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     @Override
     public void startActivity() {
+        locationCheck.checkLocationPermission();
+
         System.out.println("Activity Starting!");
     }
 
