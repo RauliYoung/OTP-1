@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -108,7 +109,17 @@ public class Controller implements IModeltoView,IViewtoModel {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Group group = document.toObject(Group.class);
+                        database.getDatabase().collection("users").whereEqualTo("email", database.getUser().getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (database.handleTask(task)) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        User currentUser = document.toObject(User.class);
+                                        docRef.update("group", FieldValue.arrayUnion(currentUser));
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
