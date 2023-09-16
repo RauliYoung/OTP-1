@@ -1,7 +1,6 @@
 package com.example.opt_1.control;
 
-import com.example.opt_1.model.RegistrationCallBack;
-import com.example.opt_1.model.User;
+import com.example.opt_1.model.CRUDCallbacks;
 
 
 public interface IViewtoModel {
@@ -9,6 +8,6 @@ public interface IViewtoModel {
     void userLogin();
     void startActivity();
     void stopActivity();
-    void setRegisterInformation(String firstName, String lastName, String username, String password, String email, RegistrationCallBack callback);
+    void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback);
     void makeNewGroup(String groupName);
 }

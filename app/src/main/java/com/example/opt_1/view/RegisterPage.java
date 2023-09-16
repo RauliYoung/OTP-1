@@ -1,6 +1,5 @@
 package com.example.opt_1.view;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,7 +10,7 @@ import android.widget.EditText;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.model.RegistrationCallBack;
+import com.example.opt_1.model.CRUDCallbacks;
 
 public class RegisterPage extends AppCompatActivity {
     private Button registerButton;
@@ -45,16 +44,18 @@ public class RegisterPage extends AppCompatActivity {
             email = emailField.getText().toString();
 
             if (checkValidCharacterLenght(firstName, lastName, userName) && checkPasswordLength(password)) {
-                controller.setRegisterInformation(firstName, lastName, userName, password, email, new RegistrationCallBack() {
+                controller.setRegisterInformation(firstName, lastName, userName, password, email, new CRUDCallbacks() {
                     @Override
-                    public void onRegistrationComplete(boolean success) {
+                    public void onSucceed(boolean success) {
                         if (success) {
                             System.out.println("Register was a Success Moving back to login screen");
                             Intent intent = new Intent(RegisterPage.this, LoginPage.class);
                             startActivity(intent);
-                        }else {
-                            System.out.println("EMAIL IS IN A WRONG FORMAT");
                         }
+                    }
+                    @Override
+                    public void onFailure() {
+                        System.out.println("Something went wrong");
                     }
                 });
 

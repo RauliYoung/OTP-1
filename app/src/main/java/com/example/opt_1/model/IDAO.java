@@ -6,11 +6,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public interface IDAO {
-    void createUser(User user, RegistrationCallBack callBack) ;
+    void createUser(User user, CRUDCallbacks callBack) ;
     void loginUser(String email, String password);
     Boolean getRegisterErrorCheck();
     void updateData();
-    void createNewGroup(Group group);
+    void createNewGroup(Group group, CRUDCallbacks callback);
     FirebaseFirestore getDatabase();
     Boolean handleTask(Task<QuerySnapshot> task);
     FirebaseAuth getUser();

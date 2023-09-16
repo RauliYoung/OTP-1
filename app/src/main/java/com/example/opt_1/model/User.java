@@ -8,7 +8,7 @@ public class User implements IUser {
     private String email;
     private String password;
 
-    public User( String firstName, String lastName, String username, String email, String password, RegistrationCallBack callback){
+    public User( String firstName, String lastName, String username, String email, String password, CRUDCallbacks callback){
 
         this.firstName = firstName;
         this.lastName = lastName;

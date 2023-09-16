@@ -9,16 +9,10 @@ import androidx.annotation.NonNull;
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.Group;
 import com.example.opt_1.model.IDAO;
-import com.example.opt_1.model.IGroup;
-import com.example.opt_1.model.IUser;
-import com.example.opt_1.model.RegistrationCallBack;
+import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -61,7 +55,7 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, RegistrationCallBack callback) {
+    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
         database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
     }
 
@@ -69,26 +63,31 @@ public class Controller implements IModeltoView,IViewtoModel {
     public void makeNewGroup(String groupName) {
 
         String email = database.getUser().getCurrentUser().getEmail();
-        Group voittaja = new Group();
+        Group newGroup = new Group();
         database.getDatabase().collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(database.handleTask(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         User groupOwner = document.toObject(User.class);
-                        //TODO Take this user to group owner
-                        voittaja.getGroup().add(groupOwner);
-                        voittaja.setGroupOwner(groupOwner.getUsername());
-                        voittaja.setGroupName(groupName);
-                        System.out.println("ONNISTUI!!!");
-                        database.createNewGroup(voittaja);
+                        newGroup.getGroup().add(groupOwner);
+                        newGroup.setGroupOwner(groupOwner.getUsername());
+                        newGroup.setGroupName(groupName);
+
+                        database.createNewGroup(newGroup, new CRUDCallbacks() {
+                            @Override
+                            public void onSucceed(boolean success) {
+                                System.out.println("Added a new group");
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                System.out.println("Error while creating a group");
+                            }
+                        });
                     }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
-
-        System.out.println("Voittaja: " + voittaja);
     }
 }

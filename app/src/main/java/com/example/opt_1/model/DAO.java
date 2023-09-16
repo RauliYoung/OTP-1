@@ -3,21 +3,24 @@ package com.example.opt_1.model;
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
@@ -31,7 +34,7 @@ public class DAO implements IDAO{
 
    private boolean taskResult;
     @Override
-    public void createUser(User user,RegistrationCallBack callback) {
+    public void createUser(User user, CRUDCallbacks callback) {
 
         auth.createUserWithEmailAndPassword(user.getEmail().trim(), user.getPassword())
                 .addOnCompleteListener(task -> {
@@ -42,17 +45,19 @@ public class DAO implements IDAO{
                             System.out.println("BAD EMAIL FOR AUTH ACC");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
+                        }finally {
+                            callback.onFailure();
                         }
 
                     } else {
                         db.collection("users")
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    callback.onSucceed(task.isSuccessful());
                                 })
-                                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                                .addOnFailureListener(e -> callback.onFailure());
                     }
-                    callback.onRegistrationComplete(task.isSuccessful());
+
                 });
 }
 
@@ -82,11 +87,30 @@ public class DAO implements IDAO{
     }
 
     @Override
-    public void createNewGroup(Group group) {
-        group.setGroupOwner(auth.getCurrentUser().getEmail());
-        CollectionReference groupRef = db.collection("groups");
-        db.collection("groups").document(auth.getCurrentUser().getEmail()).set(group, SetOptions.merge());
+    public void createNewGroup(Group group, CRUDCallbacks callback) {
+        DocumentReference docRef = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        System.out.println("Löytyy: " + document.getId());
+                        callback.onFailure();
+                    } else {
+                        docRef.set(group, SetOptions.merge());
+                        callback.onSucceed(true);
+                    }
+                } else {
+                    System.out.println("Err: " + task.getException());
+                }
+            }
+        });
 
+
+//        db.collection("groups").document(auth.getCurrentUser().getEmail())
+//                    .set(group, SetOptions.merge());
+//            callback.onSucceed(true);
     }
 
     @Override
