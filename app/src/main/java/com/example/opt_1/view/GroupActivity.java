@@ -2,18 +2,13 @@ package com.example.opt_1.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -55,7 +50,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 groupName = groupNameInputfield.getText().toString();
-                controller.makeNewGroup(groupName);
+                controller.createNewGroup(groupName);
             }
         });
         joinGroup.setOnClickListener(new View.OnClickListener() {

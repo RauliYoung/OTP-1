@@ -66,63 +66,12 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public void makeNewGroup(String groupName) {
-
-        String email = database.getUser().getCurrentUser().getEmail();
-        Group newGroup = new Group();
-        database.getDatabase().collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(database.handleTask(task)) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        User groupOwner = document.toObject(User.class);
-                        newGroup.getGroup().add(groupOwner);
-                        newGroup.setGroupOwner(groupOwner.getUsername());
-                        newGroup.setGroupName(groupName);
-
-                        database.createNewGroup(newGroup, new CRUDCallbacks() {
-                            @Override
-                            public void onSucceed(boolean success) {
-                                System.out.println("Added a new group");
-                            }
-
-                            @Override
-                            public void onFailure() {
-                                System.out.println("Error while creating a group");
-                            }
-                        });
-                    }
-                }
-            }
-        });
+    public void createNewGroup(String groupName) {
+        database.addNewGroupToDatabase(groupName);
     }
 
     @Override
     public void joinToGroup(String groupOwnerEmail) {
-        //Etsi firestoresta ryhmä email-osoitteella
-        //Yritä liittyä ryhmään, jos käyttäjä ei ole jo ryhmässä.
-        DocumentReference docRef = database.getDatabase().collection("groups").document(groupOwnerEmail);
-        System.out.println("Controller: " + docRef.getId());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        database.getDatabase().collection("users").whereEqualTo("email", database.getUser().getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (database.handleTask(task)) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        User currentUser = document.toObject(User.class);
-                                        docRef.update("group", FieldValue.arrayUnion(currentUser));
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
+        database.addUserToTheGroup(groupOwnerEmail);
     }
 }
