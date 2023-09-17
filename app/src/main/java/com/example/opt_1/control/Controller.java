@@ -74,4 +74,9 @@ public class Controller implements IModeltoView,IViewtoModel {
     public void joinToGroup(String groupOwnerEmail) {
         database.addUserToTheGroup(groupOwnerEmail);
     }
+
+    @Override
+    public void leaveFromGroup(String groupOwnerEmail) {
+        database.removeUserFromTheGroup(groupOwnerEmail);
+    }
 }

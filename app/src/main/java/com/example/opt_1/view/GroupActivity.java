@@ -12,7 +12,7 @@ import com.example.opt_1.control.Controller;
 
 public class GroupActivity extends AppCompatActivity {
 
-    private Button addGroup, joinGroup;
+    private Button addGroup, joinGroup, leaveGroup;
     private EditText groupNameInputfield;
     private Controller controller;
     private Boolean isActivated = false;
@@ -27,6 +27,7 @@ public class GroupActivity extends AppCompatActivity {
         //Get button references
         addGroup = findViewById(R.id.addGroupButton);
         joinGroup = findViewById(R.id.joinGroupButton);
+        leaveGroup = findViewById(R.id.leaveGroupButton);
         //Get inputfield reference
         groupNameInputfield = findViewById(R.id.groupNameInput);
         groupNameInputfield.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -58,6 +59,13 @@ public class GroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String groupOwnerEmail = groupNameInputfield.getText().toString();
                 controller.joinToGroup(groupOwnerEmail);
+            }
+        });
+        leaveGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String groupOwnerEmail = groupNameInputfield.getText().toString();
+                controller.leaveFromGroup(groupOwnerEmail);
             }
         });
     }

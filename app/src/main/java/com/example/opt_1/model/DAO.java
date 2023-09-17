@@ -142,6 +142,33 @@ public class DAO implements IDAO{
     }
 
     @Override
+    public void removeUserFromTheGroup(String groupOwnerEmail) {
+        DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
+        System.out.println("Controller: " + docRef.getId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (handleTask(task)) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        User currentUser = document.toObject(User.class);
+                                        docRef.update("group", FieldValue.arrayRemove(currentUser));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public Boolean getRegisterErrorCheck() {
         return taskResult;
     }

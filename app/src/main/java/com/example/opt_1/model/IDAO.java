@@ -10,6 +10,7 @@ public interface IDAO {
     void loginUser(String email, String password);
     void addNewGroupToDatabase(String groupName);
     void addUserToTheGroup(String groupOwnerEmail);
+    void removeUserFromTheGroup(String groupOwnerEmail);
     Boolean getRegisterErrorCheck();
     void updateData();
     void createNewGroup(Group group, CRUDCallbacks callback);
