@@ -1,26 +1,8 @@
 package com.example.opt_1.control;
-
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.example.opt_1.model.DAO;
-import com.example.opt_1.model.Group;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-
-import java.util.Objects;
 
 public class Controller implements IModeltoView,IViewtoModel {
 
@@ -32,6 +14,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public void userLogin() {
         database.loginUser(loginInfoUsername, loginInfoPassword);
+    }
+
+    @Override
+    public void removeUser() {
+        database.removeUser();
     }
 
     @Override

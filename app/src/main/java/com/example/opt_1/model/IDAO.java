@@ -7,6 +7,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public interface IDAO {
     void createUser(User user, CRUDCallbacks callBack) ;
+    void removeUser();
     void loginUser(String email, String password);
     void addNewGroupToDatabase(String groupName);
     void addUserToTheGroup(String groupOwnerEmail);
@@ -15,6 +16,5 @@ public interface IDAO {
     void updateData();
     void createNewGroup(Group group, CRUDCallbacks callback);
     FirebaseFirestore getDatabase();
-    Boolean handleTask(Task<QuerySnapshot> task);
     FirebaseAuth getUser();
 }

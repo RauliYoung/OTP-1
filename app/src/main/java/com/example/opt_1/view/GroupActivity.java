@@ -2,6 +2,7 @@ package com.example.opt_1.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,7 @@ import com.example.opt_1.control.Controller;
 
 public class GroupActivity extends AppCompatActivity {
 
-    private Button addGroup, joinGroup, leaveGroup;
+    private Button addGroup, joinGroup, leaveGroup, removeUser;
     private EditText groupNameInputfield;
     private Controller controller;
     private Boolean isActivated = false;
@@ -28,6 +29,7 @@ public class GroupActivity extends AppCompatActivity {
         addGroup = findViewById(R.id.addGroupButton);
         joinGroup = findViewById(R.id.joinGroupButton);
         leaveGroup = findViewById(R.id.leaveGroupButton);
+        removeUser = findViewById(R.id.removeUserButton);
         //Get inputfield reference
         groupNameInputfield = findViewById(R.id.groupNameInput);
         groupNameInputfield.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -66,6 +68,15 @@ public class GroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String groupOwnerEmail = groupNameInputfield.getText().toString();
                 controller.leaveFromGroup(groupOwnerEmail);
+            }
+        });
+
+        removeUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.removeUser();
+                Intent intent = new Intent(GroupActivity.this, LoginPage.class);
+                startActivity(intent);
             }
         });
     }

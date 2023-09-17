@@ -1,19 +1,13 @@
 package com.example.opt_1.model;
 
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.RuntimeExecutionException;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -54,9 +48,7 @@ public class DAO implements IDAO{
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
                                     callback.onSucceed(task.isSuccessful());
-                                    System.out.println("Is signed in: " + auth.getCurrentUser().getEmail());
                                     auth.signOut();
-                                    System.out.println("Is signed in: " + auth.getCurrentUser());
                                 })
                                 .addOnFailureListener(e -> callback.onFailure());
                     }
@@ -64,8 +56,54 @@ public class DAO implements IDAO{
                 });
 }
 
-
     @Override
+    public void removeUser() {
+        try {
+            DocumentReference docRefGroup = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+
+            docRefGroup.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (handleTaskDS(task)) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            docRefGroup.delete();
+                        } else {
+                            System.out.println("Group doesn't exist");
+                        }
+                    } else {
+                        System.out.println("Err: " + task.getException());
+                    }
+                }
+            });
+
+            Query usersCollectionRef = db.collection("users").whereEqualTo("email",auth.getCurrentUser().getEmail());
+            usersCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if(handleTaskQS(task)){
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            System.out.println("DAO USER: " + document.getId());
+                            DocumentReference userRef = db.collection("users").document(document.getId());
+                            userRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    System.out.println("Poistettu?");
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            auth.getCurrentUser().delete();
+    } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+        @Override
     public void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -88,7 +126,7 @@ public class DAO implements IDAO{
         db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(handleTask(task)) {
+                if(handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if(document.exists()){
                             User groupOwner = document.toObject(User.class);
@@ -127,7 +165,7 @@ public class DAO implements IDAO{
                        db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (handleTask(task)) {
+                                if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         User currentUser = document.toObject(User.class);
                                         docRef.update("group", FieldValue.arrayUnion(currentUser));
@@ -154,7 +192,7 @@ public class DAO implements IDAO{
                         db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (handleTask(task)) {
+                                if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         User currentUser = document.toObject(User.class);
                                         docRef.update("group", FieldValue.arrayRemove(currentUser));
@@ -204,8 +242,14 @@ public class DAO implements IDAO{
         return db;
     }
 
-    @Override
-    public Boolean handleTask(Task<QuerySnapshot> task) {
+    public Boolean handleTaskQS(Task<QuerySnapshot> task) {
+        if (task.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Boolean handleTaskDS(Task<DocumentSnapshot> task) {
         if (task.isSuccessful()){
             return true;
         }else{
