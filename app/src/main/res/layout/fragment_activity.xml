@@ -8,21 +8,16 @@
     android:backgroundTint="#FFFFFF"
     tools:context=".view.Main_Page" >
 
-    <LinearLayout
-        android:layout_width="424dp"
-        android:layout_height="581dp"
-        android:orientation="horizontal"
+    <TextView
+        android:id="@+id/activity_datatext"
+        android:layout_width="198dp"
+        android:layout_height="75dp"
+        android:text="@string/datahere"
         app:layout_constraintBottom_toTopOf="@+id/activity_StartActivityButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/activity_datatext"
-            android:layout_width="wrap_content"
-            android:layout_height="104dp"
-            android:text="@string/datahere" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/activity_StartActivityButton"
