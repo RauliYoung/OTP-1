@@ -1,25 +1,23 @@
 package com.example.opt_1.model;
 
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.Filter;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.Objects;
 
@@ -27,11 +25,10 @@ public class DAO implements IDAO{
 
    private FirebaseFirestore db = FirebaseFirestore.getInstance();
    private FirebaseAuth auth = FirebaseAuth.getInstance();
-   private FirebaseUser fireUser = auth.getCurrentUser();
 
    private boolean taskResult;
     @Override
-    public void createUser(User user,RegistrationCallBack callback) {
+    public void createUser(User user, CRUDCallbacks callback) {
 
         auth.createUserWithEmailAndPassword(user.getEmail().trim(), user.getPassword())
                 .addOnCompleteListener(task -> {
@@ -42,37 +39,71 @@ public class DAO implements IDAO{
                             System.out.println("BAD EMAIL FOR AUTH ACC");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
+                        }finally {
+                            callback.onFailure();
                         }
 
                     } else {
                         db.collection("users")
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    callback.onSucceed(task.isSuccessful());
+                                    auth.signOut();
                                 })
-                                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                                .addOnFailureListener(e -> callback.onFailure());
                     }
-                    callback.onRegistrationComplete(task.isSuccessful());
+
                 });
-
-
-//     Query qs = db.collection("users").whereEqualTo("email",user.getEmail());
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                            System.out.println(document.getData() + "TÄSSÄ DATAA");
-//                        }
-//                    } else {
-//                        System.out.println("EIHÄN TÄSTÄ TULLUT MITÄÄN");
-//                    }
-//                });
-
 }
 
-
     @Override
+    public void removeUser() {
+        try {
+            DocumentReference docRefGroup = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+
+            docRefGroup.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (handleTaskDS(task)) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            docRefGroup.delete();
+                        } else {
+                            System.out.println("Group doesn't exist");
+                        }
+                    } else {
+                        System.out.println("Err: " + task.getException());
+                    }
+                }
+            });
+
+            Query usersCollectionRef = db.collection("users").whereEqualTo("email",auth.getCurrentUser().getEmail());
+            usersCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if(handleTaskQS(task)){
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            System.out.println("DAO USER: " + document.getId());
+                            DocumentReference userRef = db.collection("users").document(document.getId());
+                            userRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    System.out.println("Poistettu?");
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            auth.getCurrentUser().delete();
+    } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+        @Override
     public void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -87,6 +118,94 @@ public class DAO implements IDAO{
 
                 });
     }
+
+    @Override
+    public void addNewGroupToDatabase(String groupName) {
+        String email = auth.getCurrentUser().getEmail();
+        Group newGroup = new Group();
+        db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(handleTaskQS(task)) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if(document.exists()){
+                            User groupOwner = document.toObject(User.class);
+                            newGroup.getGroup().add(groupOwner);
+                            newGroup.setGroupOwner(groupOwner.getUsername());
+                            newGroup.setGroupName(groupName);
+                            System.out.println("Controller: " + document);
+                        }
+                        createNewGroup(newGroup, new CRUDCallbacks() {
+                            @Override
+                            public void onSucceed(boolean success) {
+                                System.out.println("DAO Added a new group");
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                System.out.println("Error while creating a group");
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void addUserToTheGroup(String groupOwnerEmail) {
+        DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
+        System.out.println("Controller: " + docRef.getId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                       db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (handleTaskQS(task)) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        User currentUser = document.toObject(User.class);
+                                        docRef.update("group", FieldValue.arrayUnion(currentUser));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void removeUserFromTheGroup(String groupOwnerEmail) {
+        DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
+        System.out.println("Controller: " + docRef.getId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (handleTaskQS(task)) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        User currentUser = document.toObject(User.class);
+                                        docRef.update("group", FieldValue.arrayRemove(currentUser));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public Boolean getRegisterErrorCheck() {
         return taskResult;
@@ -96,9 +215,50 @@ public class DAO implements IDAO{
 
     }
 
-//Example for putting users to collection.
-     /*   db.collection("users")
-                .add(user)
-                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e))*/;
+    @Override
+    public void createNewGroup(Group group, CRUDCallbacks callback) {
+        DocumentReference docRef = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        System.out.println("Löytyy: " + document.getId());
+                        callback.onFailure();
+                    } else {
+                        docRef.set(group, SetOptions.merge());
+                        callback.onSucceed(true);
+                    }
+                } else {
+                    System.out.println("Err: " + task.getException());
+                }
+            }
+        });
+    }
+
+    @Override
+    public FirebaseFirestore getDatabase() {
+        return db;
+    }
+
+    public Boolean handleTaskQS(Task<QuerySnapshot> task) {
+        if (task.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Boolean handleTaskDS(Task<DocumentSnapshot> task) {
+        if (task.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public FirebaseAuth getUser() {
+        return auth;
+    }
 }

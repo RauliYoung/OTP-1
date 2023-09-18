@@ -32,10 +32,12 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         controller = new Controller();
         setContentView(R.layout.login_page);
-
+        if(auth.getCurrentUser() != null){
+            auth.signOut();
+            System.out.println("Login page user: " + auth.getCurrentUser());
+        }
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
 
@@ -46,27 +48,8 @@ public class LoginPage extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
-                controller.userLogin();
-                authlistener = new FirebaseAuth.AuthStateListener(){
-                    @Override
-                    public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if(user!=null && firebaseAuth.getCurrentUser()!=null){
-                            System.out.println("USERLOGGED IN: " + user.getEmail());
-                            Intent intent = new Intent(LoginPage.this, Main_Page.class);
-                            startActivity(intent);
-                            finish();
-                        }else{
-                            System.out.println("WRONG USER OR PASS");
-                        }
-                    }
-                };
-                auth.addAuthStateListener(authlistener);
-
-            }
-        });
-
+                userLogin();
+            }});
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,5 +57,26 @@ public class LoginPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+    private void userLogin(){
+        controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
+        controller.userLogin();
+        authlistener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user!=null && firebaseAuth.getCurrentUser()!=null){
+                    System.out.println("USERLOGGED IN: " + user.getEmail());
+                    Intent intent = new Intent(LoginPage.this, Main_Page.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    System.out.println("WRONG USER OR PASS");
+                }
+            }
+        };
+        auth.addAuthStateListener(authlistener);
+
     }
 }

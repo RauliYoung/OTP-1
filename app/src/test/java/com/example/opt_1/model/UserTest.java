@@ -1,15 +1,11 @@
 package com.example.opt_1.model;
 
-import static org.junit.Assert.*;
-
-import com.example.opt_1.R;
-
 import org.junit.Before;
 import org.junit.Test;
 
 public class UserTest {
 
-    private IModel user;
+    private IUser user;
     @Before
     public void initializeUser(){
         user = new User("testi","testi","testi","testi4@testi.com","testitesti6",null);

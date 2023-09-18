@@ -1,17 +1,14 @@
 package com.example.opt_1.control;
-
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
+import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.ILocationTracker;
-import com.example.opt_1.model.IModel;
 import com.example.opt_1.model.LocationTracker;
-import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
 import com.example.opt_1.view.ActivityFragment;
 
-public class Controller implements IModeltoView,IViewtoModel{
+public class Controller implements IModeltoView,IViewtoModel {
 
-    private IModel model = new User();
     private IDAO database = new DAO();
 
     private ILocationTracker locationTracker = new LocationTracker();
@@ -21,7 +18,12 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     @Override
     public void userLogin() {
-        database.loginUser(loginInfoUsername,loginInfoPassword);
+        database.loginUser(loginInfoUsername, loginInfoPassword);
+    }
+
+    @Override
+    public void removeUser() {
+        database.removeUser();
     }
 
     @Override
@@ -53,7 +55,22 @@ public class Controller implements IModeltoView,IViewtoModel{
     }
 
     @Override
-    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, RegistrationCallBack callback) {
-        database.createUser(new User(firstName,lastName,username,email,password,callback),callback);
+    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
+        database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
+    }
+
+    @Override
+    public void createNewGroup(String groupName) {
+        database.addNewGroupToDatabase(groupName);
+    }
+
+    @Override
+    public void joinToGroup(String groupOwnerEmail) {
+        database.addUserToTheGroup(groupOwnerEmail);
+    }
+
+    @Override
+    public void leaveFromGroup(String groupOwnerEmail) {
+        database.removeUserFromTheGroup(groupOwnerEmail);
     }
 }

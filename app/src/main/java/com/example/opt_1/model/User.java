@@ -1,6 +1,6 @@
 package com.example.opt_1.model;
 
-public class User implements IModel{
+public class User implements IUser {
 
     private String firstName;
     private String lastName;
@@ -8,7 +8,7 @@ public class User implements IModel{
     private String email;
     private String password;
 
-    public User( String firstName, String lastName, String username, String email, String password, RegistrationCallBack callback){
+    public User( String firstName, String lastName, String username, String email, String password, CRUDCallbacks callback){
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -16,9 +16,17 @@ public class User implements IModel{
         this.email = email;
         this.password = password;
     }
-    public User(){
+
+    public User( String firstName, String lastName, String username, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
+    public User(){
+    }
     public String getFirstName() {
         return firstName;
     }
