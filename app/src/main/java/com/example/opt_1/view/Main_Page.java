@@ -1,15 +1,8 @@
 package com.example.opt_1.view;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import com.example.opt_1.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,7 +15,6 @@ public class Main_Page extends AppCompatActivity  implements BottomNavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-
         homeFrag = new HomeFragment();
         groupFrag = new GroupFragment();
         activityFrag = new ActivityFragment();
