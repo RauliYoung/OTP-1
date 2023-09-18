@@ -38,18 +38,17 @@ public class ActivityFragment extends Fragment {
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
         locationText = v.findViewById(R.id.activity_datatext);
         fragment = this;
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        System.out.println("Activity fragment avautuu");
+
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (click == 0){
                     requestPermissions( new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-                    if (fragment == null) {
-                        System.out.println("Fragmenttiä ei löydy");
-                    } else {
-                        System.out.println("Fragment löytyy");
+                    if (fragment != null) {
+                        controller.startActivity(fragment);
                     }
-                    controller.startActivity(fragment);
                     click = 1;
 
                 }else{

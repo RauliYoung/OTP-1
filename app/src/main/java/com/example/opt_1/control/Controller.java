@@ -26,6 +26,7 @@ public class Controller implements IModeltoView,IViewtoModel{
 
     @Override
     public void startActivity(ActivityFragment fragment) {
+        System.out.println("Activity Starts!");
         locationTracker.getLocation(fragment);
     }
 

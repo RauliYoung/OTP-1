@@ -1,9 +1,11 @@
 package com.example.opt_1.model;
 
+import android.location.Location;
+
 import com.example.opt_1.view.ActivityFragment;
 
 public interface ILocationTracker {
 
-    void getLocation(ActivityFragment fragment);
+    Location getLocation(ActivityFragment fragment);
 
 }
