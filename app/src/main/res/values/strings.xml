@@ -55,4 +55,5 @@
     <string name="firstname">FirstName</string>
     <string name="start_activity">Start Activity</string>
     <string name="datahere">Datahere</string>
+    <string name="username">UserName</string>
 </resources>
