@@ -68,7 +68,7 @@ public class LoginPage extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user!=null && firebaseAuth.getCurrentUser()!=null){
                     System.out.println("USERLOGGED IN: " + user.getEmail());
-                    Intent intent = new Intent(LoginPage.this, GroupActivity.class);
+                    Intent intent = new Intent(LoginPage.this, Main_Page.class);
                     startActivity(intent);
                     finish();
                 }else{

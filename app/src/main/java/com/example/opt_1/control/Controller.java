@@ -3,9 +3,7 @@ import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.ILocationTracker;
-import com.example.opt_1.model.IModel;
 import com.example.opt_1.model.LocationTracker;
-import com.example.opt_1.model.RegistrationCallBack;
 import com.example.opt_1.model.User;
 import com.example.opt_1.view.ActivityFragment;
 
