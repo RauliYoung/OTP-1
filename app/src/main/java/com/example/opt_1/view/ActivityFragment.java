@@ -1,8 +1,6 @@
 package com.example.opt_1.view;
 
 import android.Manifest;
-import android.content.Context;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
@@ -30,13 +26,16 @@ public class ActivityFragment extends Fragment {
     }
     ActivityFragment fragment;
 
-    private TextView locationText;
+    private TextView dataText;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_activity,container,false);
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
-        locationText = v.findViewById(R.id.activity_datatext);
+        dataText = v.findViewById(R.id.activity_datatext);
+
+
         fragment = this;
 
         System.out.println("Activity fragment avautuu");

@@ -6,6 +6,7 @@ import static androidx.core.location.LocationManagerCompat.getCurrentLocation;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,8 +27,11 @@ public class LocationTracker implements ILocationTracker {
 
     @Override
     public Location getLocation(ActivityFragment fragment) {
+
+        //currentLocation = mLocationManager.getAllProviders();
+
         mLocationManager = (LocationManager) fragment.getActivity().getSystemService(fragment.getContext().LOCATION_SERVICE);
-        mLocationListener = location -> System.out.println("Current location = " + location.getLatitude() + " LATITUDE " + location.getLongitude() + " LONGITUDE");
+        mLocationListener = location -> System.out.println("Current location = " + location.getLatitude() + " LATITUDE " + location.getLongitude() + " LONGITUDE" + " Tässä vielä currentlocation " + currentLocation);
 
         if (ActivityCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("Tekstii");
@@ -35,7 +39,15 @@ public class LocationTracker implements ILocationTracker {
 
         mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mLocationListener, null);
 
+        System.out.println("Vastauksia kiitos " + mLocationManager.getAllProviders());
 
+        try {
+            String provider = mLocationManager.getBestProvider(new Criteria(), true);
+            currentLocation = mLocationManager.getLastKnownLocation(provider);
+            System.out.println("Currentlocation täsä näi " + currentLocation);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         return currentLocation;
     }
