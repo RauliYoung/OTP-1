@@ -51,7 +51,8 @@ public class ActivityFragment extends Fragment {
                     click = 1;
 
                 }else{
-                    controller.stopActivity();
+                    System.out.println("MOROMORO SANO PORO");
+                    //controller.stopActivity();
                     click = 0;
                 }
             }

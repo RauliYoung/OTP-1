@@ -27,14 +27,15 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public void startActivity(ActivityFragment fragment) {
+    public synchronized void startActivity(ActivityFragment fragment) {
         System.out.println("Activity Starts!");
         locationTracker.getLocation(fragment);
     }
 
 
     @Override
-    public void stopActivity() {
+    public synchronized void stopActivity() {
+        locationTracker.setActive(false);
         System.out.println("Activity Stopping!");
     }
 

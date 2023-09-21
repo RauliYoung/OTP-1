@@ -14,42 +14,80 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.dynamicanimation.animation.SpringAnimation;
 
 
 import com.example.opt_1.view.ActivityFragment;
 
-public class LocationTracker implements ILocationTracker {
+import java.util.ArrayList;
+
+public class LocationTracker implements ILocationTracker, Runnable {
 
 
     private Location currentLocation;
     private LocationManager mLocationManager;
     private LocationListener mLocationListener;
 
+    ArrayList<Location> locations = new ArrayList<>();
+
+    private boolean isActive;
+
+    @Override
+    public void setActive(boolean stopActivity) {
+        isActive = stopActivity;
+    }
+
+
     @Override
     public Location getLocation(ActivityFragment fragment) {
 
-        //currentLocation = mLocationManager.getAllProviders();
+        isActive = true;
 
         mLocationManager = (LocationManager) fragment.getActivity().getSystemService(fragment.getContext().LOCATION_SERVICE);
         mLocationListener = location -> System.out.println("Current location = " + location.getLatitude() + " LATITUDE " + location.getLongitude() + " LONGITUDE" + " Tässä vielä currentlocation " + currentLocation);
 
         if (ActivityCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            System.out.println("Tekstii");
+
         }
 
         mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mLocationListener, null);
 
-        System.out.println("Vastauksia kiitos " + mLocationManager.getAllProviders());
-
         try {
             String provider = mLocationManager.getBestProvider(new Criteria(), true);
             currentLocation = mLocationManager.getLastKnownLocation(provider);
-            System.out.println("Currentlocation täsä näi " + currentLocation);
         } catch (Exception e){
             e.printStackTrace();
         }
 
+
+        System.out.println("getLocation metodin sisällä " + Thread.currentThread());
+
+        run();
+
         return currentLocation;
     }
-}
 
+    @Override
+    public synchronized void run() {
+        int i = 0;
+
+        System.out.println("Run metodin sisällä " + Thread.currentThread());
+
+        while(i < 10){
+            try {
+                System.out.println("Try:n sisällä");
+                locations.add(currentLocation);
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println("KAATUU!!!");
+                e.printStackTrace();
+            }
+            i++;
+        }
+
+        for (int j = 0; j < locations.size(); j++){
+            System.out.println(j + ": " + locations.get(j));
+        }
+
+    }
+}
