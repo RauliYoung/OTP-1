@@ -11,7 +11,7 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     private IDAO database = new DAO();
 
-    private ILocationTracker locationTracker = new LocationTracker();
+    private LocationTracker locationTracker;
 
     private String loginInfoUsername;
     private String loginInfoPassword;
@@ -29,7 +29,9 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public synchronized void startActivity(ActivityFragment fragment) {
         System.out.println("Activity Starts!");
+        locationTracker = new LocationTracker();
         locationTracker.getLocation(fragment);
+        locationTracker.start();
     }
 
 

@@ -21,6 +21,7 @@ public class ActivityFragment extends Fragment {
     View v;
     private int click = 0;
     private Button activityButton;
+    private Button stopActivityButton;
     public ActivityFragment(){
         controller = new Controller();
     }
@@ -33,6 +34,7 @@ public class ActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_activity,container,false);
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
+        stopActivityButton = (Button) v.findViewById(R.id.activity_StopActivityButton);
         dataText = v.findViewById(R.id.activity_datatext);
 
 
@@ -43,20 +45,26 @@ public class ActivityFragment extends Fragment {
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (click == 0){
-                    requestPermissions( new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                requestPermissions( new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+                try {
                     if (fragment != null) {
                         controller.startActivity(fragment);
                     }
-                    click = 1;
-
-                }else{
-                    System.out.println("MOROMORO SANO PORO");
-                    //controller.stopActivity();
-                    click = 0;
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
+
+        stopActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.stopActivity();
+            }
+        });
+
+
         return v;
     }
 }

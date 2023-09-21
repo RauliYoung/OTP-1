@@ -22,14 +22,24 @@
 
     <Button
         android:id="@+id/activity_StartActivityButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="150dp"
+        android:layout_width="245dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/start_activity"
+        app:layout_constraintBottom_toTopOf="@+id/activity_StopActivityButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/activity_StopActivityButton"
+        android:layout_width="246dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="64dp"
+        android:text="Stop Activity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@ import com.example.opt_1.view.ActivityFragment;
 
 import java.util.ArrayList;
 
-public class LocationTracker implements ILocationTracker, Runnable {
+public class LocationTracker extends Thread implements ILocationTracker {
 
 
     private Location currentLocation;
@@ -60,29 +60,19 @@ public class LocationTracker implements ILocationTracker, Runnable {
         }
 
 
-        System.out.println("getLocation metodin sisällä " + Thread.currentThread());
-
-        run();
-
         return currentLocation;
     }
 
     @Override
     public synchronized void run() {
-        int i = 0;
 
-        System.out.println("Run metodin sisällä " + Thread.currentThread());
-
-        while(i < 10){
+        while(isActive){
             try {
-                System.out.println("Try:n sisällä");
                 locations.add(currentLocation);
                 Thread.sleep(1000);
             } catch (Exception e) {
-                System.out.println("KAATUU!!!");
                 e.printStackTrace();
             }
-            i++;
         }
 
         for (int j = 0; j < locations.size(); j++){
