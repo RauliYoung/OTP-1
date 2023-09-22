@@ -4,17 +4,38 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
 
 public class GroupFragment extends Fragment {
-    public GroupFragment(){
 
+     FrameLayout usersection;
+    Button adduserButton;
+    View v;
+    View u;
+    LinearLayout groupUserList;
+    LinearLayout.LayoutParams layoutParams;
+    public GroupFragment(){
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_groups, container, false);
+        v = inflater.inflate(R.layout.fragment_groups,container,false);
+        adduserButton = (Button) v.findViewById(R.id.addUserGroupButton);
+        groupUserList  = (LinearLayout) v.findViewById(R.id.groupUsers);
+        adduserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View f) {
+                View clonedUserSection = inflater.inflate(R.layout.usernameframe, container, false);
+                groupUserList.addView(clonedUserSection);
+                System.out.println("CLICKY CLICK");
+            }
+        });
+        return v;
     }
+
 }
