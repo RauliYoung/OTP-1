@@ -121,13 +121,12 @@ public class DAO implements IDAO{
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             System.out.println("Password has been changed");
-                            db.collection("users").whereEqualTo("email", auth).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (handleTaskQS(task)) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            User currentUser = document.toObject(User.class);
-                                            docRef.update("password", FieldValue.arrayUnion(currentUser));
+                                            docRef.update("password",FieldValue.arrayUnion(newPassword));
                                         }
                                     }
                                 }
