@@ -126,7 +126,8 @@ public class DAO implements IDAO{
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (handleTaskQS(task)) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            docRef.update("password",FieldValue.arrayUnion(newPassword));
+                                            DocumentReference userRef = db.collection("users").document(document.getId());
+                                            userRef.update("password",newPassword);
                                         }
                                     }
                                 }
