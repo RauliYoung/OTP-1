@@ -8,6 +8,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public interface IDAO {
     void createUser(User user, CRUDCallbacks callBack) ;
     void removeUser();
+    void changePassword(String oldPassword, String newPassword);
     void loginUser(String email, String password);
     void addNewGroupToDatabase(String groupName);
     void addUserToTheGroup(String groupOwnerEmail);

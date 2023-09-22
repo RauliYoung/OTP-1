@@ -6,10 +6,14 @@ import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,7 +57,6 @@ public class DAO implements IDAO{
                                 })
                                 .addOnFailureListener(e -> callback.onFailure());
                     }
-
                 });
 }
 
@@ -103,9 +106,43 @@ public class DAO implements IDAO{
         }
     }
 
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+        DocumentReference docRef = db.collection("users").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()), oldPassword);
 
-        @Override
+        firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                firebaseUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            System.out.println("Password has been changed");
+                            db.collection("users").whereEqualTo("email", auth).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (handleTaskQS(task)) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            User currentUser = document.toObject(User.class);
+                                            docRef.update("password", FieldValue.arrayUnion(currentUser));
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    @Override
     public void loginUser(String email, String password) {
+
         auth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -114,8 +151,6 @@ public class DAO implements IDAO{
                             System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
                         }else {
                             System.out.println(auth.getCurrentUser()+" LOGGED IN");
-
-
                             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {

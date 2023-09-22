@@ -22,6 +22,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
+    public void changePassword(String oldPassword, String newPassword) {
+        //database.changePassword(oldPassword,newPassword);
+    }
+
+    @Override
     public void removeUser() {
         database.removeUser();
     }
