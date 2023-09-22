@@ -117,8 +117,8 @@ public class GroupActivityTest extends Fragment {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        newPassword = newPasswordInput.getText().toString();
-                        System.out.println("User new password: " + newPassword);
+                        oldPassword = oldPasswordInput.getText().toString();
+                        System.out.println("User old password: " + oldPassword);
                     }
                 });
                 if (!focused) {
