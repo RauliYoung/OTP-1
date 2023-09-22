@@ -52,6 +52,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
+    public double getTravelledDistance() {
+        return locationTracker.getTravelledDistance();
+    }
+
+    @Override
     public void setLoginInformation(String usernameInput, String passwordInput) {
         loginInfoPassword = passwordInput;
         loginInfoUsername = usernameInput;

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -17,9 +18,9 @@ import com.example.opt_1.control.IViewtoModel;
 public class ActivityFragment extends Fragment {
 
     private static final int REQUEST_LOCATION = 1;
-    private IViewtoModel controller;
+    private Controller controller;
     View v;
-    private int click = 0;
+    //private int click = 0;
     private Button activityButton;
     private Button stopActivityButton;
     public ActivityFragment(){
@@ -64,6 +65,13 @@ public class ActivityFragment extends Fragment {
             }
         });
 
+        try {
+            dataText.setText(String.valueOf(15.20));
+            //dataText.setText(String.valueOf(controller.getTravelledDistance()));
+            Toast.makeText(this.getContext(), Double.toString(controller.getTravelledDistance()), Toast.LENGTH_LONG).show();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         return v;
     }

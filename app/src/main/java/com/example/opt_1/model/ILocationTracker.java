@@ -9,4 +9,6 @@ public interface ILocationTracker {
     Location getLocation(ActivityFragment fragment);
     void setActive(boolean stopActivity);
 
+    double getTravelledDistance();
+
 }
