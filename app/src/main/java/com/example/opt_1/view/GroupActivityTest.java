@@ -41,59 +41,58 @@ public class GroupActivityTest extends Fragment {
         addGroup = view.findViewById(R.id.addGroupButton);
         joinGroup = view.findViewById(R.id.joinGroupButton);
         leaveGroup = view.findViewById(R.id.leaveGroupButton);
-        removeUser = view.findViewById(R.id.removeUserButton);
-        usernameTextField = view.findViewById(R.id.usernameTextView);
-        groupNameInputfield = view.findViewById(R.id.groupNameInput);
-        usernameTextField = view.findViewById(R.id.usernameTextView);
-        usernameTextField.setText(userInstance.getCurrentUser().getUsername());
+        //removeUser = view.findViewById(R.id.removeUserButton);
+        //groupNameInputfield = view.findViewById(R.id.groupNameInput);
+//        usernameTextField = view.findViewById(R.id.usernameTextField);
+//        usernameTextField.setText(userInstance.getCurrentUser().getUsername());
 
-        groupNameInputfield.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean focused) {
-                if(focused){
-                    groupNameInputfield.setText("");
+//        groupNameInputfield.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean focused) {
+//                if(focused){
+//                    groupNameInputfield.setText("");
+//
+//                }
+//                if(!focused){
+//                    if(groupNameInputfield.getText().length() == 0){
+//                        groupNameInputfield.setText("Insert group name");
+//                    }else{
+//                        groupName = groupNameInputfield.getText().toString();
+//                    }
+//
+//                }
+//            }
+//        });
+//        addGroup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                groupName = groupNameInputfield.getText().toString();
+//                controller.createNewGroup(groupName);
+//            }
+//        });
+//        joinGroup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String groupOwnerEmail = groupNameInputfield.getText().toString();
+//                controller.joinToGroup(groupOwnerEmail);
+//            }
+//        });
+//        leaveGroup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String groupOwnerEmail = groupNameInputfield.getText().toString();
+//                controller.leaveFromGroup(groupOwnerEmail);
+//            }
+//        });
 
-                }
-                if(!focused){
-                    if(groupNameInputfield.getText().length() == 0){
-                        groupNameInputfield.setText("Insert group name");
-                    }else{
-                        groupName = groupNameInputfield.getText().toString();
-                    }
-
-                }
-            }
-        });
-        addGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                groupName = groupNameInputfield.getText().toString();
-                controller.createNewGroup(groupName);
-            }
-        });
-        joinGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String groupOwnerEmail = groupNameInputfield.getText().toString();
-                controller.joinToGroup(groupOwnerEmail);
-            }
-        });
-        leaveGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String groupOwnerEmail = groupNameInputfield.getText().toString();
-                controller.leaveFromGroup(groupOwnerEmail);
-            }
-        });
-
-        removeUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.removeUser();
-                Intent intent = new Intent(getActivity(), LoginPage.class);
-                startActivity(intent);
-            }
-        });
+//        removeUser.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                controller.removeUser();
+//                Intent intent = new Intent(getActivity(), LoginPage.class);
+//                startActivity(intent);
+//            }
+//        });
         return view;
     }
 }
