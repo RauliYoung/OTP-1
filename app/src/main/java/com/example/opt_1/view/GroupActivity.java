@@ -28,7 +28,7 @@ public class GroupActivity extends AppCompatActivity {
         //Get button references
         addGroup = findViewById(R.id.addGroupButton);
         joinGroup = findViewById(R.id.joinGroupButton);
-        leaveGroup = findViewById(R.id.leaveGroupButton);
+        leaveGroup = findViewById(R.id.addUserGroupButton);
         removeUser = findViewById(R.id.removeUserButton);
         //Get inputfield reference
         groupNameInputfield = findViewById(R.id.groupNameInput);
