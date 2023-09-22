@@ -8,16 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.example.opt_1.control.CurrentUserInstance;
 
 
 public class GroupActivityTest extends Fragment {
     private Button addGroup, joinGroup, leaveGroup, removeUser;
     private EditText groupNameInputfield;
+    private TextView  usernameTextField;
     private Controller controller;
     private View view;
     private String groupName;
+    private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
     public GroupActivityTest() {
         controller = new Controller();
     }
@@ -37,8 +42,11 @@ public class GroupActivityTest extends Fragment {
         joinGroup = view.findViewById(R.id.joinGroupButton);
         leaveGroup = view.findViewById(R.id.leaveGroupButton);
         removeUser = view.findViewById(R.id.removeUserButton);
-        //Set text input field
+        usernameTextField = view.findViewById(R.id.usernameTextView);
         groupNameInputfield = view.findViewById(R.id.groupNameInput);
+        usernameTextField = view.findViewById(R.id.usernameTextView);
+        usernameTextField.setText(userInstance.getCurrentUser().getUsername());
+
         groupNameInputfield.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean focused) {

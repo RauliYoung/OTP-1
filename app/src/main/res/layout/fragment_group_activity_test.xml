@@ -41,19 +41,17 @@
 
     <EditText
         android:id="@+id/groupNameInput"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.691"
         android:layout_width="322dp"
         android:layout_height="48dp"
         android:inputType="text"
         android:text="testiryhma"
         android:textAlignment="center"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="425dp" />
+        app:layout_constraintBottom_toTopOf="@+id/joinGroupButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.653" />
 
     <Button
         android:id="@+id/removeUserButton"
@@ -68,13 +66,15 @@
         app:layout_constraintVertical_bias="0.061" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/usernameTextView"
         android:layout_width="332dp"
         android:layout_height="38dp"
-        android:text="User: Samu"
+        android:text=""
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/groupNameInput"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/removeUserButton" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.264" />
 </androidx.constraintlayout.widget.ConstraintLayout>

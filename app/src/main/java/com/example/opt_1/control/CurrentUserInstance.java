@@ -1,6 +1,5 @@
 package com.example.opt_1.control;
-
-import com.google.firebase.firestore.auth.User;
+import com.example.opt_1.model.User;
 
 public class CurrentUserInstance {
     private static CurrentUserInstance INSTANCE = null;
@@ -13,5 +12,15 @@ public class CurrentUserInstance {
             INSTANCE = new CurrentUserInstance();
         }
         return INSTANCE;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        if(this.currentUser == null) {
+            this.currentUser = currentUser;
+        }
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 }

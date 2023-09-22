@@ -2,6 +2,7 @@ package com.example.opt_1.model;
 
 import androidx.annotation.NonNull;
 
+import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -113,9 +114,21 @@ public class DAO implements IDAO{
                             System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
                         }else {
                             System.out.println(auth.getCurrentUser()+" LOGGED IN");
+
+
+                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (handleTaskQS(task)) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            User currentUser = document.toObject(User.class);
+                                            CurrentUserInstance.getINSTANCE().setCurrentUser(currentUser);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
-
                 });
     }
 
