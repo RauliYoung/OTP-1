@@ -8,6 +8,7 @@ public interface IViewtoModel {
     void setLoginInformation(String emailInput,String password);
     void userLogin();
     void changePassword(String oldPassword, String newPassword);
+    void changeUsername(String newUsername);
     void startActivity(ActivityFragment fragment);
     void removeUser();
     void stopActivity();

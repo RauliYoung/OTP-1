@@ -27,6 +27,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
+    public void changeUsername(String newUsername) {
+        database.checkIfUsernameExist(newUsername);
+    }
+
+    @Override
     public void removeUser() {
         database.removeUser();
     }
