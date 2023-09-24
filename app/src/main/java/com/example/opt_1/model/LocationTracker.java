@@ -35,8 +35,6 @@ public class LocationTracker extends Thread implements ILocationTracker {
     private double lastKnowLocationY2;
     private ActivityFragment fragmentfor;
     private double travelledDistance;
-    private Location startLoc;
-    private Location endLoc;
     private Criteria criteria;
     ArrayList<Location> locations = new ArrayList<>();
 
@@ -70,12 +68,10 @@ public class LocationTracker extends Thread implements ILocationTracker {
     public Location getLocation() {
         return currentLocation;
     }
-
     @SuppressLint("MissingPermission")
     public Location fetchLocation(){
-        String provider = mLocationManager.getBestProvider(criteria, true);
-        mLocationManager.requestLocationUpdates(provider, 1000, 0,mLocationListener);
-        Location locman = mLocationManager.getLastKnownLocation(provider);
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0,mLocationListener);
+        Location locman = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         return locman;
     }
     @Override
@@ -83,17 +79,20 @@ public class LocationTracker extends Thread implements ILocationTracker {
         Looper.prepare();
         while(isActive){
             try {
-                startLoc = fetchLocation();
+                Location startLoc = fetchLocation();
                 Thread.sleep(1000);
                 double x1 = startLoc.getLatitude();
                 double y1 = startLoc.getLongitude();
-                endLoc = fetchLocation();
+               Location endLoc = fetchLocation();
                 calculateDistance(x1,y1,endLoc.getLatitude(),endLoc.getLongitude());
                 System.out.println(x1+"XLOCATIO " + y1 + " YLOCATIO");
+                mLocationManager.removeUpdates(mLocationListener);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
+
 
 //        for (int j = 0; j < locations.size(); j++){
 //            System.out.println(j + ": " + locations.get(j));
