@@ -1,6 +1,7 @@
 package com.example.opt_1.view;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,8 @@ public class ActivityFragment extends Fragment {
 
                 try {
                     if (fragment != null) {
-                        controller.startActivity(fragment);
+                        controller.startActivity(fragment,dataText);
+
                     }
                 } catch (Exception e){
                     e.printStackTrace();
@@ -64,14 +66,6 @@ public class ActivityFragment extends Fragment {
                 controller.stopActivity();
             }
         });
-
-        try {
-            dataText.setText(String.valueOf(15.20));
-            //dataText.setText(String.valueOf(controller.getTravelledDistance()));
-            Toast.makeText(this.getContext(), Double.toString(controller.getTravelledDistance()), Toast.LENGTH_LONG).show();
-        } catch (NullPointerException e){
-            e.printStackTrace();
-        }
 
         return v;
     }

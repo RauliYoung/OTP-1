@@ -8,10 +8,14 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 
+import com.example.opt_1.control.Controller;
+import com.example.opt_1.control.IViewtoModel;
 import com.example.opt_1.view.ActivityFragment;
 
 import java.util.ArrayList;
@@ -21,13 +25,14 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
     private Location currentLocation;
     private LocationManager mLocationManager;
+    private Controller controller;
     private LocationListener mLocationListener;
     private double lastKnownLocationX1;
     private double lastKnownLocationX2;
     private double lastKnownLocationY1;
     private double lastKnowLocationY2;
-
-    private double d = 0;
+    private ActivityFragment fragmentfor;
+    private double travelledDistance;
     ArrayList<Location> locations = new ArrayList<>();
 
     private boolean isActive;
@@ -37,49 +42,55 @@ public class LocationTracker extends Thread implements ILocationTracker {
         isActive = stopActivity;
     }
 
-    @Override
     public double getTravelledDistance() {
-        return d;
+        return travelledDistance;
     }
 
 
     @Override
-    public Location getLocation(ActivityFragment fragment) {
-
+    public void setLocation(ActivityFragment fragment, Controller controller) {
+        this.controller = controller;
+        this.fragmentfor = fragment;
         isActive = true;
 
         mLocationManager = (LocationManager) fragment.getActivity().getSystemService(fragment.getContext().LOCATION_SERVICE);
         mLocationListener = location -> System.out.println("Current location = " + location.getLatitude() + " LATITUDE " + location.getLongitude() + " LONGITUDE" + " Tässä vielä currentlocation " + currentLocation);
-
-        if (ActivityCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
         }
-
         mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mLocationListener, null);
+    }
 
+    @Override
+    public Location getLocation() {
+        return currentLocation;
+    }
+
+    public void fetchLocation() {
+        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        }
         try {
             String provider = mLocationManager.getBestProvider(new Criteria(), true);
             currentLocation = mLocationManager.getLastKnownLocation(provider);
         } catch (Exception e){
             e.printStackTrace();
         }
-
-
-
-        return currentLocation;
     }
-
     @Override
     public synchronized void run() {
-
+        String provider = mLocationManager.getBestProvider(new Criteria(), true);
         while(isActive){
             try {
+                fetchLocation();
+                controller.getTravelledDistanceModel();
                 lastKnownLocationX1 = currentLocation.getLatitude();
                 lastKnownLocationY1 = currentLocation.getLongitude();
                 //locations.add(currentLocation);
-                Thread.sleep(30000);
+                Thread.sleep(1000);
                 double X1 = lastKnownLocationX1;
                 double Y1 = lastKnownLocationY1;
+                fetchLocation();
                 lastKnownLocationX2 = currentLocation.getLatitude();
                 lastKnowLocationY2 = currentLocation.getLongitude();
                 System.out.println("Tässä X1: " + X1);
@@ -87,6 +98,7 @@ public class LocationTracker extends Thread implements ILocationTracker {
                 System.out.println("Tässä X2: " + lastKnownLocationX2);
                 System.out.println("Tässä Y2: " + lastKnowLocationY2);
                 calculateDistance(X1, Y1, lastKnownLocationX2, lastKnowLocationY2);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -137,11 +149,11 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        d = radius * c;
+        travelledDistance += radius * c;
 
-        System.out.println("lopputulos: " + d);
+        System.out.println("lopputulos: " + travelledDistance);
 
-        return d;
+        return travelledDistance;
     }
 
 }

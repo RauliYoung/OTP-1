@@ -4,5 +4,5 @@ public interface IModeltoView {
  void getLoginInfo();
  Boolean getRegisterInfo();
 
- double getTravelledDistance();
+ void getTravelledDistanceModel();
 }

@@ -1,5 +1,7 @@
 package com.example.opt_1.control;
 
+import android.widget.TextView;
+
 import com.example.opt_1.view.ActivityFragment;
 import com.example.opt_1.model.CRUDCallbacks;
 
@@ -7,7 +9,7 @@ import com.example.opt_1.model.CRUDCallbacks;
 public interface IViewtoModel {
     void setLoginInformation(String emailInput,String password);
     void userLogin();
-    void startActivity(ActivityFragment fragment);
+    void startActivity(ActivityFragment fragment,TextView data);
     void removeUser();
     void stopActivity();
     void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback);

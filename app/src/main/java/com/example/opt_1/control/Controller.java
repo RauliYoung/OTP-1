@@ -1,4 +1,6 @@
 package com.example.opt_1.control;
+import android.widget.TextView;
+
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
@@ -16,6 +18,7 @@ public class Controller implements IModeltoView,IViewtoModel {
     private String loginInfoUsername;
     private String loginInfoPassword;
 
+    private TextView textViewData;
     @Override
     public void userLogin() {
         database.loginUser(loginInfoUsername, loginInfoPassword);
@@ -27,10 +30,12 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public synchronized void startActivity(ActivityFragment fragment) {
+    public synchronized void startActivity(ActivityFragment fragment,TextView data) {
+        System.out.println("DATATEXTVIEW" + data);
+        this.textViewData = data;
         System.out.println("Activity Starts!");
         locationTracker = new LocationTracker();
-        locationTracker.getLocation(fragment);
+        locationTracker.setLocation(fragment,this);
         locationTracker.start();
     }
 
@@ -52,8 +57,8 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public double getTravelledDistance() {
-        return locationTracker.getTravelledDistance();
+    public void getTravelledDistanceModel() {
+        textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
     }
 
     @Override
