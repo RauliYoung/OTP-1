@@ -37,6 +37,7 @@ public class Controller implements IModeltoView,IViewtoModel {
         locationTracker = new LocationTracker();
         locationTracker.setLocation(fragment,this);
         locationTracker.start();
+
     }
 
 
