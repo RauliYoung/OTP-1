@@ -17,14 +17,16 @@ import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.control.CurrentUserInstance;
 
+import java.util.Objects;
+
 
 public class GroupActivityTest extends Fragment {
-    private Button addGroupBtn, joinGroupBtn, leaveGroupBtn, removeUserBtn, changePasswordBtn;
-    private EditText groupNameInput, oldPasswordInput,newPasswordInput;
+    private Button addGroupBtn, joinGroupBtn, leaveGroupBtn, removeUserBtn, changePasswordBtn, changeUsernameBtn;
+    private EditText groupNameInput, oldPasswordInput,newPasswordInput, newUsernameInput;
     private TextView  usernameTextField;
     private Controller controller;
     private View view;
-    private String groupName, oldPassword,newPassword;
+    private String groupName, oldPassword,newPassword, newUsername, oldUsername;
     private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
     public GroupActivityTest() {
         controller = new Controller();
@@ -46,11 +48,13 @@ public class GroupActivityTest extends Fragment {
         leaveGroupBtn = view.findViewById(R.id.leaveGroupButton);
         removeUserBtn = view.findViewById(R.id.removeUserButton);
         changePasswordBtn = view.findViewById(R.id.changePasswordBtn);
+        changeUsernameBtn = view.findViewById(R.id.changeUsernameBtn);
         //Set input references
         groupNameInput = view.findViewById(R.id.groupNameInput);
         usernameTextField = view.findViewById(R.id.usernameTextField);
         oldPasswordInput = view.findViewById(R.id.oldPasswordInputField);
         newPasswordInput = view.findViewById(R.id.newPasswordInputField);
+        newUsernameInput = view.findViewById(R.id.newUsernameInputField);
         usernameTextField.setText(userInstance.getCurrentUser().getUsername());
 
         groupNameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -162,6 +166,41 @@ public class GroupActivityTest extends Fragment {
             public void onClick(View view) {
                 System.out.println("Old password: " + oldPassword + " New password " + newPassword);
                 controller.changePassword(oldPassword,newPassword);
+            }
+        });
+        newUsernameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                newUsernameInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        oldPassword = userInstance.getCurrentUser().getUsername();
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        newUsername = newUsernameInput.getText().toString();
+                        System.out.println("New username: " + newUsername);
+                    }
+                });
+                if (!focused) {
+                    if (newUsernameInput.getText().length() == 0) {
+                        newUsernameInput.setText(newUsernameInput.getHint());
+                    }
+                }
+            }
+        });
+        changeUsernameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!Objects.equals(newUsername, oldUsername)){
+                    controller.changeUsername(newUsername);
+                }
             }
         });
         return view;

@@ -24,14 +24,18 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.Map;
 import java.util.Objects;
 
-public class DAO implements IDAO{
+public class DAO implements IDAO {
 
-   private FirebaseFirestore db = FirebaseFirestore.getInstance();
-   private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
 
-   private boolean taskResult;
+
+    private boolean taskResult;
+
     @Override
     public void createUser(User user, CRUDCallbacks callback) {
 
@@ -44,7 +48,7 @@ public class DAO implements IDAO{
                             System.out.println("BAD EMAIL FOR AUTH ACC");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
-                        }finally {
+                        } finally {
                             callback.onFailure();
                         }
 
@@ -58,7 +62,7 @@ public class DAO implements IDAO{
                                 .addOnFailureListener(e -> callback.onFailure());
                     }
                 });
-}
+    }
 
     @Override
     public void removeUser() {
@@ -81,13 +85,13 @@ public class DAO implements IDAO{
                 }
             });
 
-            Query usersCollectionRef = db.collection("users").whereEqualTo("email",auth.getCurrentUser().getEmail());
+            Query usersCollectionRef = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
             usersCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                    if(handleTaskQS(task)){
-                        for (QueryDocumentSnapshot document : task.getResult()){
+                    if (handleTaskQS(task)) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
                             System.out.println("DAO USER: " + document.getId());
                             DocumentReference userRef = db.collection("users").document(document.getId());
                             userRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -101,14 +105,13 @@ public class DAO implements IDAO{
                 }
             });
             auth.getCurrentUser().delete();
-    } catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        DocumentReference docRef = db.collection("users").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
         FirebaseUser firebaseUser = auth.getCurrentUser();
         AuthCredential credential = EmailAuthProvider
                 .getCredential(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()), oldPassword);
@@ -127,7 +130,7 @@ public class DAO implements IDAO{
                                     if (handleTaskQS(task)) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             DocumentReference userRef = db.collection("users").document(document.getId());
-                                            userRef.update("password",newPassword);
+                                            userRef.update("password", newPassword);
                                         }
                                     }
                                 }
@@ -139,6 +142,39 @@ public class DAO implements IDAO{
         });
     }
 
+    @Override
+    public void checkIfUsernameExist(String newUsername) {
+        Query usernames = db.collection("users").whereEqualTo("username", newUsername);
+        usernames.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    QuerySnapshot querySnapshot = task.getResult();
+                    if(!querySnapshot.isEmpty()){
+                        System.out.println("Username is already on use");
+                    }else {
+                        System.out.println("Username is available to use");
+                        changeUsername(newUsername);
+                    }
+                }
+            }
+        });
+    }
+    private void changeUsername(String username){
+        System.out.println("changeUsername()");
+        db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (handleTaskQS(task)) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        DocumentReference userRef = db.collection("users").document(document.getId());
+                        userRef.update("username", username);
+                        userInstance.getCurrentUser().setUsername(username);
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void loginUser(String email, String password) {
@@ -157,7 +193,7 @@ public class DAO implements IDAO{
                                     if (handleTaskQS(task)) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             User currentUser = document.toObject(User.class);
-                                            CurrentUserInstance.getINSTANCE().setCurrentUser(currentUser);
+                                            userInstance.setCurrentUser(currentUser);
                                         }
                                     }
                                 }

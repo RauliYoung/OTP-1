@@ -10,6 +10,7 @@ public interface IViewtoModel {
     void setLoginInformation(String emailInput,String password);
     void userLogin();
     void startActivity(ActivityFragment fragment,TextView data);
+    void changeUsername(String newUsername);
     void changePassword(String oldPassword, String newPassword);
     void removeUser();
     void stopActivity();
