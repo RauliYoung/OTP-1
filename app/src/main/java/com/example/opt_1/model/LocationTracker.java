@@ -58,7 +58,6 @@ public class LocationTracker extends Thread implements ILocationTracker {
         this.fragmentfor = fragment;
         criteria = new Criteria();
         isActive = true;
-
         mLocationManager = (LocationManager) fragment.getActivity().getSystemService(fragment.getContext().LOCATION_SERVICE);
         mLocationListener = location -> System.out.println("Current location = " + location.getLatitude() + " LATITUDE " + location.getLongitude() + " LONGITUDE" + " Tässä vielä currentlocation " + currentLocation);
         if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -74,8 +73,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
     @SuppressLint("MissingPermission")
     public Location fetchLocation(){
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0,mLocationListener);
-        Location locman = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        String provider = mLocationManager.getBestProvider(criteria, true);
+        mLocationManager.requestLocationUpdates(provider, 1000, 0,mLocationListener);
+        Location locman = mLocationManager.getLastKnownLocation(provider);
         return locman;
     }
     @Override
@@ -118,10 +118,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        travelledDistance = radius * c;
+        travelledDistance += radius * c;
 
         System.out.println("lopputulos: " + travelledDistance);
-
         return travelledDistance;
     }
 
