@@ -20,7 +20,7 @@ import com.example.opt_1.control.CurrentUserInstance;
 import java.util.Objects;
 
 
-public class GroupActivityTest extends Fragment {
+public class GroupActivity extends Fragment {
     private Button addGroupBtn, joinGroupBtn, leaveGroupBtn, removeUserBtn, changePasswordBtn, changeUsernameBtn;
     private EditText groupNameInput, oldPasswordInput,newPasswordInput, newUsernameInput;
     private TextView  usernameTextField;
@@ -28,7 +28,8 @@ public class GroupActivityTest extends Fragment {
     private View view;
     private String groupName, oldPassword,newPassword, newUsername, oldUsername;
     private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
-    public GroupActivityTest() {
+
+    public GroupActivity() {
         controller = new Controller();
     }
 

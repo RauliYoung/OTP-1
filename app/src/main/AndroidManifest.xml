@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".view.RegisterPage" />
         <activity android:name=".view.Main_Page" />
-        <activity android:name=".view.GroupActivityTest" />
+        <activity android:name=".view.GroupActivity" />
     </application>
 
 </manifest>

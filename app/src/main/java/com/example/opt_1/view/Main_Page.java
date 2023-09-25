@@ -10,7 +10,7 @@ public class Main_Page extends AppCompatActivity  implements BottomNavigationVie
     BottomNavigationView bottomNavigationView;
     ActivityFragment activityFrag;
     GroupFragment groupFrag;
-    GroupActivityTest groupActivityTest;
+    GroupActivity groupActivity;
     HomeFragment homeFrag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class Main_Page extends AppCompatActivity  implements BottomNavigationVie
         homeFrag = new HomeFragment();
         groupFrag = new GroupFragment();
         activityFrag = new ActivityFragment();
-        groupActivityTest = new GroupActivityTest();
+        groupActivity = new GroupActivity();
 
         bottomNavigationView
                 = findViewById(R.id.bottomNavigationView);
@@ -36,7 +36,7 @@ public class Main_Page extends AppCompatActivity  implements BottomNavigationVie
         if (item.getItemId() == R.id.groups){
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.flFragment,groupActivityTest)
+                    .replace(R.id.flFragment, groupActivity)
                     .commit();
             return true;
         }else if(item.getItemId() == R.id.activity){
