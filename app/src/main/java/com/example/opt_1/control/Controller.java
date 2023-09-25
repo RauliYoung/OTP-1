@@ -1,4 +1,6 @@
 package com.example.opt_1.control;
+import android.widget.TextView;
+
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
@@ -11,11 +13,12 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     private IDAO database = new DAO();
 
-    private ILocationTracker locationTracker = new LocationTracker();
+    private LocationTracker locationTracker;
 
     private String loginInfoUsername;
     private String loginInfoPassword;
 
+    private TextView textViewData;
     @Override
     public void userLogin() {
         database.loginUser(loginInfoUsername, loginInfoPassword);
@@ -27,14 +30,20 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public void startActivity(ActivityFragment fragment) {
-        System.out.println("Activity Starts!");
-        locationTracker.getLocation(fragment);
+    public synchronized void startActivity(ActivityFragment fragment,TextView data) {
+//        System.out.println("DATATEXTVIEW" + data);
+        this.textViewData = data;
+//        System.out.println("Activity Starts!");
+        locationTracker = new LocationTracker(fragment, this);
+//        locationTracker.setLocation(fragment,this);
+//        locationTracker.start();
+
     }
 
 
     @Override
-    public void stopActivity() {
+    public synchronized void stopActivity() {
+        locationTracker.setActive(false);
         System.out.println("Activity Stopping!");
     }
 
@@ -46,6 +55,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public Boolean getRegisterInfo() {
         return database.getRegisterErrorCheck();
+    }
+
+    @Override
+    public void getTravelledDistanceModel() {
+        textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
     }
 
     @Override
