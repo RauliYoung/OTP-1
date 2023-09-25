@@ -31,12 +31,12 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public synchronized void startActivity(ActivityFragment fragment,TextView data) {
-        System.out.println("DATATEXTVIEW" + data);
+//        System.out.println("DATATEXTVIEW" + data);
         this.textViewData = data;
-        System.out.println("Activity Starts!");
-        locationTracker = new LocationTracker();
-        locationTracker.setLocation(fragment,this);
-        locationTracker.start();
+//        System.out.println("Activity Starts!");
+        locationTracker = new LocationTracker(fragment, this);
+//        locationTracker.setLocation(fragment,this);
+//        locationTracker.start();
 
     }
 

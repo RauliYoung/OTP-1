@@ -1,103 +1,134 @@
 package com.example.opt_1.model;
-
-//import static androidx.core.app.AppOpsManagerCompat.Api23Impl.getSystemService;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Looper;
-
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
-
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.control.IViewtoModel;
 import com.example.opt_1.view.ActivityFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
 public class LocationTracker extends Thread implements ILocationTracker {
 
-
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
     private Location currentLocation;
     private LocationManager mLocationManager;
     private Controller controller;
     private LocationListener mLocationListener;
-    private double lastKnownLocationX1;
-    private double lastKnownLocationX2;
-    private double lastKnownLocationY1;
-    private double lastKnowLocationY2;
     private ActivityFragment fragmentfor;
     private double travelledDistance;
-    private Criteria criteria;
-    ArrayList<Location> locations = new ArrayList<>();
+    private ArrayList<Location> locations = new ArrayList<>();
 
-    private boolean isActive;
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+            for (Location location : locationResult.getLocations()) {
+                locations.add(location);
+            }
 
+            if (locations.size() >= 2){
+                calculateDistance(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude(), locations.get(locations.size()-2).getLatitude(), locations.get(locations.size()-2).getLongitude());
+            }
+
+        }
+    };
+    public LocationTracker(ActivityFragment activityFragment, Controller controller) {
+        this.controller = controller;
+        this.fragmentfor = activityFragment;
+        this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activityFragment.requireContext());
+        initLocationRequest();
+        getLastLocation();
+        checkSettingsAndStartGps(activityFragment);
+    }
+    private void initLocationRequest(){
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(0);
+        locationRequest.setFastestInterval(0);
+        locationRequest.setSmallestDisplacement(3);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void checkSettingsAndStartGps(ActivityFragment fragment) {
+        LocationSettingsRequest request = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
+        SettingsClient client = LocationServices.getSettingsClient(fragment.getContext());
+        Task<LocationSettingsResponse> locationSettingsResponseTask = client.checkLocationSettings(request);
+        locationSettingsResponseTask.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                startLocationUpdates();
+            }
+        });
+        locationSettingsResponseTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+
+        for (int i = 0; i < locations.size(); i++){
+            System.out.println("Locations list: " + locations.get(i));
+        }
+
+    }
+
+    private void getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)  {
+        }
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    System.out.println("Location from getLastLocation() : " + location);
+                } else {
+                    System.out.println("Location from getLastLocation() was null : " + location);
+                }
+            }
+        });
+    }
     @Override
     public void setActive(boolean stopActivity) {
-        isActive = stopActivity;
+        stopLocationUpdates();
     }
 
     public double getTravelledDistance() {
         return travelledDistance;
     }
 
-
     @Override
     public void setLocation(ActivityFragment fragment, Controller controller) {
-        this.controller = controller;
-        this.fragmentfor = fragment;
-        criteria = new Criteria();
-        isActive = true;
-        mLocationManager = (LocationManager) fragment.getActivity().getSystemService(fragment.getContext().LOCATION_SERVICE);
-        mLocationListener = location -> System.out.println("Current location = " + location.getLatitude() + " LATITUDE " + location.getLongitude() + " LONGITUDE" + " Tässä vielä currentlocation " + currentLocation);
-        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-        }
-        mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mLocationListener, null);
     }
 
     @Override
     public Location getLocation() {
         return currentLocation;
-    }
-    @SuppressLint("MissingPermission")
-    public Location fetchLocation(){
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0,mLocationListener);
-        Location locman = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        return locman;
-    }
-    @Override
-    public synchronized void run() {
-        Looper.prepare();
-        while(isActive){
-            try {
-                Location startLoc = fetchLocation();
-                Thread.sleep(1000);
-                double x1 = startLoc.getLatitude();
-                double y1 = startLoc.getLongitude();
-               Location endLoc = fetchLocation();
-                calculateDistance(x1,y1,endLoc.getLatitude(),endLoc.getLongitude());
-                System.out.println(x1+"XLOCATIO " + y1 + " YLOCATIO");
-                mLocationManager.removeUpdates(mLocationListener);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-//        for (int j = 0; j < locations.size(); j++){
-//            System.out.println(j + ": " + locations.get(j));
-//        }
-
     }
 
     public double calculateDistance(double X1, double Y1, double X2, double Y2){
@@ -117,10 +148,15 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
+//        if (radius * c >= 3){
+//
+//        }
         travelledDistance += radius * c;
 
+        controller.getTravelledDistanceModel();
+
         System.out.println("lopputulos: " + travelledDistance);
+
         return travelledDistance;
     }
-
 }
