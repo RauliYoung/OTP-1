@@ -24,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.RegisterPage" />
-        <activity android:name=".view.GroupActivity"/>
         <activity android:name=".view.Main_Page" />
     </application>
 
