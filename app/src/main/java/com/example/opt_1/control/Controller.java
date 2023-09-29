@@ -115,7 +115,7 @@ public class Controller implements IModeltoView,IViewtoModel {
         database.removeUserFromTheGroup(groupOwnerEmail);
     }
     /*
-    * Calculate pace takes the length(time) and time as parameter
+    * calculatePace takes the length(time) and time as parameter
     * then calculates the pace of the activity and returns the value by km/h.
     * */
     @Override
