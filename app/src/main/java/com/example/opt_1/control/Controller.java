@@ -114,5 +114,15 @@ public class Controller implements IModeltoView,IViewtoModel {
     public void leaveFromGroup(String groupOwnerEmail) {
         database.removeUserFromTheGroup(groupOwnerEmail);
     }
+    /*
+    * Calculate pace takes the length(time) and time as parameter
+    * then calculates the pace of the activity and returns the value by km/h.
+    * */
+    @Override
+    public int caclulatePace(int activityLength) {
+        //Calculate pace, also refactor the method to take the distance of the activity as a parameter.
+
+        return this.activityLength;
+    }
 
 }
