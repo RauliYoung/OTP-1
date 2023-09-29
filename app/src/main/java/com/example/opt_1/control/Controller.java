@@ -68,6 +68,7 @@ public class Controller implements IModeltoView,IViewtoModel {
             int seconds = (int) elapsedMillis / 1000;
             this.activityLength = seconds;
             activityTimer.setBase(SystemClock.elapsedRealtime());
+            textViewData.setText("Your activity lasted \n"+ seconds + " seconds.");
         }
         System.out.println("Activity Stopping!");
     }
