@@ -58,9 +58,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
     }
     private void initLocationRequest(){
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(0);
-        locationRequest.setFastestInterval(0);
-        locationRequest.setSmallestDisplacement(3);
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setSmallestDisplacement(1);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
