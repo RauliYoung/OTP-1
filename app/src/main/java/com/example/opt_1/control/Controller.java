@@ -30,14 +30,14 @@ public class Controller implements IModeltoView,IViewtoModel {
     private int activityLength;
     private TextView textViewData;
     private TextView timer;
-    @Override
-    public void userLogin() {
-        database.loginUser(loginInfoUsername, loginInfoPassword);
-    }
+//    @Override
+//    public void userLogin() {
+//        database.loginUser(loginInfoUsername, loginInfoPassword ,);
+//    }
 
     @Override
-    public void userLogin(String email, String password) {
-        database.loginUser(email,password);
+    public void userLogin(String email, String password, CRUDCallbacks callbacks) {
+        database.loginUser(email,password, callbacks);
     }
 
     @Override

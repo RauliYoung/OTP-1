@@ -14,7 +14,7 @@ public interface IDAO {
     void removeUser();
     void changePassword(String oldPassword, String newPassword);
     void checkIfUsernameExist(String newUsername);
-    void loginUser(String email, String password);
+    void loginUser(String email, String password, CRUDCallbacks callbacks);
     void addNewGroupToDatabase(String groupName);
     void addUserToTheGroup(String groupOwnerEmail);
     void removeUserFromTheGroup(String groupOwnerEmail);

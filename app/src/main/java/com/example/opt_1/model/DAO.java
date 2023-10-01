@@ -283,7 +283,7 @@ public class DAO implements IDAO {
         });
     }
     @Override
-    public void loginUser(String email, String password) {
+    public void loginUser(String email, String password, CRUDCallbacks callbacks) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -304,6 +304,9 @@ public class DAO implements IDAO {
                                         userInstance.setUsername((String) user.get("username"));
                                         userInstance.setEmail((String) user.get("email"));
                                         System.out.println(userInstance);
+                                        callbacks.onSucceed(true);
+                                    }else{
+                                        callbacks.onFailure();
                                     }
                                 }
                             });
