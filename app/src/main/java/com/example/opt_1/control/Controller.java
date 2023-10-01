@@ -11,6 +11,9 @@ import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
 import com.example.opt_1.view.ActivityFragment;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 public class Controller implements IModeltoView,IViewtoModel {
 
@@ -64,7 +67,7 @@ public class Controller implements IModeltoView,IViewtoModel {
             this.activityLength = seconds;
             activityTimer.setBase(SystemClock.elapsedRealtime());
             double distance = locationTracker.getTravelledDistance();
-            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the pace was " + caclulatePace(distance) + "km/h");
+            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
         }
         System.out.println("Activity Stopping!");
     }
@@ -117,15 +120,8 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public double caclulatePace(double activityLength) {
         //Calculate pace, also refactor the method to take the distance of the activity as a parameter.
-        int hours,minutes;
-        int testiPituus = 60;
-        double testiMakta = 100.00;
-        double pace = (testiMakta/testiPituus) * 3.6;
-        if(locationTracker.getTravelledDistance() != 0) {
-            return ((locationTracker.getTravelledDistance()/activityLength) * 3.6);
-        }else {
-            return pace;
-        }
-    }
+        double speed = (locationTracker.getTravelledDistance()/activityLength) * 3.6;
 
+        return BigDecimal.valueOf(speed).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
 }
