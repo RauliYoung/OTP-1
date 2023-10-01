@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public interface IDAO {
     void addNewExerciseToDatabase(Exercise exercise);
     void createUser(User user, CRUDCallbacks callBack) ;
+    void createUser2(User2 user, String password);
     void removeUser();
     void changePassword(String oldPassword, String newPassword);
     void checkIfUsernameExist(String newUsername);
