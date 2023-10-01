@@ -58,4 +58,15 @@ public class User2 {
     public void setExercises(ArrayList<Map> exercises) {
         this.exercises = exercises;
     }
+
+    @Override
+    public String toString() {
+        return "User2{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", exercises=" + exercises +
+                '}';
+    }
 }

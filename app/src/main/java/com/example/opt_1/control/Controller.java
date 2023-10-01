@@ -14,6 +14,9 @@ import com.example.opt_1.model.User;
 import com.example.opt_1.model.User2;
 import com.example.opt_1.view.ActivityFragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Controller implements IModeltoView,IViewtoModel {
 
@@ -30,6 +33,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public void userLogin() {
         database.loginUser(loginInfoUsername, loginInfoPassword);
+    }
+
+    @Override
+    public void userLogin(String email, String password) {
+        database.loginUser(email,password);
     }
 
     @Override
@@ -103,11 +111,11 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
         //database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
-        User2 user = User2.getInstance();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setUsername(username);
-        user.setEmail(email);
+        Map<String, String> user = new HashMap<>();
+        user.put("firstName", firstName);
+        user.put("lastName", lastName);
+        user.put("username", username);
+        user.put("email", email);
         database.createUser2(user, password);
     }
 

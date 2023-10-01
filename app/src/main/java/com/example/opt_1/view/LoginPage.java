@@ -60,8 +60,9 @@ public class LoginPage extends AppCompatActivity {
 
     }
     private void userLogin(){
-        controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
-        controller.userLogin();
+        //controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
+        //controller.userLogin();
+        controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString());
         authlistener = new FirebaseAuth.AuthStateListener(){
             @Override
             public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){

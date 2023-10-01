@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -118,14 +119,26 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public void createUser2(User2 user, String password) {
-        auth.createUserWithEmailAndPassword(User2.getInstance().getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    public void createUser2(Map user, String password) {
+        auth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(handleTaskAuth(task)){
                     if (task.isSuccessful()) {
-                        System.out.println("New User Success");
-                        FirebaseUser user = auth.getCurrentUser();
+                        db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                System.out.println("New User: " + documentReference.getId());
+                                System.out.println("New User Success");
+                                auth.signOut();
+                            }
+
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
                     } else {
                         System.out.println("Something went wrong " + task.getException());
                     }
@@ -251,6 +264,9 @@ public class DAO implements IDAO {
             }
         });
     }
+
+
+
     private void changeUsername(String username){
         System.out.println("changeUsername()");
         db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -266,33 +282,63 @@ public class DAO implements IDAO {
             }
         });
     }
-
     @Override
     public void loginUser(String email, String password) {
-
-        auth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (auth.getCurrentUser() == null){
-                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
-                        }else {
-                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(handleTaskAuth(task)){
+                    if(auth.getCurrentUser() != null){
+                        System.out.println(auth.getCurrentUser()+" LOGGED IN");
                             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (handleTaskQS(task)) {
+                                        Map<String,Object> user = new HashMap<>();
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            User currentUser = document.toObject(User.class);
-                                            userInstance.setCurrentUser(currentUser);
+                                            user = document.getData();
                                         }
+                                        User2 userInstance = User2.getInstance();
+                                        userInstance.setFirstName((String) user.get("firstName"));
+                                        userInstance.setLastName((String) user.get("lastName"));
+                                        userInstance.setUsername((String) user.get("username"));
+                                        userInstance.setEmail((String) user.get("email"));
+                                        System.out.println(userInstance);
                                     }
                                 }
                             });
-                        }
                     }
-                });
+                }
+            }
+        });
     }
+
+//    @Override
+//    public void loginUser(String email, String password) {
+//
+//        auth.signInWithEmailAndPassword(email,password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (auth.getCurrentUser() == null){
+//                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
+//                        }else {
+//                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
+//                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (handleTaskQS(task)) {
+//                                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                                            User currentUser = document.toObject(User.class);
+//                                            userInstance.setCurrentUser(currentUser);
+//                                        }
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     public void addNewGroupToDatabase(String groupName) {
