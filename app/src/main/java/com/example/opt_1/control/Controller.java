@@ -2,8 +2,10 @@ package com.example.opt_1.control;
 import android.widget.TextView;
 
 import com.example.opt_1.model.DAO;
+import com.example.opt_1.model.Exercise;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.IExercise;
 import com.example.opt_1.model.ILocationTracker;
 import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
@@ -12,6 +14,7 @@ import com.example.opt_1.view.ActivityFragment;
 public class Controller implements IModeltoView,IViewtoModel {
 
     private IDAO database = new DAO();
+    private IExercise exercise;
 
     private LocationTracker locationTracker;
 
@@ -41,6 +44,7 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public synchronized void startActivity(ActivityFragment fragment,TextView data) {
+
 //        System.out.println("DATATEXTVIEW" + data);
         this.textViewData = data;
 //        System.out.println("Activity Starts!");
@@ -54,6 +58,7 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public synchronized void stopActivity() {
         locationTracker.setActive(false);
+        database.addNewExerciseToDatabase(new Exercise(120,150,5.4));
         System.out.println("Activity Stopping!");
     }
 
