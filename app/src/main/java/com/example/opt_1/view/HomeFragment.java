@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
     private Button logOutButton,removeUserBtn,changePasswordBtn,changeUsernameBtn;
 
     private String oldPassword,newPassword, newUsername, oldUsername;
-    private CurrentUserInstance userInstance;
+    private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
 
     public HomeFragment(){
         controller = new Controller();
@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        userInstance = CurrentUserInstance.getINSTANCE();
         v = inflater.inflate(R.layout.fragment_home,container,false);
         logOutButton = (Button) v.findViewById(R.id.logOut_Button);
         removeUserBtn = v.findViewById(R.id.removeUserButton);

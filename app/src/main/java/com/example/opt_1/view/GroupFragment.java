@@ -17,7 +17,6 @@ public class GroupFragment extends Fragment {
      FrameLayout usersection;
     Button adduserButton;
     View v;
-    View u;
     LinearLayout groupUserList;
     LinearLayout.LayoutParams layoutParams;
     public GroupFragment(){
@@ -25,7 +24,6 @@ public class GroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_groups,container,false);
-        adduserButton = (Button) v.findViewById(R.id.addUserGroupButton);
         groupUserList  = (LinearLayout) v.findViewById(R.id.groupUsers);
         adduserButton.setOnClickListener(new View.OnClickListener() {
             @Override

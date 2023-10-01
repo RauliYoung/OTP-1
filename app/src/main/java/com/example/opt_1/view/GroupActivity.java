@@ -21,12 +21,12 @@ import java.util.Objects;
 
 
 public class GroupActivity extends Fragment {
-    private Button addGroupBtn, joinGroupBtn, leaveGroupBtn, removeUserBtn, changePasswordBtn, changeUsernameBtn;
-    private EditText groupNameInput, oldPasswordInput,newPasswordInput, newUsernameInput;
+    private Button addGroupBtn, joinGroupBtn, leaveGroupBtn;
+    private EditText groupNameInput;
     private TextView  usernameTextField;
     private Controller controller;
     private View view;
-    private String groupName, oldPassword,newPassword, newUsername, oldUsername;
+    private String groupName;
     private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
 
     public GroupActivity() {
@@ -47,15 +47,9 @@ public class GroupActivity extends Fragment {
         addGroupBtn = view.findViewById(R.id.addGroupButton);
         joinGroupBtn = view.findViewById(R.id.joinGroupButton);
         leaveGroupBtn = view.findViewById(R.id.leaveGroupButton);
-        removeUserBtn = view.findViewById(R.id.removeUserButton);
-        changePasswordBtn = view.findViewById(R.id.changePasswordBtn);
-        changeUsernameBtn = view.findViewById(R.id.changeUsernameBtn);
         //Set input references
         groupNameInput = view.findViewById(R.id.groupNameInput);
         usernameTextField = view.findViewById(R.id.usernameTextField);
-        oldPasswordInput = view.findViewById(R.id.oldPasswordInputField);
-        newPasswordInput = view.findViewById(R.id.newPasswordInputField);
-        newUsernameInput = view.findViewById(R.id.newUsernameInputField);
         groupNameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean focused) {

@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.example.opt_1.control.CurrentUserInstance;
 import com.example.opt_1.control.IViewtoModel;
+import com.example.opt_1.model.CRUDCallbacks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -66,7 +68,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user!=null && firebaseAuth.getCurrentUser()!=null){
+                if(CurrentUserInstance.getINSTANCE()!= null && user!=null && firebaseAuth.getCurrentUser()!=null){
                     System.out.println("USERLOGGED IN: " + user.getEmail());
                     Intent intent = new Intent(LoginPage.this, Main_Page.class);
                     startActivity(intent);
