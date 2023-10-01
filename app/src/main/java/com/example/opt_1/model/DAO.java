@@ -1,7 +1,6 @@
 package com.example.opt_1.model;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,14 +14,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +25,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -79,7 +75,6 @@ public class DAO implements IDAO {
                                     for (QueryDocumentSnapshot snapshot : task.getResult()){
                                         userInstance.getCurrentUser().getExercises().add(snapshot.getData());
                                     }
-                                    System.out.println("Exercises: " + CurrentUserInstance.getINSTANCE().getCurrentUser().getExercises());
                                 }
                             }
                         });
@@ -277,6 +272,7 @@ public class DAO implements IDAO {
                         DocumentReference userRef = db.collection("users").document(document.getId());
                         userRef.update("username", username);
                         userInstance.getCurrentUser().setUsername(username);
+
                     }
                 }
             }
@@ -297,6 +293,7 @@ public class DAO implements IDAO {
                                         Map<String,Object> user = new HashMap<>();
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             user = document.getData();
+                                            retrieveExercises();
                                         }
                                         User2 userInstance = User2.getInstance();
                                         userInstance.setFirstName((String) user.get("firstName"));

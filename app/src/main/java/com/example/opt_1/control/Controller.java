@@ -13,6 +13,10 @@ import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
 import com.example.opt_1.model.User2;
 import com.example.opt_1.view.ActivityFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +73,6 @@ public class Controller implements IModeltoView,IViewtoModel {
 //        locationTracker.start();
 
     }
-
 
     @Override
     public synchronized void stopActivity() {
