@@ -60,9 +60,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
     }
     private void initLocationRequest(){
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(1000);
-        locationRequest.setSmallestDisplacement(1);
+        locationRequest.setInterval(0);
+        locationRequest.setFastestInterval(0);
+        locationRequest.setSmallestDisplacement(3);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -121,7 +121,6 @@ public class LocationTracker extends Thread implements ILocationTracker {
     }
 
     public double getTravelledDistance() {
-
         return BigDecimal.valueOf(travelledDistance).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 

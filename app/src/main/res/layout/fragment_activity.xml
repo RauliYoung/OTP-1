@@ -10,8 +10,8 @@
 
     <TextView
         android:id="@+id/activity_datatext"
-        android:layout_width="192dp"
-        android:layout_height="47dp"
+        android:layout_width="289dp"
+        android:layout_height="165dp"
         android:text="@string/datahere"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -41,5 +41,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Chronometer
+        android:id="@+id/activity_timer"
+        android:layout_width="287dp"
+        android:layout_height="82dp"
+        android:text="@string/timer"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_datatext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

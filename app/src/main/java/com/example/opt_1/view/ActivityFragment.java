@@ -24,21 +24,24 @@ public class ActivityFragment extends Fragment {
     //private int click = 0;
     private Button activityButton;
     private Button stopActivityButton;
-    public ActivityFragment(){
+
+    public ActivityFragment() {
         controller = new Controller();
     }
+
     ActivityFragment fragment;
 
     private TextView dataText;
+    private TextView timer;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_activity,container,false);
+        v = inflater.inflate(R.layout.fragment_activity, container, false);
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
         stopActivityButton = (Button) v.findViewById(R.id.activity_StopActivityButton);
         dataText = v.findViewById(R.id.activity_datatext);
-
+        timer = v.findViewById(R.id.activity_timer);
 
         fragment = this;
 
@@ -47,14 +50,14 @@ public class ActivityFragment extends Fragment {
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestPermissions( new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
                 try {
                     if (fragment != null) {
-                        controller.startActivity(fragment,dataText);
+                        controller.startActivity(fragment, dataText,timer);
 
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
