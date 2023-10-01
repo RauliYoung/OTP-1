@@ -118,6 +118,23 @@ public class DAO implements IDAO {
     }
 
     @Override
+    public void createUser2(User2 user, String password) {
+        auth.createUserWithEmailAndPassword(User2.getInstance().getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(handleTaskAuth(task)){
+                    if (task.isSuccessful()) {
+                        System.out.println("New User Success");
+                        FirebaseUser user = auth.getCurrentUser();
+                    } else {
+                        System.out.println("Something went wrong " + task.getException());
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void removeUser() {
         try {
             DocumentReference docRefGroup = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
@@ -409,6 +426,13 @@ public class DAO implements IDAO {
     }
     public Boolean handleTaskDS(Task<DocumentSnapshot> task) {
         if (task.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Boolean handleTaskAuth(Task<AuthResult> task){
+        if(task.isSuccessful()){
             return true;
         }else{
             return false;

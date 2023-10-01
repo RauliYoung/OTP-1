@@ -9,6 +9,7 @@ import com.example.opt_1.model.IExercise;
 import com.example.opt_1.model.ILocationTracker;
 import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
+import com.example.opt_1.model.User2;
 import com.example.opt_1.view.ActivityFragment;
 
 public class Controller implements IModeltoView,IViewtoModel {
@@ -85,7 +86,13 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
-        database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
+        //database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
+        User2 user = User2.getInstance();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        user.setEmail(email);
+        database.createUser2(user, password);
     }
 
     @Override
