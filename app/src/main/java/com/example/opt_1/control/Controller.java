@@ -64,7 +64,7 @@ public class Controller implements IModeltoView,IViewtoModel {
             this.activityLength = seconds;
             activityTimer.setBase(SystemClock.elapsedRealtime());
             double distance = locationTracker.getTravelledDistance();
-            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the pace was " + caclulatePace(distance));
+            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the pace was " + caclulatePace(distance) + "km/h");
         }
         System.out.println("Activity Stopping!");
     }
