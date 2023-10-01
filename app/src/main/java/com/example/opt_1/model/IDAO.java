@@ -1,10 +1,10 @@
 package com.example.opt_1.model;
 
-import com.example.opt_1.control.CurrentUserInstance;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Map;
 
 public interface IDAO {
     void addNewExerciseToDatabase(Exercise exercise);
