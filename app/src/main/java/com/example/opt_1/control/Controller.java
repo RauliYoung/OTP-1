@@ -78,7 +78,7 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public synchronized void stopActivity() {
         locationTracker.setActive(false);
-        database.addNewExerciseToDatabase(new Exercise(120,150,5.4));
+        database.addNewExerciseToDatabase(new Exercise(160,150,5.4));
         if(activityTimer != null) {
             activityTimer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();
