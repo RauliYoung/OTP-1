@@ -57,8 +57,7 @@ public class DAO implements IDAO {
                         Map<String,Object> exercise = new HashMap<>();
                         exercise.put(formatDateTime,newExercise);
                         userRef.collection("exercises").add(exercise);
-
-
+                        retrieveExercises();
                     }
                 }
             }
@@ -77,8 +76,9 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(handleTaskQS(task)){
                                     for (QueryDocumentSnapshot snapshot : task.getResult()){
-
+                                        userInstance.getCurrentUser().getExercises().add(snapshot.getData());
                                     }
+                                    System.out.println("Exercises: " + CurrentUserInstance.getINSTANCE().getCurrentUser().getExercises());
                                 }
                             }
                         });
@@ -86,6 +86,7 @@ public class DAO implements IDAO {
                 }
             }
         });
+
     }
 
     @Override
