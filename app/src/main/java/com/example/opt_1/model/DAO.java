@@ -27,6 +27,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -42,14 +44,19 @@ public class DAO implements IDAO {
 
 
     @Override
-    public void addNewExerciseToDatabase(Exercise exercise) {
+    public void addNewExerciseToDatabase(Exercise newExercise) {
         db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         DocumentReference userRef = db.collection("users").document(document.getId());
-
+                        LocalDateTime date = LocalDateTime.now();
+                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                        String formatDateTime = date.format(format);
+                        Map<String,Object> exercise = new HashMap<>();
+                        exercise.put(formatDateTime,newExercise);
+                        userRef.collection("exercises").add(exercise);
                     }
                 }
             }
@@ -77,19 +84,7 @@ public class DAO implements IDAO {
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
                                     callback.onSucceed(task.isSuccessful());
-                                     db.collection("users").document(documentReference.getId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            System.out.println("Value: " + value.getId());
-                                            DocumentReference userRef = db.collection("users").document(value.getId());
-                                            Map<String,Boolean> exercise = new HashMap<>();
-                                            exercise.put("Test",true);
-                                            userRef.collection("exercises").add(exercise);
-                                        }
-                                    });
-                                    //documentReference.set(documentReference.collection("exercises").add(user));
                                     auth.signOut();
-
                                 })
                                 .addOnFailureListener(e -> callback.onFailure());
                     }
@@ -113,6 +108,27 @@ public class DAO implements IDAO {
                         }
                     } else {
                         System.out.println("Err: " + task.getException());
+                    }
+                }
+            });
+            Query usersExercises = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+            usersExercises.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(handleTaskQS(task)){
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            System.out.println("DAO USER: " + document.getId());
+                             db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(handleTaskQS(task)){
+                                        for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                            db.collection("users/" + document.getId() +"/exercises").document(snapshot.getId()).delete();
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             });
