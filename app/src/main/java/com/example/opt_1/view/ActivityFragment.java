@@ -22,9 +22,13 @@ import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.control.CurrentUserInstance;
 import com.example.opt_1.control.IViewtoModel;
+import com.example.opt_1.model.User2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ActivityFragment extends Fragment {
 
@@ -41,20 +45,17 @@ public class ActivityFragment extends Fragment {
     private TextView dataText;
     private ArrayList<Button> activityHistoryButtonList = new ArrayList<>();
 
-    public ActivityFragment(){
+    public ActivityFragment() {
         controller = new Controller();
     }
 
-    ActivityFragment fragment;
-
-    private TextView dataText;
     private TextView timer;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activityHistory = CurrentUserInstance.getINSTANCE().getCurrentUser().getExercises();
-        v = inflater.inflate(R.layout.fragment_activity,container,false);
+        activityHistory = User2.getInstance().getExercises();
+        v = inflater.inflate(R.layout.fragment_activity, container, false);
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
         stopActivityButton = (Button) v.findViewById(R.id.activity_StopActivityButton);
         dataText = v.findViewById(R.id.activity_datatext);
@@ -66,30 +67,34 @@ public class ActivityFragment extends Fragment {
         System.out.println("Activity fragment avautuu");
 
         for (int i = 0; i < activityHistory.size(); i++) {
-                View clonedUserSection = inflater.inflate(R.layout.activityobject, container, false);
-                TextView dateText = clonedUserSection.findViewById(R.id.ActivityDate);
-                Button activityHistoryButton = clonedUserSection.findViewById(R.id.ActivityReadDataButton);
-                activityHistoryButton.setId(i);
-                activityHistoryButtonList.add(activityHistoryButton);
+            View clonedUserSection = inflater.inflate(R.layout.activityobject, container, false);
+            TextView dateText = clonedUserSection.findViewById(R.id.ActivityDate);
+            Button activityHistoryButton = clonedUserSection.findViewById(R.id.ActivityReadDataButton);
+            activityHistoryButton.setId(i);
+            activityHistoryButtonList.add(activityHistoryButton);
+            View popupView = inflater.inflate(R.layout.popup_windowactivity, null);
+            TextView popUpViewDataOne = popupView.findViewById(R.id.dataOne);
 
-                View popupView = inflater.inflate(R.layout.popup_windowactivity, null);
-                TextView popUpViewDataOne =  popupView.findViewById(R.id.dataOne);
-                TextView popUpViewDataTwo =  popupView.findViewById(R.id.dataTwo);
-                TextView popUpViewDataThree =  popupView.findViewById(R.id.dataThree);
+            popUpViewDataOne.setText(activityHistory.get(i).values().toString()
+                    .replace("{","")
+                    .replace("}","")
+                    .replace("]", "")
+                    .replace("[","")
+                    .replace(",",""));
 
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                boolean focusable = true;
-                activityHistoryButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-                    }
-                });
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true;
+            activityHistoryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                    popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+                }
+            });
 
-                dateText.setText(activityHistory.get(i).keySet().toString().replace("]","").replace("[",""));
-                activityDataHistoryScrollView.addView(clonedUserSection);
+            dateText.setText(activityHistory.get(i).keySet().toString().replace("]", "").replace("[", ""));
+            activityDataHistoryScrollView.addView(clonedUserSection);
         }
 
 
@@ -100,7 +105,7 @@ public class ActivityFragment extends Fragment {
 
                 try {
                     if (fragment != null) {
-                        controller.startActivity(fragment, dataText,timer);
+                        controller.startActivity(fragment, dataText, timer);
 
                     }
                 } catch (Exception e) {

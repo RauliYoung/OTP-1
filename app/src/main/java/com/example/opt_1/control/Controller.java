@@ -46,12 +46,13 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        database.changePassword(oldPassword,newPassword);
+        //TODO database.changePassword(oldPassword,newPassword);
     }
 
     @Override
     public void changeUsername(String newUsername) {
-        database.checkIfUsernameExist(newUsername);
+        //TODO
+        // database.checkIfUsernameExist(newUsername);
     }
 
     @Override

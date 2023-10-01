@@ -1,5 +1,6 @@
 package com.example.opt_1.model;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class User2 {

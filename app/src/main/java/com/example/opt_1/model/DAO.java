@@ -34,7 +34,7 @@ public class DAO implements IDAO {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
+    private User2 userInstance = User2.getInstance();
 
 
     private boolean taskResult;
@@ -73,7 +73,9 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(handleTaskQS(task)){
                                     for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                        userInstance.getCurrentUser().getExercises().add(snapshot.getData());
+                                        ArrayList<Map> userInstanceArrayList = userInstance.getExercises();
+                                        userInstanceArrayList.add(snapshot.getData());
+                                        userInstance.setExercises(userInstanceArrayList);
                                     }
                                 }
                             }
@@ -271,7 +273,7 @@ public class DAO implements IDAO {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         DocumentReference userRef = db.collection("users").document(document.getId());
                         userRef.update("username", username);
-                        userInstance.getCurrentUser().setUsername(username);
+                        userInstance.setUsername(username);
 
                     }
                 }
@@ -293,7 +295,6 @@ public class DAO implements IDAO {
                                         Map<String,Object> user = new HashMap<>();
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             user = document.getData();
-                                            retrieveExercises();
                                         }
                                         User2 userInstance = User2.getInstance();
                                         userInstance.setFirstName((String) user.get("firstName"));
@@ -302,6 +303,7 @@ public class DAO implements IDAO {
                                         userInstance.setEmail((String) user.get("email"));
                                         System.out.println(userInstance);
                                         callbacks.onSucceed(true);
+                                        retrieveExercises();
                                     }else{
                                         callbacks.onFailure();
                                     }
