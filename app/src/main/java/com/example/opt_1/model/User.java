@@ -1,5 +1,7 @@
 package com.example.opt_1.model;
 
+import java.util.ArrayList;
+
 public class User implements IUser {
 
     private String firstName;
@@ -7,6 +9,7 @@ public class User implements IUser {
     private String username;
     private String email;
     private String password;
+    private ArrayList<Exercise> exercises = new ArrayList<>();
 
     public User( String firstName, String lastName, String username, String email, String password, CRUDCallbacks callback){
 

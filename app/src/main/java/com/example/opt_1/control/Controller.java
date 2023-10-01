@@ -4,8 +4,10 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.example.opt_1.model.DAO;
+import com.example.opt_1.model.Exercise;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.IExercise;
 import com.example.opt_1.model.ILocationTracker;
 import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
@@ -15,6 +17,7 @@ import com.example.opt_1.view.ActivityFragment;
 public class Controller implements IModeltoView,IViewtoModel {
 
     private IDAO database = new DAO();
+    private IExercise exercise;
 
     private LocationTracker locationTracker;
     private Chronometer activityTimer;
@@ -62,6 +65,7 @@ public class Controller implements IModeltoView,IViewtoModel {
     @Override
     public synchronized void stopActivity() {
         locationTracker.setActive(false);
+        database.addNewExerciseToDatabase(new Exercise(120,150,5.4));
         if(activityTimer != null) {
             activityTimer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();

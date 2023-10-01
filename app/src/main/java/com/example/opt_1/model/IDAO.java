@@ -4,7 +4,10 @@ import com.example.opt_1.control.CurrentUserInstance;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDateTime;
+
 public interface IDAO {
+    void addNewExerciseToDatabase(Exercise exercise);
     void createUser(User user, CRUDCallbacks callBack) ;
     void removeUser();
     void changePassword(String oldPassword, String newPassword);

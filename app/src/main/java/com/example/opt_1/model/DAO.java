@@ -1,6 +1,7 @@
 package com.example.opt_1.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,13 +18,16 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,6 +39,22 @@ public class DAO implements IDAO {
 
 
     private boolean taskResult;
+
+
+    @Override
+    public void addNewExerciseToDatabase(Exercise exercise) {
+        db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (handleTaskQS(task)) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        DocumentReference userRef = db.collection("users").document(document.getId());
+
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void createUser(User user, CRUDCallbacks callback) {
@@ -57,7 +77,19 @@ public class DAO implements IDAO {
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
                                     callback.onSucceed(task.isSuccessful());
+                                     db.collection("users").document(documentReference.getId()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            System.out.println("Value: " + value.getId());
+                                            DocumentReference userRef = db.collection("users").document(value.getId());
+                                            Map<String,Boolean> exercise = new HashMap<>();
+                                            exercise.put("Test",true);
+                                            userRef.collection("exercises").add(exercise);
+                                        }
+                                    });
+                                    //documentReference.set(documentReference.collection("exercises").add(user));
                                     auth.signOut();
+
                                 })
                                 .addOnFailureListener(e -> callback.onFailure());
                     }
