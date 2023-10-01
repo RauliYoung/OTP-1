@@ -34,6 +34,10 @@ public class User implements IUser {
         return firstName;
     }
 
+    public ArrayList<Exercise> getExercises() {
+        return exercises;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

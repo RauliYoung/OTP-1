@@ -57,6 +57,31 @@ public class DAO implements IDAO {
                         Map<String,Object> exercise = new HashMap<>();
                         exercise.put(formatDateTime,newExercise);
                         userRef.collection("exercises").add(exercise);
+
+
+                    }
+                }
+            }
+        });
+    }
+    private void retrieveExercises(){
+        Query usersExercises = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+        usersExercises.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(handleTaskQS(task)){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        System.out.println("DAO USER: " + document.getId());
+                        db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(handleTaskQS(task)){
+                                    for (QueryDocumentSnapshot snapshot : task.getResult()){
+
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
