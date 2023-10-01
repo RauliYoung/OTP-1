@@ -45,17 +45,12 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public synchronized void startActivity(ActivityFragment fragment,TextView data, TextView timer) {
-//        System.out.println("DATATEXTVIEW" + data);
         this.textViewData = data;
         this.timer = timer;
         activityTimer = (Chronometer) timer;
         activityTimer.setBase(SystemClock.elapsedRealtime());
         activityTimer.start();
-//        System.out.println("Activity Starts!");
         locationTracker = new LocationTracker(fragment, this);
-      //  locationTracker.setLocation(fragment,this);
-//        locationTracker.start();
-
     }
 
 
@@ -68,7 +63,8 @@ public class Controller implements IModeltoView,IViewtoModel {
             int seconds = (int) elapsedMillis / 1000;
             this.activityLength = seconds;
             activityTimer.setBase(SystemClock.elapsedRealtime());
-            textViewData.setText("Your activity lasted \n"+ seconds + " seconds.");
+            double distance = locationTracker.getTravelledDistance();
+            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the pace was " + caclulatePace(distance));
         }
         System.out.println("Activity Stopping!");
     }
@@ -119,10 +115,17 @@ public class Controller implements IModeltoView,IViewtoModel {
     * then calculates the pace of the activity and returns the value by km/h.
     * */
     @Override
-    public int caclulatePace(int activityLength) {
+    public double caclulatePace(double activityLength) {
         //Calculate pace, also refactor the method to take the distance of the activity as a parameter.
-
-        return this.activityLength;
+        int hours,minutes;
+        int testiPituus = 60;
+        double testiMakta = 100.00;
+        double pace = (testiMakta/testiPituus) * 3.6;
+        if(locationTracker.getTravelledDistance() != 0) {
+            return ((locationTracker.getTravelledDistance()/activityLength) * 3.6);
+        }else {
+            return pace;
+        }
     }
 
 }
