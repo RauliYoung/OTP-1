@@ -1,5 +1,6 @@
 package com.example.opt_1.model;
 
+import com.example.opt_1.control.CurrentUserInstance;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 

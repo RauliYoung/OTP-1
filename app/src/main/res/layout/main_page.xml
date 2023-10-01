@@ -15,28 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginBottom="25dp"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/userNameProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:text="@string/username" />
-        </LinearLayout>
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

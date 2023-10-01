@@ -8,6 +8,13 @@
     android:backgroundTint="#FFFFFF"
     tools:context=".view.Main_Page">
 
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="143dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/activity_datatext"
         android:layout_width="192dp"

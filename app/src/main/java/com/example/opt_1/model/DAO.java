@@ -368,6 +368,7 @@ public class DAO implements IDAO {
     public Boolean getRegisterErrorCheck() {
         return taskResult;
     }
+
     @Override
     public void updateData() {
 
