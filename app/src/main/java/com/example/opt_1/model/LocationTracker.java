@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class LocationTracker extends Thread implements ILocationTracker {
@@ -119,7 +121,8 @@ public class LocationTracker extends Thread implements ILocationTracker {
     }
 
     public double getTravelledDistance() {
-        return travelledDistance;
+
+        return BigDecimal.valueOf(travelledDistance).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     @Override
