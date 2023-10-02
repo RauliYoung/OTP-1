@@ -22,8 +22,7 @@ public class GroupFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_groups,container,false);
-        groupUserList  = (LinearLayout) v.findViewById(R.id.groupUsers);
+        v = inflater.inflate(R.layout.fragment_group_activity_test,container,false);
         return v;
     }
 
