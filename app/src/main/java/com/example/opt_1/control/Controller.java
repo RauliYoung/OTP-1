@@ -4,12 +4,22 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.example.opt_1.model.DAO;
+import com.example.opt_1.model.Exercise;
 import com.example.opt_1.model.IDAO;
 import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.IExercise;
 import com.example.opt_1.model.ILocationTracker;
 import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
+import com.example.opt_1.model.User2;
 import com.example.opt_1.view.ActivityFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,6 +28,7 @@ import java.math.RoundingMode;
 public class Controller implements IModeltoView,IViewtoModel {
 
     private IDAO database = new DAO();
+    private IExercise exercise;
 
     private LocationTracker locationTracker;
     private Chronometer activityTimer;
@@ -26,19 +37,25 @@ public class Controller implements IModeltoView,IViewtoModel {
     private int activityLength;
     private TextView textViewData;
     private TextView timer;
+//    @Override
+//    public void userLogin() {
+//        database.loginUser(loginInfoUsername, loginInfoPassword ,);
+//    }
+
     @Override
-    public void userLogin() {
-        database.loginUser(loginInfoUsername, loginInfoPassword);
+    public void userLogin(String email, String password, CRUDCallbacks callbacks) {
+        database.loginUser(email,password, callbacks);
     }
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        database.changePassword(oldPassword,newPassword);
+        //TODO database.changePassword(oldPassword,newPassword);
     }
 
     @Override
     public void changeUsername(String newUsername) {
-        database.checkIfUsernameExist(newUsername);
+        //TODO
+        // database.checkIfUsernameExist(newUsername);
     }
 
     @Override
@@ -56,10 +73,10 @@ public class Controller implements IModeltoView,IViewtoModel {
         locationTracker = new LocationTracker(fragment, this);
     }
 
-
     @Override
     public synchronized void stopActivity() {
         locationTracker.setActive(false);
+        database.addNewExerciseToDatabase(new Exercise(160,150,5.4));
         if(activityTimer != null) {
             activityTimer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();
@@ -96,7 +113,13 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
-        database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
+        //database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
+        Map<String, String> user = new HashMap<>();
+        user.put("firstName", firstName);
+        user.put("lastName", lastName);
+        user.put("username", username);
+        user.put("email", email);
+        database.createUser2(user, password);
     }
 
     @Override

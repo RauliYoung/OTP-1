@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -13,8 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -24,6 +23,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -31,10 +34,58 @@ public class DAO implements IDAO {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private CurrentUserInstance userInstance = CurrentUserInstance.getINSTANCE();
+    private User2 userInstance = User2.getInstance();
 
 
     private boolean taskResult;
+
+
+    @Override
+    public void addNewExerciseToDatabase(Exercise newExercise) {
+        db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (handleTaskQS(task)) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        DocumentReference userRef = db.collection("users").document(document.getId());
+                        LocalDateTime date = LocalDateTime.now();
+                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                        String formatDateTime = date.format(format);
+                        Map<String,Object> exercise = new HashMap<>();
+                        exercise.put(formatDateTime,newExercise);
+                        userRef.collection("exercises").add(exercise);
+                        retrieveExercises();
+                    }
+                }
+            }
+        });
+    }
+    private void retrieveExercises(){
+        Query usersExercises = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+        usersExercises.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(handleTaskQS(task)){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        System.out.println("DAO USER: " + document.getId());
+                        db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(handleTaskQS(task)){
+                                    for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                        ArrayList<Map> userInstanceArrayList = userInstance.getExercises();
+                                        userInstanceArrayList.add(snapshot.getData());
+                                        userInstance.setExercises(userInstanceArrayList);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+    }
 
     @Override
     public void createUser(User user, CRUDCallbacks callback) {
@@ -65,6 +116,35 @@ public class DAO implements IDAO {
     }
 
     @Override
+    public void createUser2(Map user, String password) {
+        auth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(handleTaskAuth(task)){
+                    if (task.isSuccessful()) {
+                        db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                System.out.println("New User: " + documentReference.getId());
+                                System.out.println("New User Success");
+                                auth.signOut();
+                            }
+
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } else {
+                        System.out.println("Something went wrong " + task.getException());
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void removeUser() {
         try {
             DocumentReference docRefGroup = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
@@ -81,6 +161,27 @@ public class DAO implements IDAO {
                         }
                     } else {
                         System.out.println("Err: " + task.getException());
+                    }
+                }
+            });
+            Query usersExercises = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+            usersExercises.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(handleTaskQS(task)){
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            System.out.println("DAO USER: " + document.getId());
+                             db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(handleTaskQS(task)){
+                                        for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                            db.collection("users/" + document.getId() +"/exercises").document(snapshot.getId()).delete();
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             });
@@ -160,6 +261,9 @@ public class DAO implements IDAO {
             }
         });
     }
+
+
+
     private void changeUsername(String username){
         System.out.println("changeUsername()");
         db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -169,39 +273,74 @@ public class DAO implements IDAO {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         DocumentReference userRef = db.collection("users").document(document.getId());
                         userRef.update("username", username);
-                        userInstance.getCurrentUser().setUsername(username);
+                        userInstance.setUsername(username);
+
+                    }
+                }
+            }
+        });
+    }
+    @Override
+    public void loginUser(String email, String password, CRUDCallbacks callbacks) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(handleTaskAuth(task)){
+                    if(auth.getCurrentUser() != null){
+                        System.out.println(auth.getCurrentUser()+" LOGGED IN");
+                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (handleTaskQS(task)) {
+                                        Map<String,Object> user = new HashMap<>();
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            user = document.getData();
+                                        }
+                                        User2 userInstance = User2.getInstance();
+                                        userInstance.setFirstName((String) user.get("firstName"));
+                                        userInstance.setLastName((String) user.get("lastName"));
+                                        userInstance.setUsername((String) user.get("username"));
+                                        userInstance.setEmail((String) user.get("email"));
+                                        System.out.println(userInstance);
+                                        callbacks.onSucceed(true);
+                                        retrieveExercises();
+                                    }else{
+                                        callbacks.onFailure();
+                                    }
+                                }
+                            });
                     }
                 }
             }
         });
     }
 
-    @Override
-    public void loginUser(String email, String password) {
-
-        auth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (auth.getCurrentUser() == null){
-                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
-                        }else {
-                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
-                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (handleTaskQS(task)) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            User currentUser = document.toObject(User.class);
-                                            userInstance.setCurrentUser(currentUser);
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-    }
+//    @Override
+//    public void loginUser(String email, String password) {
+//
+//        auth.signInWithEmailAndPassword(email,password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (auth.getCurrentUser() == null){
+//                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
+//                        }else {
+//                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
+//                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (handleTaskQS(task)) {
+//                                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                                            User currentUser = document.toObject(User.class);
+//                                            userInstance.setCurrentUser(currentUser);
+//                                        }
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     public void addNewGroupToDatabase(String groupName) {
@@ -336,6 +475,13 @@ public class DAO implements IDAO {
     }
     public Boolean handleTaskDS(Task<DocumentSnapshot> task) {
         if (task.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Boolean handleTaskAuth(Task<AuthResult> task){
+        if(task.isSuccessful()){
             return true;
         }else{
             return false;

@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.example.opt_1.control.CurrentUserInstance;
 import com.example.opt_1.control.IViewtoModel;
+import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.User2;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -60,23 +63,35 @@ public class LoginPage extends AppCompatActivity {
 
     }
     private void userLogin(){
-        controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
-        controller.userLogin();
-        authlistener = new FirebaseAuth.AuthStateListener(){
+        //controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
+        //controller.userLogin();
+        controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {
             @Override
-            public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user!=null && firebaseAuth.getCurrentUser()!=null){
-                    System.out.println("USERLOGGED IN: " + user.getEmail());
-                    Intent intent = new Intent(LoginPage.this, Main_Page.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    System.out.println("WRONG USER OR PASS");
-                }
-            }
-        };
-        auth.addAuthStateListener(authlistener);
+            public void onSucceed(boolean success) {
+                System.out.println("Kaikki ok!, voidaan jatkaa seuraavaan fragmenttiin");
+                System.out.println("USERLOGGED IN: " + User2.getInstance().getEmail());
+                Intent intent = new Intent(LoginPage.this, Main_Page.class);
+                startActivity(intent);
+                finish();
 
+            }
+
+            @Override
+            public void onFailure() {
+                System.out.println("Kaikki paskana!");
+            }
+        });
+//        authlistener = new FirebaseAuth.AuthStateListener(){
+//            @Override
+//            public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if(user!=null && firebaseAuth.getCurrentUser()!=null){
+//
+//                }else{
+//                    System.out.println("WRONG USER OR PASS");
+//                }
+//            }
+//        };
+//        auth.addAuthStateListener(authlistener);
     }
 }

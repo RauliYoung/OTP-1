@@ -9,7 +9,7 @@
     tools:context=".view.Main_Page" >
 
     <Button
-        android:id="@+id/leaveGroupButton3"
+        android:id="@+id/leaveGroupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="leave group"
@@ -17,18 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
-    <Button
-        android:id="@+id/addUserGroupButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="120dp"
-        android:text="Add user"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leaveGroupButton3" />
 
     <ScrollView
         android:id="@+id/scrollView2"

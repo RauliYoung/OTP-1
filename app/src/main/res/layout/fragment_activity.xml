@@ -8,10 +8,26 @@
     android:backgroundTint="#FFFFFF"
     tools:context=".view.Main_Page">
 
+    <ScrollView
+        android:id="@+id/ActivityDataHistoryList"
+        android:layout_width="409dp"
+        android:layout_height="143dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <LinearLayout
+            android:id="@+id/ActivityListForData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
     <TextView
         android:id="@+id/activity_datatext"
         android:layout_width="289dp"
         android:layout_height="165dp"
+        android:layout_marginTop="300dp"
         android:text="@string/datahere"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -53,6 +69,6 @@
         app:layout_constraintBottom_toTopOf="@+id/activity_datatext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ActivityDataHistoryList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

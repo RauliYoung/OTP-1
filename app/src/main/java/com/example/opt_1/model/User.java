@@ -1,5 +1,8 @@
 package com.example.opt_1.model;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class User implements IUser {
 
     private String firstName;
@@ -7,6 +10,7 @@ public class User implements IUser {
     private String username;
     private String email;
     private String password;
+    private ArrayList<Map> exercises = new ArrayList<>();
 
     public User( String firstName, String lastName, String username, String email, String password, CRUDCallbacks callback){
 
@@ -29,6 +33,10 @@ public class User implements IUser {
     }
     public String getFirstName() {
         return firstName;
+    }
+
+    public ArrayList<Map> getExercises() {
+        return exercises;
     }
 
     public void setFirstName(String firstName) {
