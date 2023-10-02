@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 public class Controller implements IModeltoView,IViewtoModel {
 
@@ -62,17 +65,12 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public synchronized void startActivity(ActivityFragment fragment,TextView data, TextView timer) {
-//        System.out.println("DATATEXTVIEW" + data);
         this.textViewData = data;
         this.timer = timer;
         activityTimer = (Chronometer) timer;
         activityTimer.setBase(SystemClock.elapsedRealtime());
         activityTimer.start();
-//        System.out.println("Activity Starts!");
         locationTracker = new LocationTracker(fragment, this);
-      //  locationTracker.setLocation(fragment,this);
-//        locationTracker.start();
-
     }
 
     @Override
@@ -85,7 +83,8 @@ public class Controller implements IModeltoView,IViewtoModel {
             int seconds = (int) elapsedMillis / 1000;
             this.activityLength = seconds;
             activityTimer.setBase(SystemClock.elapsedRealtime());
-            textViewData.setText("Your activity lasted \n"+ seconds + " seconds.");
+            double distance = locationTracker.getTravelledDistance();
+            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
         }
         System.out.println("Activity Stopping!");
     }
@@ -142,10 +141,10 @@ public class Controller implements IModeltoView,IViewtoModel {
     * then calculates the pace of the activity and returns the value by km/h.
     * */
     @Override
-    public int caclulatePace(int activityLength) {
+    public double caclulatePace(double activityLength) {
         //Calculate pace, also refactor the method to take the distance of the activity as a parameter.
+        double speed = (locationTracker.getTravelledDistance()/activityLength) * 3.6;
 
-        return this.activityLength;
+        return BigDecimal.valueOf(speed).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
-
 }

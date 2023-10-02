@@ -18,5 +18,5 @@ public interface IViewtoModel {
     void createNewGroup(String groupName);
     void joinToGroup(String groupOwnerEmail);
     void leaveFromGroup(String groupOwnerEmail);
-    int caclulatePace(int activityLength);
+    double caclulatePace(double activityLength);
 }
