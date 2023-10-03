@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -47,12 +48,8 @@ public class DAO implements IDAO {
                 if (handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         DocumentReference userRef = db.collection("users").document(document.getId());
-                        LocalDateTime date = LocalDateTime.now();
-                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-                        String formatDateTime = date.format(format);
-                        Map<String,Object> exercise = new HashMap<>();
-                        exercise.put(formatDateTime,newExercise);
-                        userRef.collection("exercises").add(exercise);
+                        CollectionReference userExercise = userRef.collection("exercises");
+                        userExercise.add(newExercise);
                         retrieveExercises();
                     }
                 }
@@ -401,7 +398,18 @@ public class DAO implements IDAO {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(handleTaskQS(task)){
                                         for(QueryDocumentSnapshot q : task.getResult()){
-                                            System.out.println("Group user email document: " + q.getData());
+                                            Map<String,Object> user = q.getData();
+                                            System.out.println("Username: " +  (String) user.get("username"));
+                                            db.collection("users/" + q.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    for(QueryDocumentSnapshot q : task.getResult()){
+                                                        Map<String,Object> usersExercises = q.getData();
+                                                        System.out.println("avgSpeed: " + usersExercises.get("avgSpeed"));
+                                                    }
+                                                    System.out.println("DOCUMENT " + q.getData() + " AND EXERCISES " + task.getResult().getDocuments());
+                                                }
+                                            });
                                         }
                                     }
                                 }
