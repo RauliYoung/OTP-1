@@ -46,12 +46,10 @@ public class RegisterPage extends AppCompatActivity {
             if (checkValidCharacterLenght(firstName, lastName, userName) && checkPasswordLength(password)) {
                 controller.setRegisterInformation(firstName, lastName, userName, password, email, new CRUDCallbacks() {
                     @Override
-                    public void onSucceed(boolean success) {
-                        if (success) {
+                    public void onSucceed() {
                             System.out.println("Register was a Success Moving back to login screen");
                             Intent intent = new Intent(RegisterPage.this, LoginPage.class);
                             startActivity(intent);
-                        }
                     }
                     @Override
                     public void onFailure() {

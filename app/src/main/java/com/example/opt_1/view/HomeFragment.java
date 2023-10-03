@@ -172,7 +172,7 @@ public class HomeFragment extends Fragment {
                 if(!Objects.equals(newUsername, oldUsername)){
                     controller.changeUsername(newUsername, new CRUDCallbacks() {
                         @Override
-                        public void onSucceed(boolean success) {
+                        public void onSucceed() {
                             usernameTextField.setText(userInstance.getUsername());
                         }
 
