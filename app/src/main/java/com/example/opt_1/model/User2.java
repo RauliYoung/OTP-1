@@ -1,6 +1,5 @@
 package com.example.opt_1.model;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class User2 {
@@ -9,7 +8,7 @@ public class User2 {
     private String lastName;
     private String username;
     private String email;
-    private ArrayList<Map> exercises = new ArrayList<>();
+    private ArrayList<Map<String, Object>> exercises = new ArrayList<>();
 
     private User2(){};
 
@@ -52,22 +51,12 @@ public class User2 {
         this.email = email;
     }
 
-    public ArrayList<Map> getExercises() {
+    public ArrayList<Map<String,Object>> getExercises() {
         return exercises;
     }
 
-    public void setExercises(ArrayList<Map> exercises) {
+    public void setExercises(ArrayList<Map<String,Object>> exercises) {
         this.exercises = exercises;
     }
 
-    @Override
-    public String toString() {
-        return "User2{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", exercises=" + exercises +
-                '}';
-    }
 }

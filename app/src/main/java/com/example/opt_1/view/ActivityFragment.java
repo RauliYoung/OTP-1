@@ -34,7 +34,7 @@ public class ActivityFragment extends Fragment {
 
     private static final int REQUEST_LOCATION = 1;
     private Controller controller;
-    private ArrayList<Map> activityHistory;
+    private ArrayList<Map<String,Object>> activityHistory;
     View v;
     //private int click = 0;
     private Button activityButton;

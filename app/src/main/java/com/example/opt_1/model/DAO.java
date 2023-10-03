@@ -73,7 +73,7 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(handleTaskQS(task)){
                                     for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                        ArrayList<Map> userInstanceArrayList = userInstance.getExercises();
+                                        ArrayList<Map<String,Object>> userInstanceArrayList = userInstance.getExercises();
                                         userInstanceArrayList.add(snapshot.getData());
                                         userInstance.setExercises(userInstanceArrayList);
                                     }
@@ -116,7 +116,7 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public void createUser2(Map user, String password) {
+    public void createUser2(Map<String,String> user, String password) {
         auth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -244,7 +244,7 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public void checkIfUsernameExist(String newUsername) {
+    public void checkIfUsernameExist(String newUsername, CRUDCallbacks callbacks) {
         Query usernames = db.collection("users").whereEqualTo("username", newUsername);
         usernames.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -255,7 +255,7 @@ public class DAO implements IDAO {
                         System.out.println("Username is already on use");
                     }else {
                         System.out.println("Username is available to use");
-                        changeUsername(newUsername);
+                        changeUsername(newUsername, callbacks);
                     }
                 }
             }
@@ -264,7 +264,7 @@ public class DAO implements IDAO {
 
 
 
-    private void changeUsername(String username){
+    private void changeUsername(String username, CRUDCallbacks callbacks){
         System.out.println("changeUsername()");
         db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -274,6 +274,7 @@ public class DAO implements IDAO {
                         DocumentReference userRef = db.collection("users").document(document.getId());
                         userRef.update("username", username);
                         userInstance.setUsername(username);
+                        callbacks.onSucceed(true);
 
                     }
                 }
