@@ -338,7 +338,7 @@ public class DAO implements IDAO {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if(document.exists()){
                             //User groupOwner = document.toObject(User.class);
-                            newGroup.getGroup().add(userInstance);
+                            newGroup.getGroupOfUserEmails().add(userInstance.getEmail());
                             newGroup.setGroupOwner(userInstance.getUsername());
                             newGroup.setGroupName(groupName);
                         }
@@ -374,11 +374,39 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        docRef.update("group", FieldValue.arrayUnion(userInstance));
+                                        docRef.update("groupOfUserEmails", FieldValue.arrayUnion(userInstance.getEmail()));
+                                        fetchGroupFromDatabase(docRef);
                                     }
                                 }
                             }
                         });
+                    }
+                }
+            }
+        });
+    }
+    private void fetchGroupFromDatabase(DocumentReference joinedGroupRef){
+        joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(handleTaskDS(task)){
+                    DocumentSnapshot document = task.getResult();
+                    System.out.println("Group document: " + document);
+                    Group group = document.toObject(Group.class);
+                    System.out.println("Group: " + group);
+                    if(group.getGroupOfUserEmails() != null){
+                        for(String email : group.getGroupOfUserEmails()){
+                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(handleTaskQS(task)){
+                                        for(QueryDocumentSnapshot q : task.getResult()){
+                                            System.out.println("Group user email document: " + q.getData());
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -400,8 +428,7 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        User currentUser = document.toObject(User.class);
-                                        docRef.update("group", FieldValue.arrayRemove(currentUser));
+                                        docRef.update("groupOfUserEmails", FieldValue.arrayRemove(userInstance.getEmail()));
                                     }
                                 }
                             }
