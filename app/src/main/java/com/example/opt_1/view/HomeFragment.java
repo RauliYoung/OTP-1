@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.control.CurrentUserInstance;
 import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User2;
 import com.google.firebase.auth.FirebaseAuth;

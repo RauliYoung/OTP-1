@@ -8,12 +8,12 @@ import java.util.List;
 public class Group implements IGroup{
     private String groupName;
     private String groupOwner;
-    private ArrayList<User> group = new ArrayList<>();
+    private ArrayList<User2> group = new ArrayList<>();
 
-    public ArrayList<User> getGroup() {
+    public ArrayList<User2> getGroup() {
         return group;
     }
-    public void setGroup(ArrayList<User> group) {
+    public void setGroup(ArrayList<User2> group) {
         this.group = group;
     }
     public void setGroupName(String groupName) {

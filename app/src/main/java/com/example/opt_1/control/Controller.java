@@ -2,7 +2,6 @@ package com.example.opt_1.control;
 import android.os.SystemClock;
 import android.widget.Chronometer;
 import android.widget.TextView;
-
 import com.example.opt_1.model.DAO;
 import com.example.opt_1.model.Exercise;
 import com.example.opt_1.model.IDAO;
@@ -118,7 +117,7 @@ public class Controller implements IModeltoView,IViewtoModel {
         user.put("lastName", lastName);
         user.put("username", username);
         user.put("email", email);
-        database.createUser2(user, password);
+        database.createUser2(user, password, callback);
     }
 
     @Override
