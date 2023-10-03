@@ -67,8 +67,7 @@ public class LoginPage extends AppCompatActivity {
         //controller.userLogin();
         controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {
             @Override
-            public void onSucceed(boolean success) {
-                System.out.println("Kaikki ok!, voidaan jatkaa seuraavaan fragmenttiin");
+            public void onSucceed() {
                 System.out.println("USERLOGGED IN: " + User2.getInstance().getEmail());
                 Intent intent = new Intent(LoginPage.this, Main_Page.class);
                 startActivity(intent);

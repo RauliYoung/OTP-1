@@ -107,7 +107,7 @@ public class DAO implements IDAO {
                         db.collection("users")
                                 .add(user)
                                 .addOnSuccessListener(documentReference -> {
-                                    callback.onSucceed(task.isSuccessful());
+                                    callback.onSucceed();
                                     auth.signOut();
                                 })
                                 .addOnFailureListener(e -> callback.onFailure());
@@ -274,7 +274,7 @@ public class DAO implements IDAO {
                         DocumentReference userRef = db.collection("users").document(document.getId());
                         userRef.update("username", username);
                         userInstance.setUsername(username);
-                        callbacks.onSucceed(true);
+                        callbacks.onSucceed();
 
                     }
                 }
@@ -303,7 +303,7 @@ public class DAO implements IDAO {
                                         userInstance.setUsername((String) user.get("username"));
                                         userInstance.setEmail((String) user.get("email"));
                                         System.out.println(userInstance);
-                                        callbacks.onSucceed(true);
+                                        callbacks.onSucceed();
                                         retrieveExercises();
                                     }else{
                                         callbacks.onFailure();
@@ -361,7 +361,7 @@ public class DAO implements IDAO {
                         }
                         createNewGroup(newGroup, new CRUDCallbacks() {
                             @Override
-                            public void onSucceed(boolean success) {
+                            public void onSucceed() {
                                 System.out.println("DAO Added a new group");
                             }
 
@@ -453,7 +453,7 @@ public class DAO implements IDAO {
                         callback.onFailure();
                     } else {
                         docRef.set(group, SetOptions.merge());
-                        callback.onSucceed(true);
+                        callback.onSucceed();
                     }
                 } else {
                     System.out.println("Err: " + task.getException());
