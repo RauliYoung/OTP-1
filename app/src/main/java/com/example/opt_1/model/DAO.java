@@ -23,12 +23,16 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DAO implements IDAO {
 
@@ -403,11 +407,23 @@ public class DAO implements IDAO {
                                             db.collection("users/" + q.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    double exerciseTime = 0;
+                                                    double exerciseInMeters = 0;
                                                     for(QueryDocumentSnapshot q : task.getResult()){
                                                         Map<String,Object> usersExercises = q.getData();
-                                                        System.out.println("avgSpeed: " + usersExercises.get("avgSpeed"));
+                                                        LocalDateTime date = LocalDateTime.now();
+                                                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                                                        if(Objects.equals(usersExercises.get("exerciseDate"), date.format(format))){
+                                                            exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseTime"))));
+                                                            exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseInMeters"))));
+                                                        }
                                                     }
-                                                    System.out.println("DOCUMENT " + q.getData() + " AND EXERCISES " + task.getResult().getDocuments());
+                                                    ArrayList<Double> resultList = new ArrayList<Double>();
+                                                    resultList.add(exerciseTime);
+                                                    resultList.add(exerciseInMeters);
+                                                    Map<String,ArrayList<Double>> userResults = new HashMap<>();
+                                                    userResults.put((String) user.get("username"),resultList);
+                                                    System.out.println(userResults.get("samu"));
                                                 }
                                             });
                                         }
@@ -419,6 +435,9 @@ public class DAO implements IDAO {
                 }
             }
         });
+    }
+    private void calcUsersExercisesOfTheGroup(Map<String,Object> usersExercises){
+
     }
 
     @Override
