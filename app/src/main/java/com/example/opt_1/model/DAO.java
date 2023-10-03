@@ -2,7 +2,6 @@ package com.example.opt_1.model;
 
 import androidx.annotation.NonNull;
 
-import com.example.opt_1.control.CurrentUserInstance;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -116,7 +115,7 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public void createUser2(Map<String,String> user, String password) {
+    public void createUser2(Map<String,String> user, String password, CRUDCallbacks callbacks) {
         auth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -128,12 +127,14 @@ public class DAO implements IDAO {
                                 System.out.println("New User: " + documentReference.getId());
                                 System.out.println("New User Success");
                                 auth.signOut();
+                                callbacks.onSucceed();
                             }
 
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 e.printStackTrace();
+                                callbacks.onFailure();
                             }
                         });
                     } else {
@@ -198,14 +199,24 @@ public class DAO implements IDAO {
                             userRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    System.out.println("Poistettu?");
+                                    System.out.println("Poistettu user collection");
                                 }
                             });
                         }
                     }
                 }
             });
-            auth.getCurrentUser().delete();
+            auth.getCurrentUser().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    System.out.println("Poistettu auth");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Ei poistettu auth");
+                }
+            });
         } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
@@ -316,33 +327,6 @@ public class DAO implements IDAO {
         });
     }
 
-//    @Override
-//    public void loginUser(String email, String password) {
-//
-//        auth.signInWithEmailAndPassword(email,password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (auth.getCurrentUser() == null){
-//                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
-//                        }else {
-//                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
-//                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (handleTaskQS(task)) {
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            User currentUser = document.toObject(User.class);
-//                                            userInstance.setCurrentUser(currentUser);
-//                                        }
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
-//    }
-
     @Override
     public void addNewGroupToDatabase(String groupName) {
         String email = auth.getCurrentUser().getEmail();
@@ -353,11 +337,10 @@ public class DAO implements IDAO {
                 if(handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if(document.exists()){
-                            User groupOwner = document.toObject(User.class);
-                            newGroup.getGroup().add(groupOwner);
-                            newGroup.setGroupOwner(groupOwner.getUsername());
+                            //User groupOwner = document.toObject(User.class);
+                            newGroup.getGroup().add(userInstance);
+                            newGroup.setGroupOwner(userInstance.getUsername());
                             newGroup.setGroupName(groupName);
-                            System.out.println("Controller: " + document);
                         }
                         createNewGroup(newGroup, new CRUDCallbacks() {
                             @Override
@@ -391,8 +374,7 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        User currentUser = document.toObject(User.class);
-                                        docRef.update("group", FieldValue.arrayUnion(currentUser));
+                                        docRef.update("group", FieldValue.arrayUnion(userInstance));
                                     }
                                 }
                             }

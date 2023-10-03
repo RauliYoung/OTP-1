@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.control.CurrentUserInstance;
 import com.example.opt_1.control.IViewtoModel;
 import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User2;

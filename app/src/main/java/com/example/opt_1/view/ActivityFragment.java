@@ -1,7 +1,6 @@
 package com.example.opt_1.view;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,24 +10,16 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ThemedSpinnerAdapter;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.control.CurrentUserInstance;
-import com.example.opt_1.control.IViewtoModel;
 import com.example.opt_1.model.User2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ActivityFragment extends Fragment {
 
