@@ -11,10 +11,10 @@ import java.util.Map;
 public interface IDAO {
     void addNewExerciseToDatabase(Exercise exercise);
     void createUser(User user, CRUDCallbacks callBack) ;
-    void createUser2(Map user, String password);
+    void createUser2(Map<String, String> user, String password);
     void removeUser();
     void changePassword(String oldPassword, String newPassword);
-    void checkIfUsernameExist(String newUsername);
+    void checkIfUsernameExist(String newUsername, CRUDCallbacks callbacks);
     void loginUser(String email, String password, CRUDCallbacks callbacks);
     void addNewGroupToDatabase(String groupName);
     void addUserToTheGroup(String groupOwnerEmail);

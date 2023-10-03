@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.control.CurrentUserInstance;
+import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User2;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -169,7 +170,17 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!Objects.equals(newUsername, oldUsername)){
-                    controller.changeUsername(newUsername);
+                    controller.changeUsername(newUsername, new CRUDCallbacks() {
+                        @Override
+                        public void onSucceed(boolean success) {
+                            usernameTextField.setText(userInstance.getUsername());
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    });
                 }
             }
         });

@@ -49,14 +49,9 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        //TODO database.changePassword(oldPassword,newPassword);
+        database.changePassword(oldPassword,newPassword);
     }
 
-    @Override
-    public void changeUsername(String newUsername) {
-        //TODO
-        // database.checkIfUsernameExist(newUsername);
-    }
 
     @Override
     public void removeUser() {
@@ -71,6 +66,11 @@ public class Controller implements IModeltoView,IViewtoModel {
         activityTimer.setBase(SystemClock.elapsedRealtime());
         activityTimer.start();
         locationTracker = new LocationTracker(fragment, this);
+    }
+
+    @Override
+    public void changeUsername(String newUsername, CRUDCallbacks callbacks) {
+        database.checkIfUsernameExist(newUsername, callbacks);
     }
 
     @Override
@@ -113,7 +113,6 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
-        //database.createUser(new User(firstName, lastName, username, email, password, callback), callback);
         Map<String, String> user = new HashMap<>();
         user.put("firstName", firstName);
         user.put("lastName", lastName);
