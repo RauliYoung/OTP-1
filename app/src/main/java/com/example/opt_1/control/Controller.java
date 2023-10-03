@@ -65,6 +65,7 @@ public class Controller implements IModeltoView, IViewToModel {
         database.changePassword(oldPassword,newPassword);
     }
 
+
     /**
      * Method for to remove the user from app
      */
