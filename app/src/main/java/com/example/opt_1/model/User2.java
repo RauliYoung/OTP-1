@@ -10,6 +10,9 @@ public class User2 {
     private String username;
     private String email;
     private ArrayList<Map> exercises = new ArrayList<>();
+    private boolean userInGroup;
+    private String group;
+    private ArrayList<Map<String, Object>> exercises = new ArrayList<>();
 
     private User2(){};
 
@@ -69,5 +72,13 @@ public class User2 {
                 ", email='" + email + '\'' +
                 ", exercises=" + exercises +
                 '}';
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }
