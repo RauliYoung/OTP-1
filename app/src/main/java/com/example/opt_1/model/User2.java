@@ -8,6 +8,7 @@ public class User2 {
     private String lastName;
     private String username;
     private String email;
+    private boolean userInGroup;
     private ArrayList<Map<String, Object>> exercises = new ArrayList<>();
 
     private User2(){};
@@ -59,4 +60,11 @@ public class User2 {
         this.exercises = exercises;
     }
 
+    public boolean isUserInGroup() {
+        return userInGroup;
+    }
+
+    public void setUserInGroup(boolean userInGroup) {
+        this.userInGroup = userInGroup;
+    }
 }

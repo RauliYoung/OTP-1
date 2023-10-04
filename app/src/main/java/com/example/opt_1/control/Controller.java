@@ -117,6 +117,7 @@ public class Controller implements IModeltoView,IViewtoModel {
         user.put("lastName", lastName);
         user.put("username", username);
         user.put("email", email);
+        user.put("userInGroup","false");
         database.createUser2(user, password, callback);
     }
 

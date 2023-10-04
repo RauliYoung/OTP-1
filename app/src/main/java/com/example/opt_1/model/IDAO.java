@@ -10,7 +10,6 @@ import java.util.Map;
 
 public interface IDAO {
     void addNewExerciseToDatabase(Exercise exercise);
-    void createUser(User user, CRUDCallbacks callBack) ;
     void createUser2(Map<String, String> user, String password, CRUDCallbacks callbacks);
     void removeUser();
     void changePassword(String oldPassword, String newPassword);
