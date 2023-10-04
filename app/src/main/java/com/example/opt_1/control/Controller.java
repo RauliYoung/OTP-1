@@ -118,6 +118,7 @@ public class Controller implements IModeltoView,IViewtoModel {
         user.put("username", username);
         user.put("email", email);
         user.put("userInGroup","false");
+        user.put("group","null");
         database.createUser2(user, password, callback);
     }
 
@@ -145,5 +146,11 @@ public class Controller implements IModeltoView,IViewtoModel {
         double speed = (locationTracker.getTravelledDistance()/activityLength) * 3.6;
 
         return BigDecimal.valueOf(speed).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    @Override
+    public void fecthGroupResults(String groupOwnerEmail) {
+        ArrayList<Map<String,ArrayList<Double>>> exerciseResultList = database.fetchGroupFromDatabase(groupOwnerEmail);
+        System.out.println("Exercise list: " + exerciseResultList.size());
     }
 }
