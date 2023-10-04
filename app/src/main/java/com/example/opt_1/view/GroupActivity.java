@@ -23,6 +23,7 @@ public class GroupActivity extends Fragment {
     private Controller controller;
     private View view;
     private String groupName;
+    private User2 userInstance;
 
     public GroupActivity() {
         controller = new Controller();
@@ -38,6 +39,7 @@ public class GroupActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_group_activity_test, container, false);
+        userInstance = User2.getInstance();
         //Set button references
         addGroupBtn = view.findViewById(R.id.addGroupButton);
         joinGroupBtn = view.findViewById(R.id.joinGroupButton);
@@ -67,6 +69,11 @@ public class GroupActivity extends Fragment {
                 controller.createNewGroup(groupName);
             }
         });
+        if(userInstance.isUserInGroup()){
+            controller.fecthGroupResults();
+        }
+        System.out.println("User in group: " + userInstance.isUserInGroup());
+
         joinGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
