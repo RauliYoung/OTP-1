@@ -286,6 +286,7 @@ public class DAO implements IDAO {
                                         userInstance.setLastName((String) user.get("lastName"));
                                         userInstance.setUsername((String) user.get("username"));
                                         userInstance.setEmail((String) user.get("email"));
+                                        userInstance.setGroup((String) user.get("group"));
                                         boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get("userInGroup")));
                                         userInstance.setUserInGroup(userInGroup);
                                         System.out.println(userInstance);
@@ -349,7 +350,7 @@ public class DAO implements IDAO {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         System.out.println("Document add user ID: " + document.getId());
-                                        db.collection("users").document(document.getId()).update("userInGroup","true").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        db.collection("users").document(document.getId()).update("userInGroup","true","group",groupOwnerEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
@@ -365,7 +366,7 @@ public class DAO implements IDAO {
                                                                             DocumentSnapshot user = task.getResult();
                                                                             boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.getData()).get("userInGroup"));
                                                                             userInstance.setUserInGroup(userInGroup);
-                                                                            fetchGroupFromDatabase(docRef);
+                                                                            fetchGroupFromDatabase(groupOwnerEmail);
                                                                         }
                                                                     }
                                                                 });
@@ -385,7 +386,10 @@ public class DAO implements IDAO {
             }
         });
     }
-    private void fetchGroupFromDatabase(DocumentReference joinedGroupRef){
+    @Override
+    public ArrayList<Map<String,ArrayList<Double>>> fetchGroupFromDatabase(String groupOwnerEmail){
+        ArrayList<Map<String,ArrayList<Double>>> exerciseGroupList = new ArrayList<>();
+        DocumentReference joinedGroupRef = db.collection("groups").document(groupOwnerEmail);
         joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -422,6 +426,9 @@ public class DAO implements IDAO {
                                                     resultList.add(exerciseInMeters);
                                                     Map<String,ArrayList<Double>> userResults = new HashMap<>();
                                                     userResults.put((String) user.get("username"),resultList);
+                                                    System.out.println(userResults.get("samu"));
+                                                    exerciseGroupList.add(userResults);
+                                                    System.out.println("DAO exerciseGroup: " + exerciseGroupList.size());
                                                 }
                                             });
                                         }
@@ -433,6 +440,7 @@ public class DAO implements IDAO {
                 }
             }
         });
+        return exerciseGroupList;
     }
 
     @Override

@@ -19,5 +19,5 @@ public interface IViewtoModel {
     void joinToGroup(String groupOwnerEmail);
     void leaveFromGroup(String groupOwnerEmail);
     double caclulatePace(double activityLength);
-    void fecthGroupResults();
+    void fecthGroupResults(String groupOwnerEmail);
 }

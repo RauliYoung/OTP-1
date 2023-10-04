@@ -70,7 +70,7 @@ public class GroupActivity extends Fragment {
             }
         });
         if(userInstance.isUserInGroup()){
-            controller.fecthGroupResults();
+            controller.fecthGroupResults(userInstance.getGroup());
         }
         System.out.println("User in group: " + userInstance.isUserInGroup());
 

@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -21,6 +22,7 @@ public interface IDAO {
     Boolean getRegisterErrorCheck();
     void updateData();
     void createNewGroup(Group group, CRUDCallbacks callback);
+    ArrayList<Map<String,ArrayList<Double>>> fetchGroupFromDatabase(String groupOwnerEmail);
     FirebaseFirestore getDatabase();
     FirebaseAuth getUser();
 }
