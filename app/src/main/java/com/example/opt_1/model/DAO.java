@@ -40,7 +40,6 @@ public class DAO implements IDAO {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User2 userInstance = User2.getInstance();
 
-    private Map<String,ArrayList<Double>> groupExercisesSumList;
 
     private boolean taskResult;
 
@@ -87,35 +86,6 @@ public class DAO implements IDAO {
         });
 
     }
-
-    @Override
-    public void createUser(User user, CRUDCallbacks callback) {
-
-        auth.createUserWithEmailAndPassword(user.getEmail().trim(), user.getPassword())
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        try {
-                            throw Objects.requireNonNull(task.getException());
-                        } catch (FirebaseAuthInvalidCredentialsException err) {
-                            System.out.println("BAD EMAIL FOR AUTH ACC");
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        } finally {
-                            callback.onFailure();
-                        }
-
-                    } else {
-                        db.collection("users")
-                                .add(user)
-                                .addOnSuccessListener(documentReference -> {
-                                    callback.onSucceed();
-                                    auth.signOut();
-                                })
-                                .addOnFailureListener(e -> callback.onFailure());
-                    }
-                });
-    }
-
     @Override
     public void createUser2(Map<String,String> user, String password, CRUDCallbacks callbacks) {
         auth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -315,6 +285,9 @@ public class DAO implements IDAO {
                                         userInstance.setLastName((String) user.get("lastName"));
                                         userInstance.setUsername((String) user.get("username"));
                                         userInstance.setEmail((String) user.get("email"));
+                                        userInstance.setGroup((String) user.get("group"));
+                                        boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get("userInGroup")));
+                                        userInstance.setUserInGroup(userInGroup);
                                         System.out.println(userInstance);
                                         callbacks.onSucceed();
                                         retrieveExercises();
@@ -339,7 +312,6 @@ public class DAO implements IDAO {
                 if(handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if(document.exists()){
-                            //User groupOwner = document.toObject(User.class);
                             newGroup.getGroupOfUserEmails().add(userInstance.getEmail());
                             newGroup.setGroupOwner(userInstance.getUsername());
                             newGroup.setGroupName(groupName);
@@ -376,8 +348,34 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        docRef.update("groupOfUserEmails", FieldValue.arrayUnion(userInstance.getEmail()));
-                                        fetchGroupFromDatabase(docRef);
+                                        System.out.println("Document add user ID: " + document.getId());
+                                        db.collection("users").document(document.getId()).update("userInGroup","true","group",groupOwnerEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    System.out.println("User in group: true");
+                                                    docRef.update("groupOfUserEmails", FieldValue.arrayUnion(userInstance.getEmail())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                db.collection("users").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            DocumentSnapshot user = task.getResult();
+                                                                            boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.getData()).get("userInGroup"));
+                                                                            userInstance.setUserInGroup(userInGroup);
+                                                                            fetchGroupFromDatabase(groupOwnerEmail);
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             }
@@ -387,7 +385,10 @@ public class DAO implements IDAO {
             }
         });
     }
-    private void fetchGroupFromDatabase(DocumentReference joinedGroupRef){
+    @Override
+    public ArrayList<Map<String,ArrayList<Double>>> fetchGroupFromDatabase(String groupOwnerEmail){
+        ArrayList<Map<String,ArrayList<Double>>> exerciseGroupList = new ArrayList<>();
+        DocumentReference joinedGroupRef = db.collection("groups").document(groupOwnerEmail);
         joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -424,6 +425,9 @@ public class DAO implements IDAO {
                                                     resultList.add(exerciseInMeters);
                                                     Map<String,ArrayList<Double>> userResults = new HashMap<>();
                                                     userResults.put((String) user.get("username"),resultList);
+                                                    System.out.println(userResults.get("samu"));
+                                                    exerciseGroupList.add(userResults);
+                                                    System.out.println("DAO exerciseGroup: " + exerciseGroupList.size());
                                                 }
                                             });
                                         }
@@ -435,6 +439,10 @@ public class DAO implements IDAO {
                 }
             }
         });
+        return exerciseGroupList;
+    }
+    private void calcUsersExercisesOfTheGroup(Map<String,Object> usersExercises){
+
     }
 
     @Override
