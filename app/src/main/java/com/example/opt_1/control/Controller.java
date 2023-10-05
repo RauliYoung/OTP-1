@@ -104,6 +104,8 @@ public class Controller implements IModeltoView,IViewtoModel {
         //timer.setText(String.valueOf());
     }
 
+
+
     @Override
     public void setLoginInformation(String usernameInput, String passwordInput) {
         loginInfoPassword = passwordInput;

@@ -8,22 +8,24 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
+import com.example.opt_1.control.Controller;
 
-public class GroupFragment extends Fragment {
+public class GroupFragment extends AppCompatActivity {
 
      FrameLayout usersection;
-    View v;
     LinearLayout groupUserList;
     LinearLayout.LayoutParams layoutParams;
-    public GroupFragment(){
-    }
+
+    private Controller controller;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_group_activity_test,container,false);
-        return v;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        controller = new Controller();
+
     }
 
 }

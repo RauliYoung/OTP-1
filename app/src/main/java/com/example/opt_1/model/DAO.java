@@ -40,6 +40,7 @@ public class DAO implements IDAO {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User2 userInstance = User2.getInstance();
 
+    private Map<String,ArrayList<Double>> groupExercisesSumList;
 
     private boolean taskResult;
 
@@ -423,7 +424,6 @@ public class DAO implements IDAO {
                                                     resultList.add(exerciseInMeters);
                                                     Map<String,ArrayList<Double>> userResults = new HashMap<>();
                                                     userResults.put((String) user.get("username"),resultList);
-                                                    System.out.println(userResults.get("samu"));
                                                 }
                                             });
                                         }
@@ -435,9 +435,6 @@ public class DAO implements IDAO {
                 }
             }
         });
-    }
-    private void calcUsersExercisesOfTheGroup(Map<String,Object> usersExercises){
-
     }
 
     @Override

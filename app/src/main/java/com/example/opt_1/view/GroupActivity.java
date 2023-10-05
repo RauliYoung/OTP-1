@@ -1,5 +1,6 @@
 package com.example.opt_1.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.example.opt_1.model.CRUDCallbacks;
 
 
 public class GroupActivity extends Fragment {
@@ -70,6 +72,8 @@ public class GroupActivity extends Fragment {
             public void onClick(View view) {
                 String groupOwnerEmail = groupNameInput.getText().toString();
                 controller.joinToGroup(groupOwnerEmail);
+                Intent intent = new Intent(getActivity(), GroupFragment.class);
+                startActivity(intent);
             }
         });
         return view;
