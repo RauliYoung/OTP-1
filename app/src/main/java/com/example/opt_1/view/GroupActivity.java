@@ -1,5 +1,6 @@
 package com.example.opt_1.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
@@ -68,10 +69,14 @@ public class GroupActivity extends Fragment {
                 controller.createNewGroup(groupName);
             }
         });
-        if(userInstance.isUserInGroup()){
-            controller.fecthGroupResults(userInstance.getGroup());
+        try {
+            if(userInstance.isUserInGroup()){
+                controller.fecthGroupResults(userInstance.getGroup());
+                System.out.println("User in group: " + userInstance.isUserInGroup());
+            }
+        }catch (NullPointerException e){
+            System.out.println("User not in group");
         }
-        System.out.println("User in group: " + userInstance.isUserInGroup());
 
         joinGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
