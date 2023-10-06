@@ -35,6 +35,7 @@ public class DAO implements IDAO {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User2 userInstance = User2.getInstance();
     Map<String,ArrayList<Double>> groupExerciseResultMap;
+    private int emailCount = 0;
 
 
     private boolean taskResult;
@@ -425,6 +426,11 @@ public class DAO implements IDAO {
         exerciseResults.add(2.3);
         exerciseResults.add(2.7);
         for(String email : group.getGroupOfUserEmails()) {
+            System.out.println("Before Email for-loop: " + emailCount);
+            if(emailCount == group.getGroupOfUserEmails().size()){
+                System.out.println("Email for-loop: " + groupResults.keySet());
+                secondCallback.onSucceed();
+            }
             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -432,13 +438,13 @@ public class DAO implements IDAO {
                         for (QueryDocumentSnapshot q : task.getResult()) {
                             Map<String, Object> user = q.getData();
                             groupResults.put((String) user.get("username"), exerciseResults);
+                            emailCount++;
                         }
-
                     }
                 }
             });
+
         }
-        secondCallback.onSucceed();
         return groupResults;
     }
 
