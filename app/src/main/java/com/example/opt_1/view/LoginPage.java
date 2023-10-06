@@ -58,15 +58,12 @@ public class LoginPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
     private void userLogin(){
-        //controller.setLoginInformation(usernameField.getText().toString(), passwordField.getText().toString());
-        //controller.userLogin();
         controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {
             @Override
             public void onSucceed() {
-                System.out.println("USERLOGGED IN: " + User2.getInstance().getEmail());
+                System.out.println("User logged in: " + User2.getInstance().getEmail());
                 Intent intent = new Intent(LoginPage.this, Main_Page.class);
                 startActivity(intent);
                 finish();
@@ -78,17 +75,5 @@ public class LoginPage extends AppCompatActivity {
                 System.out.println("Kaikki paskana!");
             }
         });
-//        authlistener = new FirebaseAuth.AuthStateListener(){
-//            @Override
-//            public  void  onAuthStateChanged(FirebaseAuth firebaseAuth){
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if(user!=null && firebaseAuth.getCurrentUser()!=null){
-//
-//                }else{
-//                    System.out.println("WRONG USER OR PASS");
-//                }
-//            }
-//        };
-//        auth.addAuthStateListener(authlistener);
     }
 }

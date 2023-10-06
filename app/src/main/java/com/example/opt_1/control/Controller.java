@@ -86,27 +86,9 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
-    public void getLoginInfo() {
-
-    }
-
-    @Override
-    public Boolean getRegisterInfo() {
-        return database.getRegisterErrorCheck();
-    }
-
-    @Override
     public void getTravelledDistanceModel() {
         textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
         //timer.setText(String.valueOf());
-    }
-
-
-
-    @Override
-    public void setLoginInformation(String usernameInput, String passwordInput) {
-        loginInfoPassword = passwordInput;
-        loginInfoUsername = usernameInput;
     }
 
     @Override
@@ -173,6 +155,17 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void fecthGroupResults(String groupOwnerEmail) {
+        database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {
+            @Override
+            public void onSucceed() {
+                groupExercises = database.getGroupResults();
+                System.out.println("Groups exercises: " + groupExercises);
+            }
 
+            @Override
+            public void onFailure() {
+
+            }
+        });
     }
 }

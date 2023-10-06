@@ -66,7 +66,6 @@ public class DAO implements IDAO {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(handleTaskQS(task)){
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        System.out.println("DAO USER: " + document.getId());
                         db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -95,8 +94,6 @@ public class DAO implements IDAO {
                         db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                System.out.println("New User: " + documentReference.getId());
-                                System.out.println("New User Success");
                                 auth.signOut();
                                 callbacks.onSucceed();
                             }
@@ -109,7 +106,7 @@ public class DAO implements IDAO {
                             }
                         });
                     } else {
-                        System.out.println("Something went wrong " + task.getException());
+                        System.out.println("Something went wrong while creating new user " + task.getException());
                     }
                 }
             }
@@ -142,7 +139,6 @@ public class DAO implements IDAO {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if(handleTaskQS(task)){
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            System.out.println("DAO USER: " + document.getId());
                              db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -165,7 +161,6 @@ public class DAO implements IDAO {
 
                     if (handleTaskQS(task)) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            System.out.println("DAO USER: " + document.getId());
                             DocumentReference userRef = db.collection("users").document(document.getId());
                             userRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -269,7 +264,6 @@ public class DAO implements IDAO {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(handleTaskAuth(task)){
-                    if(auth.getCurrentUser() != null){
                         System.out.println(auth.getCurrentUser()+" LOGGED IN");
                             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
@@ -287,9 +281,9 @@ public class DAO implements IDAO {
                                         userInstance.setGroup((String) user.get("group"));
                                         boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get("userInGroup")));
                                         userInstance.setUserInGroup(userInGroup);
-                                        System.out.println(userInstance);
-                                        callbacks.onSucceed();
+                                        System.out.println("User instance: " + userInstance);
                                         retrieveExercises();
+                                        callbacks.onSucceed();
                                     }else{
                                         callbacks.onFailure();
                                     }
@@ -297,7 +291,6 @@ public class DAO implements IDAO {
                             });
                     }
                 }
-            }
         });
     }
 
@@ -420,7 +413,7 @@ public class DAO implements IDAO {
     }
 
 
-    private Map<String,ArrayList<Double>> fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
+    private void fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
 
         for(String email : group.getGroupOfUserEmails()) {
             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -441,20 +434,14 @@ public class DAO implements IDAO {
                                         emailCount = 0;
                                     }
                                 }
-
                                 @Override
-                                public void onFailure() {
-
-                                }
+                                public void onFailure() {}
                             });
-
                         }
                     }
                 }
             });
-
         }
-        return groupResults;
     }
 
     private void fetchExerciseResults(QueryDocumentSnapshot q, Map<String, Object> user, CRUDCallbacks callbacks) {
@@ -533,11 +520,6 @@ public class DAO implements IDAO {
         });
     }
 
-    @Override
-    public FirebaseFirestore getDatabase() {
-        return db;
-    }
-
     public Boolean handleTaskQS(Task<QuerySnapshot> task) {
         if (task.isSuccessful()){
             return true;
@@ -558,10 +540,5 @@ public class DAO implements IDAO {
         }else{
             return false;
         }
-    }
-
-    @Override
-    public FirebaseAuth getUser() {
-        return auth;
     }
     }

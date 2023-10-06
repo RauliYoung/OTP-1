@@ -7,7 +7,6 @@ import com.example.opt_1.model.CRUDCallbacks;
 
 
 public interface IViewtoModel {
-    void setLoginInformation(String emailInput,String password);
     void userLogin(String email, String password, CRUDCallbacks callbacks);
     void startActivity(ActivityFragment fragment,TextView data,TextView timer);
     void changeUsername(String newUsername, CRUDCallbacks callbacks);
