@@ -36,6 +36,7 @@ public class Controller implements IModeltoView,IViewtoModel {
     private int activityLength;
     private TextView textViewData;
     private TextView timer;
+    private ArrayList<Map<String,ArrayList<Double>>> group;
 //    @Override
 //    public void userLogin() {
 //        database.loginUser(loginInfoUsername, loginInfoPassword ,);
@@ -131,7 +132,18 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void joinToGroup(String groupOwnerEmail) {
-        database.addUserToTheGroup(groupOwnerEmail);
+
+        database.addUserToTheGroup(groupOwnerEmail, new CRUDCallbacks() {
+            @Override
+            public void onSucceed() {
+                System.out.println("Users' exercises");
+            }
+
+            @Override
+            public void onFailure() {
+                System.out.println("User not added");
+            }
+        });
     }
 
     @Override
@@ -152,7 +164,6 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void fecthGroupResults(String groupOwnerEmail) {
-        ArrayList<Map<String,ArrayList<Double>>> exerciseResultList = database.fetchGroupFromDatabase(groupOwnerEmail);
-        System.out.println("Exercise list: " + exerciseResultList.size());
+        //ArrayList<Map<String,ArrayList<Double>>> exerciseResultList = database.fetchGroupFromDatabase(groupOwnerEmail);
     }
 }

@@ -155,7 +155,7 @@ public class LocationTracker extends Thread implements ILocationTracker {
 //        }
         travelledDistance += radius * c;
 
-        controller.getTravelledDistanceModel();
+        //controller.getTravelledDistanceModel();
 
         System.out.println("lopputulos: " + travelledDistance);
 
