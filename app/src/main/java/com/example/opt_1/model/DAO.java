@@ -36,7 +36,8 @@ public class DAO implements IDAO {
     private User2 userInstance = User2.getInstance();
     Map<String,ArrayList<Double>> groupExerciseResultMap;
     private int emailCount = 0;
-
+    private int exerciseTime = 0;
+    private int exerciseInMeters = 0;
     private Map<String,ArrayList<Double>> groupExercisesSumList;
 
     private boolean taskResult;
@@ -423,22 +424,31 @@ public class DAO implements IDAO {
 
     private Map<String,ArrayList<Double>> fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
         Map<String,ArrayList<Double>> groupResults = new HashMap<>();
-        ArrayList<Double> exerciseResults = new ArrayList<>();
-        exerciseResults.add(2.3);
-        exerciseResults.add(2.7);
         for(String email : group.getGroupOfUserEmails()) {
-            System.out.println("Before Email for-loop: " + emailCount);
-            if(emailCount == group.getGroupOfUserEmails().size()){
-                System.out.println("Email for-loop: " + groupResults.keySet());
-                secondCallback.onSucceed();
-            }
             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (handleTaskQS(task)) {
                         for (QueryDocumentSnapshot q : task.getResult()) {
                             Map<String, Object> user = q.getData();
-                            groupResults.put((String) user.get("username"), exerciseResults);
+                            groupResults.put((String) user.get("username"), fetchExerciseResults(q,user, new CRUDCallbacks() {
+                                @Override
+                                public void onSucceed() {
+                                    System.out.println("Before Email for-loop: " + emailCount);
+                                    if(emailCount == group.getGroupOfUserEmails().size()){
+                                        System.out.println("Email for-loop: " + groupResults.keySet());
+                                        secondCallback.onSucceed();
+                                        emailCount = 0;
+                                        exerciseTime = 0;
+                                        exerciseInMeters = 0;
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+                            }));
                             emailCount++;
                         }
                     }
@@ -449,24 +459,24 @@ public class DAO implements IDAO {
         return groupResults;
     }
 
-    private ArrayList<Double> fetchExerciseResults(QueryDocumentSnapshot q, Map<String, Object> user) {
+    private ArrayList<Double> fetchExerciseResults(QueryDocumentSnapshot q, Map<String, Object> user, CRUDCallbacks callbacks) {
         ArrayList<Double> exerciseResults = new ArrayList<>();
         db.collection("users/" + q.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                double exerciseTime = 0;
-                double exerciseInMeters = 0;
-                for(QueryDocumentSnapshot q : task.getResult()){
-                    Map<String,Object> usersExercises = q.getData();
-                    LocalDateTime date = LocalDateTime.now();
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    if(Objects.equals(usersExercises.get("exerciseDate"), date.format(format))){
-                        exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseTime"))));
-                        exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseInMeters"))));
+                if (handleTaskQS(task)) {
+                    for (QueryDocumentSnapshot queryRes : task.getResult()){
+                        LocalDateTime date = LocalDateTime.now();
+                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        if(Objects.equals(queryRes.get("exerciseDate"), date.format(format))){
+                            exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get("exerciseTime"))));
+                            exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get("exerciseInMeters"))));
+                        }
                     }
+
+                    System.out.println("TIME AND MTIERE " +user.get("email")+" "+ exerciseInMeters + " " + exerciseTime);
+                    callbacks.onSucceed();
                 }
-                exerciseResults.add(exerciseTime);
-                exerciseResults.add(exerciseInMeters);
             }
 
         });
