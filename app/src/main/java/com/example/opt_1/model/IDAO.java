@@ -17,12 +17,12 @@ public interface IDAO {
     void checkIfUsernameExist(String newUsername, CRUDCallbacks callbacks);
     void loginUser(String email, String password, CRUDCallbacks callbacks);
     void addNewGroupToDatabase(String groupName);
-    void addUserToTheGroup(String groupOwnerEmail);
+    void addUserToTheGroup(String groupOwnerEmail, CRUDCallbacks callbacks);
     void removeUserFromTheGroup(String groupOwnerEmail);
     Boolean getRegisterErrorCheck();
     void updateData();
     void createNewGroup(Group group, CRUDCallbacks callback);
-    ArrayList<Map<String,ArrayList<Double>>> fetchGroupFromDatabase(String groupOwnerEmail);
+    Map<String,ArrayList<Double>> fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks callbacks);
     FirebaseFirestore getDatabase();
     FirebaseAuth getUser();
 }
