@@ -10,7 +10,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,22 +22,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class DAO implements IDAO {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User2 userInstance = User2.getInstance();
+    Map<String,ArrayList<Double>> groupExerciseResultMap;
 
 
     private boolean taskResult;
@@ -334,7 +330,7 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public void addUserToTheGroup(String groupOwnerEmail) {
+    public void addUserToTheGroup(String groupOwnerEmail , CRUDCallbacks callbacks) {
         DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
         System.out.println("Controller: " + docRef.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -365,8 +361,14 @@ public class DAO implements IDAO {
                                                                             DocumentSnapshot user = task.getResult();
                                                                             boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.getData()).get("userInGroup"));
                                                                             userInstance.setUserInGroup(userInGroup);
-                                                                            fetchGroupFromDatabase(groupOwnerEmail);
+                                                                            fetchGroupFromDatabase(groupOwnerEmail,callbacks);
                                                                         }
+                                                                    }
+                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        e.printStackTrace();
+                                                                        callbacks.onFailure();
                                                                     }
                                                                 });
                                                             }
@@ -386,8 +388,7 @@ public class DAO implements IDAO {
         });
     }
     @Override
-    public ArrayList<Map<String,ArrayList<Double>>> fetchGroupFromDatabase(String groupOwnerEmail){
-        ArrayList<Map<String,ArrayList<Double>>> exerciseGroupList = new ArrayList<>();
+    public Map<String,ArrayList<Double>> fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks controllerCallback){
         DocumentReference joinedGroupRef = db.collection("groups").document(groupOwnerEmail);
         joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -398,51 +399,71 @@ public class DAO implements IDAO {
                     Group group = document.toObject(Group.class);
                     System.out.println("Group: " + group);
                     if(group.getGroupOfUserEmails() != null){
-                        for(String email : group.getGroupOfUserEmails()){
-                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if(handleTaskQS(task)){
-                                        for(QueryDocumentSnapshot q : task.getResult()){
-                                            Map<String,Object> user = q.getData();
-                                            System.out.println("Username: " +  (String) user.get("username"));
-                                            db.collection("users/" + q.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    double exerciseTime = 0;
-                                                    double exerciseInMeters = 0;
-                                                    for(QueryDocumentSnapshot q : task.getResult()){
-                                                        Map<String,Object> usersExercises = q.getData();
-                                                        LocalDateTime date = LocalDateTime.now();
-                                                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                                                        if(Objects.equals(usersExercises.get("exerciseDate"), date.format(format))){
-                                                            exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseTime"))));
-                                                            exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseInMeters"))));
-                                                        }
-                                                    }
-                                                    ArrayList<Double> resultList = new ArrayList<Double>();
-                                                    resultList.add(exerciseTime);
-                                                    resultList.add(exerciseInMeters);
-                                                    Map<String,ArrayList<Double>> userResults = new HashMap<>();
-                                                    userResults.put((String) user.get("username"),resultList);
-                                                    System.out.println(userResults.get("samu"));
-                                                    exerciseGroupList.add(userResults);
-                                                    System.out.println("DAO exerciseGroup: " + exerciseGroupList.size());
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-                            });
-                        }
+                         groupExerciseResultMap = fetchGroupParticipants(group, new CRUDCallbacks() {
+                             @Override
+                             public void onSucceed() {
+                                 System.out.println("End of query: " + groupExerciseResultMap);
+                                 controllerCallback.onSucceed();
+                             }
+
+                             @Override
+                             public void onFailure() {
+
+                             }
+                         });
                     }
                 }
             }
         });
-        return exerciseGroupList;
+        return groupExerciseResultMap;
     }
-    private void calcUsersExercisesOfTheGroup(Map<String,Object> usersExercises){
 
+
+    private Map<String,ArrayList<Double>> fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
+        Map<String,ArrayList<Double>> groupResults = new HashMap<>();
+        ArrayList<Double> exerciseResults = new ArrayList<>();
+        exerciseResults.add(2.3);
+        exerciseResults.add(2.7);
+        for(String email : group.getGroupOfUserEmails()) {
+            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (handleTaskQS(task)) {
+                        for (QueryDocumentSnapshot q : task.getResult()) {
+                            Map<String, Object> user = q.getData();
+                            groupResults.put((String) user.get("username"), exerciseResults);
+                        }
+
+                    }
+                }
+            });
+        }
+        secondCallback.onSucceed();
+        return groupResults;
+    }
+
+    private ArrayList<Double> fetchExerciseResults(QueryDocumentSnapshot q, Map<String, Object> user) {
+        ArrayList<Double> exerciseResults = new ArrayList<>();
+        db.collection("users/" + q.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                double exerciseTime = 0;
+                double exerciseInMeters = 0;
+                for(QueryDocumentSnapshot q : task.getResult()){
+                    Map<String,Object> usersExercises = q.getData();
+                    LocalDateTime date = LocalDateTime.now();
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    if(Objects.equals(usersExercises.get("exerciseDate"), date.format(format))){
+                        exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseTime"))));
+                        exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(usersExercises.get("exerciseInMeters"))));
+                    }
+                }
+                exerciseResults.add(exerciseTime);
+                exerciseResults.add(exerciseInMeters);
+            }
+
+        });
+        return exerciseResults;
     }
 
     @Override
