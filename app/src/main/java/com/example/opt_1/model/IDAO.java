@@ -23,8 +23,6 @@ public interface IDAO {
     void removeUserFromTheGroup(String groupOwnerEmail);
     Boolean getRegisterErrorCheck();
     void createNewGroup(Group group, CRUDCallbacks callback);
-     Map<String, ArrayList<Double>> getGroupResults();
-    
-    FirebaseFirestore getDatabase();
-    FirebaseAuth getUser();
+    Map<String, ArrayList<Double>> getGroupResults();
+
 }

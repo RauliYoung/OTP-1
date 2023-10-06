@@ -23,7 +23,7 @@ public class GroupActivity extends Fragment {
     private Controller controller;
     private View view;
     private String groupName;
-    private User2 userInstance;
+    private User2 userInstance = User2.getInstance();
 
     public GroupActivity() {
         controller = new Controller();
@@ -69,14 +69,12 @@ public class GroupActivity extends Fragment {
                 controller.createNewGroup(groupName);
             }
         });
-        try {
-            if(userInstance.isUserInGroup()){
+
+        if(userInstance.isUserInGroup()){
                 controller.fecthGroupResults(userInstance.getGroup());
                 System.out.println("User in group: " + userInstance.isUserInGroup());
-            }
-        }catch (NullPointerException e){
-            System.out.println("User not in group");
         }
+
 
         joinGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
