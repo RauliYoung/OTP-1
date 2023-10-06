@@ -151,3 +151,18 @@ Jos sovelluksesta  ei  saada  tarpeeksi  hyvää  kilpailijoihin  verrattaen  m�
 -   Samu Aikio
 
 ---
+
+# Sovelluksen kuvantamiseen käytettyjä kaavioita
+### Sekvenssikaavio
+Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain.
+
+![img.png](img.png)
+
+1. Käyttäjä luo käyttäjätunnuksen. Jos käyttäjätunnuksen luonnissa tapahtuu virhe, niin
+   palataan rekisteröitymissivulle, muuten jatketaan kirjautumisikkunaan.
+2. Jos käyttäjätunnuksen luonti onnistui, yritetään kirjautua sovellukseen.
+3. Jos kirjautumistiedot ovat oikein, siirrytään kotinäkymään, muussa tapauksessa palataan
+   kirjautumisikkunaan.
+
+---
+
