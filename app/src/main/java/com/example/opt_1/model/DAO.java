@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class DAO implements IDAO {
 
@@ -36,9 +37,8 @@ public class DAO implements IDAO {
     private User2 userInstance = User2.getInstance();
     Map<String,ArrayList<Double>> groupExerciseResultMap;
     private int emailCount = 0;
-    private int exerciseTime = 0;
-    private int exerciseInMeters = 0;
-    private Map<String,ArrayList<Double>> groupExercisesSumList;
+    private double exerciseTime = 0;
+    private double exerciseInMeters = 0;
 
     private boolean taskResult;
 
@@ -434,13 +434,14 @@ public class DAO implements IDAO {
                             groupResults.put((String) user.get("username"), fetchExerciseResults(q,user, new CRUDCallbacks() {
                                 @Override
                                 public void onSucceed() {
-                                    System.out.println("Before Email for-loop: " + emailCount);
+                                    exerciseTime = 0;
+                                    exerciseInMeters = 0;
                                     if(emailCount == group.getGroupOfUserEmails().size()){
-                                        System.out.println("Email for-loop: " + groupResults.keySet());
+                                        for(Map.Entry<String, ArrayList<Double>> key : groupResults.entrySet()){
+                                            System.out.println("Hashmap results: Key: " + key.getKey() + " Results: " + key.getValue());
+                                        }
                                         secondCallback.onSucceed();
                                         emailCount = 0;
-                                        exerciseTime = 0;
-                                        exerciseInMeters = 0;
                                     }
                                 }
 
@@ -473,8 +474,10 @@ public class DAO implements IDAO {
                             exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get("exerciseInMeters"))));
                         }
                     }
-
-                    System.out.println("TIME AND MTIERE " +user.get("email")+" "+ exerciseInMeters + " " + exerciseTime);
+                    //Index 0 = sum of exercise times
+                    exerciseResults.add(exerciseTime);
+                    //Index 1 = sum of exercise meters
+                    exerciseResults.add(exerciseInMeters);
                     callbacks.onSucceed();
                 }
             }
