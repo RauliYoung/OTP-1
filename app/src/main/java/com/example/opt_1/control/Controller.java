@@ -28,6 +28,7 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     private IDAO database = new DAO();
     private IExercise exercise;
+    private Map<String,ArrayList<Double>> groupExercises = new HashMap<>();
 
     private LocationTracker locationTracker;
     private Chronometer activityTimer;
@@ -36,11 +37,6 @@ public class Controller implements IModeltoView,IViewtoModel {
     private int activityLength;
     private TextView textViewData;
     private TextView timer;
-    private ArrayList<Map<String,ArrayList<Double>>> group;
-//    @Override
-//    public void userLogin() {
-//        database.loginUser(loginInfoUsername, loginInfoPassword ,);
-//    }
 
     @Override
     public void userLogin(String email, String password, CRUDCallbacks callbacks) {
@@ -136,7 +132,20 @@ public class Controller implements IModeltoView,IViewtoModel {
         database.addUserToTheGroup(groupOwnerEmail, new CRUDCallbacks() {
             @Override
             public void onSucceed() {
-                System.out.println("Users' exercises");
+                System.out.println("Added user into group");
+
+                database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {
+                    @Override
+                    public void onSucceed() {
+                        groupExercises = database.getGroupResults();
+                        System.out.println("Groups exercises: " + groupExercises);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
             }
 
             @Override
@@ -164,6 +173,6 @@ public class Controller implements IModeltoView,IViewtoModel {
 
     @Override
     public void fecthGroupResults(String groupOwnerEmail) {
-        //ArrayList<Map<String,ArrayList<Double>>> exerciseResultList = database.fetchGroupFromDatabase(groupOwnerEmail);
+
     }
 }

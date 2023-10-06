@@ -2,6 +2,7 @@ package com.example.opt_1.model;
 
 import androidx.annotation.NonNull;
 
+import com.example.opt_1.control.Controller;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,14 +29,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public class DAO implements IDAO {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User2 userInstance = User2.getInstance();
-    Map<String,ArrayList<Double>> groupExerciseResultMap;
+    private Map<String,ArrayList<Double>> groupResults = null;
     private int emailCount = 0;
     private double exerciseTime = 0;
     private double exerciseInMeters = 0;
@@ -317,9 +317,7 @@ public class DAO implements IDAO {
                         }
                         createNewGroup(newGroup, new CRUDCallbacks() {
                             @Override
-                            public void onSucceed() {
-                                System.out.println("DAO Added a new group");
-                            }
+                            public void onSucceed() {}
 
                             @Override
                             public void onFailure() {
@@ -335,7 +333,6 @@ public class DAO implements IDAO {
     @Override
     public void addUserToTheGroup(String groupOwnerEmail , CRUDCallbacks callbacks) {
         DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
-        System.out.println("Controller: " + docRef.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -347,12 +344,10 @@ public class DAO implements IDAO {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        System.out.println("Document add user ID: " + document.getId());
                                         db.collection("users").document(document.getId()).update("userInGroup","true","group",groupOwnerEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    System.out.println("User in group: true");
                                                     docRef.update("groupOfUserEmails", FieldValue.arrayUnion(userInstance.getEmail())).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
@@ -364,7 +359,7 @@ public class DAO implements IDAO {
                                                                             DocumentSnapshot user = task.getResult();
                                                                             boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.getData()).get("userInGroup"));
                                                                             userInstance.setUserInGroup(userInGroup);
-                                                                            fetchGroupFromDatabase(groupOwnerEmail,callbacks);
+                                                                            callbacks.onSucceed();
                                                                         }
                                                                     }
                                                                 }).addOnFailureListener(new OnFailureListener() {
@@ -390,22 +385,26 @@ public class DAO implements IDAO {
             }
         });
     }
+
     @Override
-    public Map<String,ArrayList<Double>> fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks controllerCallback){
+    public Map<String, ArrayList<Double>> getGroupResults() {
+        return groupResults;
+    }
+
+    @Override
+    public void fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks controllerCallback){
+        groupResults = new HashMap<>();
         DocumentReference joinedGroupRef = db.collection("groups").document(groupOwnerEmail);
         joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(handleTaskDS(task)){
                     DocumentSnapshot document = task.getResult();
-                    System.out.println("Group document: " + document);
                     Group group = document.toObject(Group.class);
-                    System.out.println("Group: " + group);
                     if(group.getGroupOfUserEmails() != null){
-                         groupExerciseResultMap = fetchGroupParticipants(group, new CRUDCallbacks() {
+                         fetchGroupParticipants(group, new CRUDCallbacks() {
                              @Override
                              public void onSucceed() {
-                                 System.out.println("End of query: " + groupExerciseResultMap);
                                  controllerCallback.onSucceed();
                              }
 
@@ -418,12 +417,11 @@ public class DAO implements IDAO {
                 }
             }
         });
-        return groupExerciseResultMap;
     }
 
 
     private Map<String,ArrayList<Double>> fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
-        Map<String,ArrayList<Double>> groupResults = new HashMap<>();
+
         for(String email : group.getGroupOfUserEmails()) {
             db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -431,15 +429,14 @@ public class DAO implements IDAO {
                     if (handleTaskQS(task)) {
                         for (QueryDocumentSnapshot q : task.getResult()) {
                             Map<String, Object> user = q.getData();
-                            groupResults.put((String) user.get("username"), fetchExerciseResults(q,user, new CRUDCallbacks() {
+
+                            fetchExerciseResults(q,user, new CRUDCallbacks() {
                                 @Override
                                 public void onSucceed() {
+                                    emailCount++;
                                     exerciseTime = 0;
                                     exerciseInMeters = 0;
                                     if(emailCount == group.getGroupOfUserEmails().size()){
-                                        for(Map.Entry<String, ArrayList<Double>> key : groupResults.entrySet()){
-                                            System.out.println("Hashmap results: Key: " + key.getKey() + " Results: " + key.getValue());
-                                        }
                                         secondCallback.onSucceed();
                                         emailCount = 0;
                                     }
@@ -449,8 +446,8 @@ public class DAO implements IDAO {
                                 public void onFailure() {
 
                                 }
-                            }));
-                            emailCount++;
+                            });
+
                         }
                     }
                 }
@@ -460,7 +457,7 @@ public class DAO implements IDAO {
         return groupResults;
     }
 
-    private ArrayList<Double> fetchExerciseResults(QueryDocumentSnapshot q, Map<String, Object> user, CRUDCallbacks callbacks) {
+    private void fetchExerciseResults(QueryDocumentSnapshot q, Map<String, Object> user, CRUDCallbacks callbacks) {
         ArrayList<Double> exerciseResults = new ArrayList<>();
         db.collection("users/" + q.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -478,18 +475,16 @@ public class DAO implements IDAO {
                     exerciseResults.add(exerciseTime);
                     //Index 1 = sum of exercise meters
                     exerciseResults.add(exerciseInMeters);
+                    groupResults.put((String) user.get("username"),exerciseResults);
                     callbacks.onSucceed();
                 }
             }
-
         });
-        return exerciseGroupList;
     }
 
     @Override
     public void removeUserFromTheGroup(String groupOwnerEmail) {
         DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
-        System.out.println("Controller: " + docRef.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -518,11 +513,6 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public void updateData() {
-
-    }
-
-    @Override
     public void createNewGroup(Group group, CRUDCallbacks callback) {
         DocumentReference docRef = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -531,7 +521,6 @@ public class DAO implements IDAO {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        System.out.println("Löytyy: " + document.getId());
                         callback.onFailure();
                     } else {
                         docRef.set(group, SetOptions.merge());
@@ -575,4 +564,4 @@ public class DAO implements IDAO {
     public FirebaseAuth getUser() {
         return auth;
     }
-}
+    }
