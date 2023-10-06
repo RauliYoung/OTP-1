@@ -1,5 +1,6 @@
 package com.example.opt_1.model;
 
+import com.example.opt_1.control.Controller;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -18,11 +19,12 @@ public interface IDAO {
     void loginUser(String email, String password, CRUDCallbacks callbacks);
     void addNewGroupToDatabase(String groupName);
     void addUserToTheGroup(String groupOwnerEmail, CRUDCallbacks callbacks);
+    void fetchGroupFromDatabase(String groupOwnerEmail,CRUDCallbacks controllerCallback);
     void removeUserFromTheGroup(String groupOwnerEmail);
     Boolean getRegisterErrorCheck();
-    void updateData();
     void createNewGroup(Group group, CRUDCallbacks callback);
-    Map<String,ArrayList<Double>> fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks callbacks);
+     Map<String, ArrayList<Double>> getGroupResults();
+    
     FirebaseFirestore getDatabase();
     FirebaseAuth getUser();
 }
