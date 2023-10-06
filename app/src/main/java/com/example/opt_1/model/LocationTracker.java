@@ -50,6 +50,8 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
         }
     };
+
+    public LocationTracker(){};
     public LocationTracker(ActivityFragment activityFragment, Controller controller) {
         this.controller = controller;
         this.fragmentfor = activityFragment;
@@ -133,31 +135,58 @@ public class LocationTracker extends Thread implements ILocationTracker {
         return currentLocation;
     }
 
-    public double calculateDistance(double X1, double Y1, double X2, double Y2){
-        double radius = 6371000; // metrit
-
-        double latitude1 = X1 * Math.PI/180;
-        double latitude2 = X2 * Math.PI/180;
-        double longitude1 = Y1;
-        double longitude2 = Y2;
-
-        double changeOfLatitude = (latitude2 - latitude1) * Math.PI/180;
-        double changeOfLongitude = (longitude2 - longitude1) * Math.PI/180;
-
-        double a = Math.sin(changeOfLatitude/2) * Math.sin(changeOfLatitude/2)
-                + Math.cos(latitude1) * Math.cos(latitude2)
-                * Math.sin(changeOfLongitude/2) * Math.sin(changeOfLongitude/2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-//        if (radius * c >= 3){
+//    public double calculateDistance(double X1, double Y1, double X2, double Y2){
+//        double radius = 6371000; // metrit
 //
-//        }
-        travelledDistance += radius * c;
+//        double latitude1 = X1 * Math.PI/180;
+//        double latitude2 = X2 * Math.PI/180;
+//        double longitude1 = Y1;
+//        double longitude2 = Y2;
+//
+//        double changeOfLatitude = (latitude2 - latitude1) * Math.PI/180;
+//        double changeOfLongitude = (longitude2 - longitude1) * Math.PI/180;
+//
+//        double a = (Math.sin(changeOfLatitude/2) * Math.sin(changeOfLatitude/2))
+//                + (Math.cos(latitude1) * Math.cos(latitude2)
+//                * Math.sin(changeOfLongitude/2) * Math.sin(changeOfLongitude/2));
+//
+//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+//
+//        travelledDistance += radius * c;
+//
+//        //controller.getTravelledDistanceModel();
+//
+//        System.out.println("lopputulos: " + travelledDistance);
+//
+//        return travelledDistance;
+//    }
 
+    private void updateDistance(){
         controller.getTravelledDistanceModel();
+    }
 
-        System.out.println("lopputulos: " + travelledDistance);
+
+
+    double calculateDistance(double lat1, double lon1,
+                            double lat2, double lon2)
+    {
+
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        double a = Math.pow(Math.sin(dLat / 2), 2) +
+                Math.pow(Math.sin(dLon / 2), 2) *
+                        Math.cos(lat1) *
+                        Math.cos(lat2);
+        double rad = 6371000;
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        travelledDistance += rad * c;
+
+        updateDistance();
 
         return travelledDistance;
     }
