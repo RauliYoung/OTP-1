@@ -37,6 +37,10 @@ public class LocationTracker extends Thread implements ILocationTracker {
     private double travelledDistance;
     private ArrayList<Location> locations = new ArrayList<>();
 
+
+    /*
+    * Adds the requested locations into list and their latitudes and longitudes.
+    * */
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -60,6 +64,11 @@ public class LocationTracker extends Thread implements ILocationTracker {
         getLastLocation();
         checkSettingsAndStartGps(activityFragment);
     }
+
+    /*
+    * Is used to to adjust to the intervals in which the location is requested
+    * and sets a radius for the smallest displacement.
+    * */
     private void initLocationRequest(){
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(0);
@@ -68,6 +77,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    /*
+    * Checks the settings for location requests and calls for locations updates to start.
+    * */
     private void checkSettingsAndStartGps(ActivityFragment fragment) {
         LocationSettingsRequest request = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
         SettingsClient client = LocationServices.getSettingsClient(fragment.getContext());
@@ -86,12 +98,18 @@ public class LocationTracker extends Thread implements ILocationTracker {
         });
     }
 
+    /*
+    * Starts the location updates if permissions are granted.
+    * */
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
+    /*
+    * Used for stopping the location updates.
+    * */
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
@@ -101,6 +119,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
     }
 
+    /*
+    * Checks the permission for location use and returns the last known location.
+    * */
     private void getLastLocation() {
         if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)  {
@@ -117,11 +138,18 @@ public class LocationTracker extends Thread implements ILocationTracker {
             }
         });
     }
+
+    /*
+    * Is used to stop the activity running.
+    * */
     @Override
     public void setActive(boolean stopActivity) {
         stopLocationUpdates();
     }
 
+    /*
+    * Returns the rounded value of travelled distance.
+    * */
     public double getTravelledDistance() {
         return BigDecimal.valueOf(travelledDistance).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
@@ -130,43 +158,28 @@ public class LocationTracker extends Thread implements ILocationTracker {
     public void setLocation(ActivityFragment fragment, Controller controller) {
     }
 
+    /*
+    * Returns the current location of users mobile device.
+    * */
     @Override
     public Location getLocation() {
         return currentLocation;
     }
 
-//    public double calculateDistance(double X1, double Y1, double X2, double Y2){
-//        double radius = 6371000; // metrit
-//
-//        double latitude1 = X1 * Math.PI/180;
-//        double latitude2 = X2 * Math.PI/180;
-//        double longitude1 = Y1;
-//        double longitude2 = Y2;
-//
-//        double changeOfLatitude = (latitude2 - latitude1) * Math.PI/180;
-//        double changeOfLongitude = (longitude2 - longitude1) * Math.PI/180;
-//
-//        double a = (Math.sin(changeOfLatitude/2) * Math.sin(changeOfLatitude/2))
-//                + (Math.cos(latitude1) * Math.cos(latitude2)
-//                * Math.sin(changeOfLongitude/2) * Math.sin(changeOfLongitude/2));
-//
-//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-//
-//        travelledDistance += radius * c;
-//
-//        //controller.getTravelledDistanceModel();
-//
-//        System.out.println("lopputulos: " + travelledDistance);
-//
-//        return travelledDistance;
-//    }
-
+    /*
+    * updateDistance is for sending the updated distance to controller to be shown in view as travelled distance.
+    * */
     private void updateDistance(){
         controller.getTravelledDistanceModel();
     }
 
 
 
+    /*
+    * calculateDistance-method calculates distance between two locations using Haversine-formula.
+    * It takes in latitude and longitude values as parameters from the two locations it calculates the distance between,
+    * and returns the difference as double.
+    * */
     double calculateDistance(double lat1, double lon1,
                             double lat2, double lon2)
     {
