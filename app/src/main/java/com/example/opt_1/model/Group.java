@@ -2,9 +2,21 @@ package com.example.opt_1.model;
 
 import java.util.ArrayList;
 
-public class Group implements IGroup{
+/**
+ * Represents a group object for saving data to database
+ */
+public class Group {
+    /**
+     * A variable for group name
+     */
     private String groupName;
+    /**
+     * A variable for group owner
+     */
     private String groupOwner;
+    /**
+     * A list variable for members of the group
+     */
     private ArrayList<String> groupOfUserEmails = new ArrayList<>();
 
     public ArrayList<String> getGroupOfUserEmails() {

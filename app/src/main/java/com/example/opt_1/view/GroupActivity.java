@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.model.User2;
+import com.example.opt_1.model.User;
 
 
 public class GroupActivity extends Fragment {
@@ -23,7 +23,7 @@ public class GroupActivity extends Fragment {
     private Controller controller;
     private View view;
     private String groupName;
-    private User2 userInstance = User2.getInstance();
+    private User userInstance = User.getInstance();
 
     public GroupActivity() {
         controller = new Controller();
@@ -73,6 +73,8 @@ public class GroupActivity extends Fragment {
         if(userInstance.isUserInGroup()){
                 controller.fecthGroupResults(userInstance.getGroup());
                 System.out.println("User in group: " + userInstance.isUserInGroup());
+        }else {
+            System.out.println("User is not part of any group: " + userInstance.isUserInGroup());
         }
 
 

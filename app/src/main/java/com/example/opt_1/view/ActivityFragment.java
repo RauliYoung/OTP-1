@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.model.User2;
+import com.example.opt_1.model.User;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class ActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activityHistory = User2.getInstance().getExercises();
+        activityHistory = User.getInstance().getExercises();
         v = inflater.inflate(R.layout.fragment_activity, container, false);
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
         stopActivityButton = (Button) v.findViewById(R.id.activity_StopActivityButton);
