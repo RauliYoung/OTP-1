@@ -166,6 +166,7 @@ Jos sovelluksesta  ei  saada  tarpeeksi  hyvää  kilpailijoihin  verrattaen  m�
 
 ![img_5.png](img_5.png)
 
+---
 
 ### Sekvenssikaavio
 Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain.
@@ -179,4 +180,18 @@ Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain
    kirjautumisikkunaan.
 
 ---
+### Aktiviteettikaavio
 
+![img_6.png](img_6.png)
+
+---
+
+### Käyttötapauskaavio
+
+![img_7.png](img_7.png)
+
+---
+
+### Sijoittelukaavio
+
+![img_8.png](img_8.png)
