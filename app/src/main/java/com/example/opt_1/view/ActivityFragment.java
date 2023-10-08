@@ -58,9 +58,9 @@ public class ActivityFragment extends Fragment {
         System.out.println("Activity fragment avautuu");
 
         for (int i = 0; i < activityHistory.size(); i++) {
-            View clonedUserSection = inflater.inflate(R.layout.activityobject, container, false);
-            TextView dateText = clonedUserSection.findViewById(R.id.ActivityDate);
-            Button activityHistoryButton = clonedUserSection.findViewById(R.id.ActivityReadDataButton);
+            View clonedActivitySection = inflater.inflate(R.layout.activityobject, container, false);
+            TextView dateText = clonedActivitySection.findViewById(R.id.ActivityDate);
+            Button activityHistoryButton = clonedActivitySection.findViewById(R.id.ActivityReadDataButton);
             activityHistoryButton.setId(i);
             activityHistoryButtonList.add(activityHistoryButton);
             View popupView = inflater.inflate(R.layout.popup_windowactivity, null);
@@ -85,7 +85,7 @@ public class ActivityFragment extends Fragment {
             });
 
             dateText.setText(activityHistory.get(i).keySet().toString().replace("]", "").replace("[", ""));
-            activityDataHistoryScrollView.addView(clonedUserSection);
+            activityDataHistoryScrollView.addView(clonedActivitySection);
         }
 
 

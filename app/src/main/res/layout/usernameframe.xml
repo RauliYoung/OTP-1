@@ -5,8 +5,8 @@
 
     <FrameLayout
         android:id="@+id/usernameFrameID"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="405dp"
+        android:layout_height="37dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -14,17 +14,26 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
+                android:id="@+id/userNameNameInList"
+                android:layout_width="103dp"
                 android:layout_height="wrap_content"
                 android:minWidth="300dp"
                 android:text="TextView" />
 
-            <Button
-                android:id="@+id/removeUserButton"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/sumResult"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remove User" />
+                android:layout_weight="1"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/sumResult2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+
         </LinearLayout>
 
     </FrameLayout>

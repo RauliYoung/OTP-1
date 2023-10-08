@@ -2,6 +2,7 @@ package com.example.opt_1.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,13 +14,14 @@ import android.widget.TextView;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User2;
 
 
 public class GroupActivity extends Fragment {
     private Button addGroupBtn, joinGroupBtn, leaveGroupBtn;
     private EditText groupNameInput;
-    private TextView  usernameTextField;
+    private TextView usernameTextField;
     private Controller controller;
     private View view;
     private String groupName;
@@ -42,20 +44,20 @@ public class GroupActivity extends Fragment {
         //Set button references
         addGroupBtn = view.findViewById(R.id.addGroupButton);
         joinGroupBtn = view.findViewById(R.id.joinGroupButton);
-        leaveGroupBtn = view.findViewById(R.id.leaveGroupButton);
+        leaveGroupBtn = view.findViewById(R.id.leaveGroupButton2);
         //Set input references
         groupNameInput = view.findViewById(R.id.groupNameInput);
         groupNameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean focused) {
-                if(focused){
+                if (focused) {
                     groupNameInput.setText("");
 
                 }
-                if(!focused){
-                    if(groupNameInput.getText().length() == 0){
+                if (!focused) {
+                    if (groupNameInput.getText().length() == 0) {
                         groupNameInput.setText("Insert group name");
-                    }else{
+                    } else {
                         groupName = groupNameInput.getText().toString();
                     }
 
@@ -70,9 +72,19 @@ public class GroupActivity extends Fragment {
             }
         });
 
-        if(userInstance.isUserInGroup()){
-                controller.fecthGroupResults(userInstance.getGroup());
-                System.out.println("User in group: " + userInstance.isUserInGroup());
+        if (userInstance.isUserInGroup()) {
+            controller.fecthGroupResults(userInstance.getGroup(), new CRUDCallbacks() {
+                @Override
+                public void onSucceed() {
+                    System.out.println("USER IS IN GROUP");
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+            System.out.println("User in group: " + userInstance.isUserInGroup());
         }
 
 
@@ -83,13 +95,6 @@ public class GroupActivity extends Fragment {
                 controller.joinToGroup(groupOwnerEmail);
                 Intent intent = new Intent(getActivity(), GroupFragment.class);
                 startActivity(intent);
-            }
-        });
-        leaveGroupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String groupOwnerEmail = groupNameInput.getText().toString();
-                controller.leaveFromGroup(groupOwnerEmail);
             }
         });
         return view;

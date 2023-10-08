@@ -14,6 +14,8 @@ import com.example.opt_1.model.User2;
 import com.example.opt_1.view.ActivityFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -92,6 +94,12 @@ public class Controller implements IModeltoView,IViewtoModel {
     }
 
     @Override
+    public Map<String, ArrayList<Double>> getGroupExericesforView() {
+        System.out.println(groupExercises +" TÄSSÄ OLLAAAN LISTA");
+        return groupExercises;
+    }
+
+    @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
         Map<String, String> user = new HashMap<>();
         user.put("firstName", firstName);
@@ -153,13 +161,15 @@ public class Controller implements IModeltoView,IViewtoModel {
         return BigDecimal.valueOf(speed).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
+
     @Override
-    public void fecthGroupResults(String groupOwnerEmail) {
+    public void fecthGroupResults(String groupOwnerEmail,CRUDCallbacks callbacks) {
         database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {
             @Override
             public void onSucceed() {
                 groupExercises = database.getGroupResults();
                 System.out.println("Groups exercises: " + groupExercises);
+                callbacks.onSucceed();
             }
 
             @Override
