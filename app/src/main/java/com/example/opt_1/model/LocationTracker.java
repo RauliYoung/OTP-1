@@ -199,7 +199,7 @@ public class LocationTracker extends Thread implements ILocationTracker {
 
         travelledDistance += rad * c;
 
-        updateDistance();
+//        updateDistance();
 
         return travelledDistance;
     }
