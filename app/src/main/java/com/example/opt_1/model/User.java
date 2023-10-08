@@ -1,42 +1,53 @@
 package com.example.opt_1.model;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-public class User implements IUser {
-
+/**
+ * The User class is implemented as Singleton
+ * It represents the logged-in user
+ */
+public class User {
+    /**
+     * A variable for the user instance
+     */
+    private static User instance = null;
+    /**
+     * A variable for the user's first name
+     */
     private String firstName;
+    /**
+     * A variable for the user's last name
+     */
     private String lastName;
+    /**
+     * A variable for the user's username
+     */
     private String username;
+    /**
+     * A variable for the user's email
+     */
     private String email;
-    private String password;
-    private ArrayList<Map> exercises = new ArrayList<>();
+    /**
+     * A boolean variable which tells if the user belongs to a group
+     */
+    private boolean userInGroup;
+    /**
+     * A variable for the name of the group which user involved
+     */
+    private String group;
+    private ArrayList<Map<String, Object>> exercises = new ArrayList<>();
 
-    public User( String firstName, String lastName, String username, String email, String password, CRUDCallbacks callback){
+    private User(){};
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public static User getInstance() {
+        if(instance == null){
+            instance = new User();
+        }
+        return instance;
     }
 
-    public User( String firstName, String lastName, String username, String email, String password){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(){
-    }
     public String getFirstName() {
         return firstName;
-    }
-
-    public ArrayList<Map> getExercises() {
-        return exercises;
     }
 
     public void setFirstName(String firstName) {
@@ -51,8 +62,13 @@ public class User implements IUser {
         this.lastName = lastName;
     }
 
-    public String getUsername(){return username;}
-    public void setUsername(String username){this.username = username;}
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getEmail() {
         return email;
@@ -62,21 +78,27 @@ public class User implements IUser {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public ArrayList<Map<String,Object>> getExercises() {
+        return exercises;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setExercises(ArrayList<Map<String,Object>> exercises) {
+        this.exercises = exercises;
     }
 
-    @Override
-    public void processLogin(String username, String password) {
-
+    public boolean isUserInGroup() {
+        return userInGroup;
     }
 
-    @Override
-    public void getRegisterInfo(String email, String username, String password) {
+    public void setUserInGroup(boolean userInGroup) {
+        this.userInGroup = userInGroup;
+    }
 
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

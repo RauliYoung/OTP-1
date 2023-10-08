@@ -1,12 +1,12 @@
 package com.example.opt_1.control;
-
 import android.widget.TextView;
-
 import com.example.opt_1.view.ActivityFragment;
 import com.example.opt_1.model.CRUDCallbacks;
 
-
-public interface IViewtoModel {
+/**
+ * ViewModel interface that declares all the necessary methods for data transfer between view and model via controller
+ */
+public interface IViewToModel {
     void userLogin(String email, String password, CRUDCallbacks callbacks);
     void startActivity(ActivityFragment fragment,TextView data,TextView timer);
     void changeUsername(String newUsername, CRUDCallbacks callbacks);

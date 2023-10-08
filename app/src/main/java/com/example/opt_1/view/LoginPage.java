@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.control.IViewtoModel;
+import com.example.opt_1.control.IViewToModel;
 import com.example.opt_1.model.CRUDCallbacks;
-import com.example.opt_1.model.User2;
+import com.example.opt_1.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,7 +24,7 @@ public class LoginPage extends AppCompatActivity {
     private EditText passwordField;
     private Button loginButton;
     private Button registerButton;
-    private IViewtoModel controller;
+    private IViewToModel controller;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser fireUser = auth.getCurrentUser();
@@ -63,7 +63,7 @@ public class LoginPage extends AppCompatActivity {
         controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {
             @Override
             public void onSucceed() {
-                System.out.println("User logged in: " + User2.getInstance().getEmail());
+                System.out.println("User logged in: " + User.getInstance().getEmail());
                 Intent intent = new Intent(LoginPage.this, Main_Page.class);
                 startActivity(intent);
                 finish();
