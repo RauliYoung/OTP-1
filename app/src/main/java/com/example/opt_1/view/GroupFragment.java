@@ -14,11 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.model.CRUDCallbacks;
-import com.example.opt_1.model.User2;
+import com.example.opt_1.model.User;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 public class GroupFragment extends AppCompatActivity {
 
@@ -46,7 +45,7 @@ public class GroupFragment extends AppCompatActivity {
         groupSumResult = findViewById(R.id.wholeGroupSumResult);
         groupMeterSumResult = findViewById(R.id.wholeGroupSumResultMeter);
 
-        controller.fecthGroupResults(User2.getInstance().getGroup(), new CRUDCallbacks() {
+        controller.fecthGroupResults(User.getInstance().getGroup(), new CRUDCallbacks() {
             @Override
             public void onSucceed() {
                 groupResultsWithMembers = controller.getGroupExericesforView();
@@ -62,7 +61,7 @@ public class GroupFragment extends AppCompatActivity {
         leaveGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.leaveFromGroup(User2.getInstance().getGroup());
+                controller.leaveFromGroup(User.getInstance().getGroup());
             }
         });
 

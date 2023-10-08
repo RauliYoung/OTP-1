@@ -115,6 +115,12 @@ public class Controller implements IModeltoView, IViewToModel {
         //timer.setText(String.valueOf());
     }
 
+    @Override
+    public Map<String, ArrayList<Double>> getGroupExericesforView() {
+        System.out.println(groupExercises +" TÄSSÄ OLLAAAN LISTA");
+        return groupExercises;
+    }
+
     /**
      * Method creating a new hashmap for saving using to the database
      * @param firstName The first name provided in register page form
@@ -124,11 +130,6 @@ public class Controller implements IModeltoView, IViewToModel {
      * @param email The email provided in register page form
      * @param callback Used for verifying that a new user has been created
      */
-    @Override
-    public Map<String, ArrayList<Double>> getGroupExericesforView() {
-        System.out.println(groupExercises +" TÄSSÄ OLLAAAN LISTA");
-        return groupExercises;
-    }
 
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
