@@ -153,6 +153,20 @@ Jos sovelluksesta  ei  saada  tarpeeksi  hyvää  kilpailijoihin  verrattaen  m�
 ---
 
 # Sovelluksen kuvantamiseen käytettyjä kaavioita
+
+### Luokkakaavio
+
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+
+![img_4.png](img_4.png)
+
+![img_5.png](img_5.png)
+
+
 ### Sekvenssikaavio
 Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain.
 
