@@ -1,5 +1,4 @@
 package com.example.opt_1.model;
-
 import java.util.ArrayList;
 import java.util.Map;
 

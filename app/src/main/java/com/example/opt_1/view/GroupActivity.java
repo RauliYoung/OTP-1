@@ -41,6 +41,7 @@ public class GroupActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_group_activity_test, container, false);
+        userInstance = User.getInstance();
         //Set button references
         addGroupBtn = view.findViewById(R.id.addGroupButton);
         joinGroupBtn = view.findViewById(R.id.joinGroupButton);
