@@ -96,7 +96,6 @@ public class Controller implements IModeltoView, IViewToModel {
     @Override
     public synchronized void stopActivity() {
         locationTracker.setActive(false);
-        database.addNewExerciseToDatabase(new Exercise(160,150,5.4));
         if(activityTimer != null) {
             activityTimer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();
@@ -106,6 +105,7 @@ public class Controller implements IModeltoView, IViewToModel {
             double distance = locationTracker.getTravelledDistance();
             textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
         }
+        database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));
         System.out.println("Activity Stopping!");
     }
 
