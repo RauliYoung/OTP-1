@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
-import com.example.opt_1.control.CurrentUserInstance;
-import com.example.opt_1.model.User2;
+import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
     private Button logOutButton,removeUserBtn,changePasswordBtn,changeUsernameBtn;
 
     private String oldPassword,newPassword, newUsername, oldUsername;
-    private User2 userInstance;
+    private User userInstance;
 
     public HomeFragment(){
         controller = new Controller();
@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        userInstance = User2.getInstance();
+        userInstance = User.getInstance();
         v = inflater.inflate(R.layout.fragment_home,container,false);
         logOutButton = (Button) v.findViewById(R.id.logOut_Button);
         removeUserBtn = v.findViewById(R.id.removeUserButton);
@@ -169,7 +169,17 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!Objects.equals(newUsername, oldUsername)){
-                    controller.changeUsername(newUsername);
+                    controller.changeUsername(newUsername, new CRUDCallbacks() {
+                        @Override
+                        public void onSucceed() {
+                            usernameTextField.setText(userInstance.getUsername());
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    });
                 }
             }
         });

@@ -1,27 +1,23 @@
 package com.example.opt_1.model;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.Map;
-import java.time.LocalDateTime;
-import java.util.Map;
 
+/**
+ * The IDAO interface defines the methods for the CRUD operations
+ */
 public interface IDAO {
     void addNewExerciseToDatabase(Exercise exercise);
-    void createUser(User user, CRUDCallbacks callBack) ;
-    void createUser2(Map user, String password);
+    void createUser(Map<String, String> user, String password, CRUDCallbacks callbacks);
     void removeUser();
     void changePassword(String oldPassword, String newPassword);
-    void checkIfUsernameExist(String newUsername);
+    void checksIfUsernameExist(String newUsername, CRUDCallbacks callbacks);
     void loginUser(String email, String password, CRUDCallbacks callbacks);
-    void addNewGroupToDatabase(String groupName);
-    void addUserToTheGroup(String groupOwnerEmail);
+    void addNewGroupIntoDatabase(String groupName);
+    void addUserToTheGroup(String groupOwnerEmail, CRUDCallbacks callbacks);
+    void fetchGroupFromDatabase(String groupOwnerEmail,CRUDCallbacks controllerCallback);
     void removeUserFromTheGroup(String groupOwnerEmail);
-    Boolean getRegisterErrorCheck();
-    void updateData();
     void createNewGroup(Group group, CRUDCallbacks callback);
-    FirebaseFirestore getDatabase();
-    FirebaseAuth getUser();
+    Map<String, ArrayList<Double>> getGroupResults();
+
 }

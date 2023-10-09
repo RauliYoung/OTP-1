@@ -1,20 +1,29 @@
 package com.example.opt_1.model;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class Group implements IGroup{
+/**
+ * Represents a group object for saving data to database
+ */
+public class Group {
+    /**
+     * A variable for group name
+     */
     private String groupName;
+    /**
+     * A variable for group owner
+     */
     private String groupOwner;
-    private ArrayList<User> group = new ArrayList<>();
+    /**
+     * A list variable for members of the group
+     */
+    private ArrayList<String> groupOfUserEmails = new ArrayList<>();
 
-    public ArrayList<User> getGroup() {
-        return group;
+    public ArrayList<String> getGroupOfUserEmails() {
+        return groupOfUserEmails;
     }
-    public void setGroup(ArrayList<User> group) {
-        this.group = group;
+    public void setGroupOfUserEmails(ArrayList<String> groupOfUserEmails) {
+        this.groupOfUserEmails = groupOfUserEmails;
     }
     public void setGroupName(String groupName) {
         this.groupName = groupName;
@@ -42,7 +51,7 @@ public class Group implements IGroup{
         return "Group{" +
                 "groupName='" + groupName + '\'' +
                 ", groupOwner='" + groupOwner + '\'' +
-                ", group=" + group +
+                ", group=" + groupOfUserEmails +
                 '}';
     }
 }

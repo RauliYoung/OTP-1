@@ -1,79 +1,86 @@
 package com.example.opt_1.model;
-
 import androidx.annotation.NonNull;
-
-import com.example.opt_1.control.CurrentUserInstance;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-
+import com.google.android.gms.tasks.*;
+import com.google.firebase.auth.*;
+import com.google.firebase.firestore.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
+/**
+ *
+ * DAO class represents CRUD operations of application
+ *
+ */
 public class DAO implements IDAO {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private User2 userInstance = User2.getInstance();
+    /**
+     * A variable for the database instance
+     */
+    private FirebaseFirestore databaseInstance = FirebaseFirestore.getInstance();
+    /**
+     * A variable for the database auth instance
+     */
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    /**
+     * A variable for the user instance
+     */
+    private User userInstance = User.getInstance();
+    /**
+     * A list variable for the exercise group results
+     *
+     */
+    private Map<String,ArrayList<Double>> groupResults = null;
+    /**
+     * A variable for participants count
+     */
+    private int emailCount = 0;
+    /**
+     * A variable for sum of exercise time for the day
+     */
+    private double exerciseTime = 0;
+    /**
+     * A variable for sum of exercise meters for the day
+     */
+    private double exerciseInMeters = 0;
 
-
-    private boolean taskResult;
-
-
+    /**
+     * Method adds a new exercise data to the database
+     * This method is called by controller after the user has stopped the activity
+     * @param newExercise The exercise data to be added to the database
+     */
     @Override
     public void addNewExerciseToDatabase(Exercise newExercise) {
-        db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        databaseInstance.collection("users").whereEqualTo("email", Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        DocumentReference userRef = db.collection("users").document(document.getId());
-                        LocalDateTime date = LocalDateTime.now();
-                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-                        String formatDateTime = date.format(format);
-                        Map<String,Object> exercise = new HashMap<>();
-                        exercise.put(formatDateTime,newExercise);
-                        userRef.collection("exercises").add(exercise);
+                        DocumentReference userRef = databaseInstance.collection("users").document(document.getId());
+                        CollectionReference userExercise = userRef.collection("exercises");
+                        userExercise.add(newExercise);
                         retrieveExercises();
                     }
                 }
             }
         });
     }
+    /**
+     * Method retrieves the user exercises from database and updates the user's instance
+     */
     private void retrieveExercises(){
-        Query usersExercises = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+        Query usersExercises = databaseInstance.collection("users").whereEqualTo("email", Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
         usersExercises.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(handleTaskQS(task)){
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        System.out.println("DAO USER: " + document.getId());
-                        db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        databaseInstance.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(handleTaskQS(task)){
                                     for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                        ArrayList<Map> userInstanceArrayList = userInstance.getExercises();
+                                        ArrayList<Map<String,Object>> userInstanceArrayList = userInstance.getExercises();
                                         userInstanceArrayList.add(snapshot.getData());
                                         userInstance.setExercises(userInstanceArrayList);
                                     }
@@ -87,67 +94,48 @@ public class DAO implements IDAO {
 
     }
 
+    /**
+     * Method adds a new user to the database
+     * @param user A Hashmap containing username, email, first name and last name
+     * @param password The password provided in the registration form
+     * @param callbacks Callback verifies that the user has been created
+     */
     @Override
-    public void createUser(User user, CRUDCallbacks callback) {
-
-        auth.createUserWithEmailAndPassword(user.getEmail().trim(), user.getPassword())
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        try {
-                            throw Objects.requireNonNull(task.getException());
-                        } catch (FirebaseAuthInvalidCredentialsException err) {
-                            System.out.println("BAD EMAIL FOR AUTH ACC");
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        } finally {
-                            callback.onFailure();
-                        }
-
-                    } else {
-                        db.collection("users")
-                                .add(user)
-                                .addOnSuccessListener(documentReference -> {
-                                    callback.onSucceed(task.isSuccessful());
-                                    auth.signOut();
-                                })
-                                .addOnFailureListener(e -> callback.onFailure());
-                    }
-                });
-    }
-
-    @Override
-    public void createUser2(Map user, String password) {
-        auth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    public void createUser(Map<String,String> user, String password, CRUDCallbacks callbacks) {
+        firebaseAuth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get("email")), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(handleTaskAuth(task)){
                     if (task.isSuccessful()) {
-                        db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        databaseInstance.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                System.out.println("New User: " + documentReference.getId());
-                                System.out.println("New User Success");
-                                auth.signOut();
+                                firebaseAuth.signOut();
+                                callbacks.onSucceed();
                             }
 
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 e.printStackTrace();
+                                callbacks.onFailure();
                             }
                         });
                     } else {
-                        System.out.println("Something went wrong " + task.getException());
+                        System.out.println("Something went wrong while creating new user " + task.getException());
                     }
                 }
             }
         });
     }
 
+    /**
+     * Method deletes a user and associated data from the database
+     */
     @Override
     public void removeUser() {
         try {
-            DocumentReference docRefGroup = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+            DocumentReference docRefGroup = databaseInstance.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()));
 
             docRefGroup.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -164,19 +152,18 @@ public class DAO implements IDAO {
                     }
                 }
             });
-            Query usersExercises = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+            Query usersExercises = databaseInstance.collection("users").whereEqualTo("email", firebaseAuth.getCurrentUser().getEmail());
             usersExercises.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if(handleTaskQS(task)){
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            System.out.println("DAO USER: " + document.getId());
-                             db.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                             databaseInstance.collection("users/" + document.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(handleTaskQS(task)){
                                         for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                            db.collection("users/" + document.getId() +"/exercises").document(snapshot.getId()).delete();
+                                            databaseInstance.collection("users/" + document.getId() +"/exercises").document(snapshot.getId()).delete();
                                         }
                                     }
                                 }
@@ -186,66 +173,89 @@ public class DAO implements IDAO {
                 }
             });
 
-            Query usersCollectionRef = db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail());
+            Query usersCollectionRef = databaseInstance.collection("users").whereEqualTo("email", firebaseAuth.getCurrentUser().getEmail());
             usersCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                     if (handleTaskQS(task)) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            System.out.println("DAO USER: " + document.getId());
-                            DocumentReference userRef = db.collection("users").document(document.getId());
+                            DocumentReference userRef = databaseInstance.collection("users").document(document.getId());
                             userRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    System.out.println("Poistettu?");
+                                    System.out.println("Poistettu user collection");
                                 }
                             });
                         }
                     }
                 }
             });
-            auth.getCurrentUser().delete();
+            firebaseAuth.getCurrentUser().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    System.out.println("Poistettu auth");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Ei poistettu auth");
+                }
+            });
         } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Method verifies login credentials and updates the user's password
+     * @param oldPassword The old password provided in the main page form
+     * @param newPassword The new password provided in the main page form
+     */
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        FirebaseUser firebaseUser = auth.getCurrentUser();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         AuthCredential credential = EmailAuthProvider
-                .getCredential(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()), oldPassword);
+                .getCredential(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()), oldPassword);
 
-        firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                firebaseUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            System.out.println("Password has been changed");
-                            db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (handleTaskQS(task)) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            DocumentReference userRef = db.collection("users").document(document.getId());
-                                            userRef.update("password", newPassword);
+        try {
+            firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    firebaseUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                System.out.println("Password has been changed");
+                                databaseInstance.collection("users").whereEqualTo("email", firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (handleTaskQS(task)) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                DocumentReference userRef = databaseInstance.collection("users").document(document.getId());
+                                                userRef.update("password", newPassword);
+                                            }
                                         }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }catch (NullPointerException err){
+            err.printStackTrace();
+        }
     }
 
+    /**
+     * Method checks if new username is already in use
+     * @param newUsername The new username provided in the main page form
+     * @param callbacks callbacks ensures that the username check has been processed
+     */
     @Override
-    public void checkIfUsernameExist(String newUsername) {
-        Query usernames = db.collection("users").whereEqualTo("username", newUsername);
+    public void checksIfUsernameExist(String newUsername, CRUDCallbacks callbacks) {
+        Query usernames = databaseInstance.collection("users").whereEqualTo("username", newUsername);
         usernames.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -255,40 +265,51 @@ public class DAO implements IDAO {
                         System.out.println("Username is already on use");
                     }else {
                         System.out.println("Username is available to use");
-                        changeUsername(newUsername);
+                        changeUsername(newUsername, callbacks);
                     }
                 }
             }
         });
     }
 
-
-
-    private void changeUsername(String username){
+    /**
+     * Method is called after checksIfUsernameExist has been passed successful and changes the username to new one
+     * @param username The username provided in the main page form
+     * @param callbacks callbacks ensures that the username has been changed
+     */
+    private void changeUsername(String username, CRUDCallbacks callbacks){
         System.out.println("changeUsername()");
-        db.collection("users").whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        databaseInstance.collection("users").whereEqualTo("email", Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        DocumentReference userRef = db.collection("users").document(document.getId());
+                        DocumentReference userRef = databaseInstance.collection("users").document(document.getId());
                         userRef.update("username", username);
                         userInstance.setUsername(username);
+                        callbacks.onSucceed();
 
                     }
                 }
             }
         });
     }
+
+    /**
+     * Method attempts to login with user email and password in Firebase auth, and if it passed
+     * method sets the user into instance and changes the view to main view
+     * @param email The user's email from login page form
+     * @param password The user's password from the login page form
+     * @param callbacks callbacks ensures that the login has been processed
+     */
     @Override
     public void loginUser(String email, String password, CRUDCallbacks callbacks) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(handleTaskAuth(task)){
-                    if(auth.getCurrentUser() != null){
-                        System.out.println(auth.getCurrentUser()+" LOGGED IN");
-                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        System.out.println(firebaseAuth.getCurrentUser()+" LOGGED IN");
+                            databaseInstance.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (handleTaskQS(task)) {
@@ -296,14 +317,17 @@ public class DAO implements IDAO {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             user = document.getData();
                                         }
-                                        User2 userInstance = User2.getInstance();
+                                        User userInstance = User.getInstance();
                                         userInstance.setFirstName((String) user.get("firstName"));
                                         userInstance.setLastName((String) user.get("lastName"));
                                         userInstance.setUsername((String) user.get("username"));
                                         userInstance.setEmail((String) user.get("email"));
-                                        System.out.println(userInstance);
-                                        callbacks.onSucceed(true);
+                                        userInstance.setGroup((String) user.get("group"));
+                                        boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get("userInGroup")));
+                                        userInstance.setUserInGroup(userInGroup);
+                                        System.out.println("User instance: " + userInstance);
                                         retrieveExercises();
+                                        callbacks.onSucceed();
                                     }else{
                                         callbacks.onFailure();
                                     }
@@ -311,57 +335,41 @@ public class DAO implements IDAO {
                             });
                     }
                 }
-            }
         });
     }
 
-//    @Override
-//    public void loginUser(String email, String password) {
-//
-//        auth.signInWithEmailAndPassword(email,password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (auth.getCurrentUser() == null){
-//                            System.out.println("WRONG USERNAME/ AUTH NOT LOGGED IN!");
-//                        }else {
-//                            System.out.println(auth.getCurrentUser()+" LOGGED IN");
-//                            db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (handleTaskQS(task)) {
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            User currentUser = document.toObject(User.class);
-//                                            userInstance.setCurrentUser(currentUser);
-//                                        }
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
-//    }
-
+    /**
+     * Method creates and adds a new group to the database
+     * @param groupName User-given name for the group from group page form
+     */
     @Override
-    public void addNewGroupToDatabase(String groupName) {
-        String email = auth.getCurrentUser().getEmail();
+    public void addNewGroupIntoDatabase(String groupName) {
+        String email = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail();
         Group newGroup = new Group();
-        db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        databaseInstance.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(handleTaskQS(task)) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if(document.exists()){
-                            User groupOwner = document.toObject(User.class);
-                            newGroup.getGroup().add(groupOwner);
-                            newGroup.setGroupOwner(groupOwner.getUsername());
+                            newGroup.getGroupOfUserEmails().add(userInstance.getEmail());
+                            newGroup.setGroupOwner(userInstance.getUsername());
                             newGroup.setGroupName(groupName);
-                            System.out.println("Controller: " + document);
                         }
                         createNewGroup(newGroup, new CRUDCallbacks() {
                             @Override
-                            public void onSucceed(boolean success) {
-                                System.out.println("DAO Added a new group");
+                            public void onSucceed() {
+                                addUserToTheGroup(userInstance.getEmail(), new CRUDCallbacks() {
+                                    @Override
+                                    public void onSucceed() {
+                                        System.out.println("New group and owner updated");
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+                                });
                             }
 
                             @Override
@@ -375,23 +383,57 @@ public class DAO implements IDAO {
         });
     }
 
+    /**
+     * Method adds the user to a specific exercise group by group owner's email
+     * @param groupOwnerEmail The email of the group owner, obtained from the group page form
+     * @param callbacks callbacks ensures that the user has been added group
+     */
     @Override
-    public void addUserToTheGroup(String groupOwnerEmail) {
-        DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
-        System.out.println("Controller: " + docRef.getId());
+    public void addUserToTheGroup(String groupOwnerEmail , CRUDCallbacks callbacks) {
+        DocumentReference docRef = databaseInstance.collection("groups").document(groupOwnerEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                       db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                       databaseInstance.collection("users").whereEqualTo("email", firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        User currentUser = document.toObject(User.class);
-                                        docRef.update("group", FieldValue.arrayUnion(currentUser));
+                                        databaseInstance.collection("users").document(document.getId()).update("userInGroup","true","group",groupOwnerEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    docRef.update("groupOfUserEmails", FieldValue.arrayUnion(userInstance.getEmail())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                databaseInstance.collection("users").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            DocumentSnapshot user = task.getResult();
+                                                                            boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.getData()).get("userInGroup"));
+                                                                            userInstance.setUserInGroup(userInGroup);
+                                                                            callbacks.onSucceed();
+                                                                        }
+                                                                    }
+                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        e.printStackTrace();
+                                                                        callbacks.onFailure();
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             }
@@ -402,23 +444,142 @@ public class DAO implements IDAO {
         });
     }
 
+    /**
+     * Gets the exercise results
+     * @return Returns a HashMap containing results
+     */
+    @Override
+    public Map<String, ArrayList<Double>> getGroupResults() {
+        return groupResults;
+    }
+
+    /**
+     * Method attempts to fetch a group by name from database
+     * @param groupOwnerEmail The email of the group owner, obtained from the group page form
+     * @param controllerCallback controllerCallbacks ensures that the group has been found
+     */
+    @Override
+    public void fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks controllerCallback){
+        groupResults = new HashMap<>();
+        DocumentReference joinedGroupRef = databaseInstance.collection("groups").document(groupOwnerEmail);
+        joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(handleTaskDS(task)){
+                    DocumentSnapshot document = task.getResult();
+                    Group group = document.toObject(Group.class);
+                    try{
+                        if(group.getGroupOfUserEmails() != null){
+                            fetchGroupParticipants(group, new CRUDCallbacks() {
+                                @Override
+                                public void onSucceed() {
+                                    System.out.println("Testi: " + groupResults);
+                                    controllerCallback.onSucceed();
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+                            });
+                        }
+
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+    }
+
+    /**
+     * Method attempts to fetch all users of the group from the database
+     * @param group The group information
+     * @param secondCallback secondCallback ensures that the group members are found
+     */
+    private void fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
+
+        for(String email : group.getGroupOfUserEmails()) {
+            databaseInstance.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (handleTaskQS(task)) {
+                        for (QueryDocumentSnapshot q : task.getResult()) {
+                            Map<String, Object> user = q.getData();
+
+                            fetchExerciseResults(q,user, new CRUDCallbacks() {
+                                @Override
+                                public void onSucceed() {
+                                    emailCount++;
+                                    exerciseTime = 0;
+                                    exerciseInMeters = 0;
+                                    if(emailCount == group.getGroupOfUserEmails().size()){
+                                        secondCallback.onSucceed();
+                                        emailCount = 0;
+                                    }
+                                }
+                                @Override
+                                public void onFailure() {}
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Method attempts to fetch all exercises of particular user from the database
+     * @param queryDocumentSnapshot A user reference document from the database
+     * @param user The user information
+     * @param callbacks callbacks ensures that all the exercises has been retrieved
+     */
+    private void fetchExerciseResults(QueryDocumentSnapshot queryDocumentSnapshot, Map<String, Object> user, CRUDCallbacks callbacks) {
+        ArrayList<Double> exerciseResults = new ArrayList<>();
+        databaseInstance.collection("users/" + queryDocumentSnapshot.getId() + "/exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (handleTaskQS(task)) {
+                    for (QueryDocumentSnapshot queryRes : task.getResult()){
+                        LocalDateTime date = LocalDateTime.now();
+                        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        if(Objects.equals(queryRes.get("exerciseDate"), date.format(format))){
+                            exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get("exerciseTime"))));
+                            exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get("exerciseInMeters"))));
+                        }
+                    }
+                    //Index 0 = sum of exercise times
+                    exerciseResults.add(exerciseTime);
+                    //Index 1 = sum of exercise meters
+                    exerciseResults.add(exerciseInMeters);
+                    System.out.println("EXERLIST" + exerciseResults);
+                    groupResults.put((String) user.get("username"),exerciseResults);
+                    callbacks.onSucceed();
+                }
+            }
+        });
+    }
+
+    /**
+     * Method removes the user from the group by group owner email
+     * @param groupOwnerEmail The email of the group owner, obtained from the group page form
+     */
     @Override
     public void removeUserFromTheGroup(String groupOwnerEmail) {
-        DocumentReference docRef = db.collection("groups").document(groupOwnerEmail);
-        System.out.println("Controller: " + docRef.getId());
+        DocumentReference docRef = databaseInstance.collection("groups").document(groupOwnerEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        db.collection("users").whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        databaseInstance.collection("users").whereEqualTo("email", firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (handleTaskQS(task)) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        User currentUser = document.toObject(User.class);
-                                        docRef.update("group", FieldValue.arrayRemove(currentUser));
+                                        docRef.update("groupOfUserEmails", FieldValue.arrayRemove(userInstance.getEmail()));
                                     }
                                 }
                             }
@@ -429,30 +590,24 @@ public class DAO implements IDAO {
         });
     }
 
-    @Override
-    public Boolean getRegisterErrorCheck() {
-        return taskResult;
-    }
-
-    @Override
-    public void updateData() {
-
-    }
-
+    /**
+     * Method creates a new group and sets the group ID to be as the user's email
+     * @param group The group information
+     * @param callback callback ensures that the user has been removed from the group
+     */
     @Override
     public void createNewGroup(Group group, CRUDCallbacks callback) {
-        DocumentReference docRef = db.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getEmail()));
+        DocumentReference docRef = databaseInstance.collection("groups").document(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()));
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        System.out.println("Löytyy: " + document.getId());
                         callback.onFailure();
                     } else {
                         docRef.set(group, SetOptions.merge());
-                        callback.onSucceed(true);
+                        callback.onSucceed();
                     }
                 } else {
                     System.out.println("Err: " + task.getException());
@@ -461,35 +616,28 @@ public class DAO implements IDAO {
         });
     }
 
-    @Override
-    public FirebaseFirestore getDatabase() {
-        return db;
-    }
-
+    /**
+     * Method checks if a specific task has been completed
+     * @param task The task or action to be checked for completion
+     * @return boolean value
+     */
     public Boolean handleTaskQS(Task<QuerySnapshot> task) {
-        if (task.isSuccessful()){
-            return true;
-        }else{
-            return false;
-        }
+        return task.isSuccessful();
     }
+    /**
+     * Method checks if a specific task has been completed
+     * @param task The task or action to be checked for completion
+     * @return boolean value
+     */
     public Boolean handleTaskDS(Task<DocumentSnapshot> task) {
-        if (task.isSuccessful()){
-            return true;
-        }else{
-            return false;
-        }
+        return task.isSuccessful();
     }
+    /**
+     * Method checks if a specific task has been completed
+     * @param task The task or action to be checked for completion
+     * @return boolean value
+     */
     public Boolean handleTaskAuth(Task<AuthResult> task){
-        if(task.isSuccessful()){
-            return true;
-        }else{
-            return false;
-        }
+        return task.isSuccessful();
     }
-
-    @Override
-    public FirebaseAuth getUser() {
-        return auth;
     }
-}

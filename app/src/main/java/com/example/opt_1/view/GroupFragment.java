@@ -1,29 +1,108 @@
 package com.example.opt_1.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opt_1.R;
+import com.example.opt_1.control.Controller;
+import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.User;
 
-public class GroupFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Map;
 
-     FrameLayout usersection;
-    View v;
+public class GroupFragment extends AppCompatActivity {
+
+    FrameLayout usersection;
     LinearLayout groupUserList;
     LinearLayout.LayoutParams layoutParams;
-    public GroupFragment(){
-    }
+    LinearLayout userNameListForData;
+    Button leaveGroupBtn;
+
+    TextView groupSumResult,groupMeterSumResult;
+
+    Map groupResultsWithMembers;
+
+
+
+    private Controller controller;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_group_activity_test,container,false);
-        return v;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_groups);
+        controller = new Controller();
+        leaveGroupBtn = findViewById(R.id.leaveGroupButton);
+        groupUserList = findViewById(R.id.groupUsers);
+        userNameListForData = findViewById(R.id.groupUsers);
+        groupSumResult = findViewById(R.id.wholeGroupSumResult);
+        groupMeterSumResult = findViewById(R.id.wholeGroupSumResultMeter);
+
+        controller.fecthGroupResults(User.getInstance().getGroup(), new CRUDCallbacks() {
+            @Override
+            public void onSucceed() {
+                groupResultsWithMembers = controller.getGroupExericesforView();
+                activateMethods();
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+
+        leaveGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.leaveFromGroup(User.getInstance().getGroup());
+            }
+        });
+
+    }
+    private void activateMethods(){
+        int i = 0;
+        int sumTime = 0;
+        int sumMeter = 0;
+        for (Object set : groupResultsWithMembers.keySet()) {
+            View clonedUserSection = LayoutInflater.from(this).inflate(R.layout.usernameframe,null);
+            TextView userNameInList = clonedUserSection.findViewById(R.id.userNameNameInList);
+            TextView userSumResult = clonedUserSection.findViewById(R.id.sumResult);
+            TextView userSumResult2 = clonedUserSection.findViewById(R.id.sumResult2);
+            ArrayList<Double> resultKeyList = (ArrayList<Double>) groupResultsWithMembers.get(set);
+
+            //Timeresult
+            userSumResult.setText(resultKeyList.get(i).toString());
+            sumTime += resultKeyList.get(i);
+            i++;
+
+            //Metersresult
+            userSumResult2.setText(resultKeyList.get(i).toString());
+
+            sumMeter += resultKeyList.get(i);
+
+            userNameInList.setText(set.toString());
+
+            String time = "Group´s Total Time: " + sumTime;
+            String meter = "Group´s Total Meter´s: " + sumMeter;
+
+            groupSumResult.setText(time);
+            groupMeterSumResult.setText(meter);
+            userNameListForData.addView(clonedUserSection);
+
+            if (i == 1){
+                i = 0;
+            }
+        }
+
+
+
     }
 
 }

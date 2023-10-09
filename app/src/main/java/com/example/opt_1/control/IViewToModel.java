@@ -1,16 +1,15 @@
 package com.example.opt_1.control;
-
 import android.widget.TextView;
-
 import com.example.opt_1.view.ActivityFragment;
 import com.example.opt_1.model.CRUDCallbacks;
 
-
-public interface IViewtoModel {
-    void setLoginInformation(String emailInput,String password);
+/**
+ * ViewModel interface that declares all the necessary methods for data transfer between view and model via controller
+ */
+public interface IViewToModel {
     void userLogin(String email, String password, CRUDCallbacks callbacks);
     void startActivity(ActivityFragment fragment,TextView data,TextView timer);
-    void changeUsername(String newUsername);
+    void changeUsername(String newUsername, CRUDCallbacks callbacks);
     void changePassword(String oldPassword, String newPassword);
     void removeUser();
     void stopActivity();
@@ -19,4 +18,5 @@ public interface IViewtoModel {
     void joinToGroup(String groupOwnerEmail);
     void leaveFromGroup(String groupOwnerEmail);
     double caclulatePace(double activityLength);
+    void fecthGroupResults(String groupOwnerEmail,CRUDCallbacks callbacks);
 }
