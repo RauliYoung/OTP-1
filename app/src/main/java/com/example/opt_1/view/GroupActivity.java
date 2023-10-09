@@ -46,7 +46,7 @@ public class GroupActivity extends Fragment {
         //Set button references
         addGroupBtn = view.findViewById(R.id.addGroupButton);
         joinGroupBtn = view.findViewById(R.id.joinGroupButton);
-        leaveGroupBtn = view.findViewById(R.id.leaveGroupButton2);
+        leaveGroupBtn = view.findViewById(R.id.leaveGroupButton);
         //Set input references
         groupNameInput = view.findViewById(R.id.groupNameInput);
         groupNameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -96,6 +96,14 @@ public class GroupActivity extends Fragment {
                 controller.joinToGroup(groupOwnerEmail);
                 Intent intent = new Intent(getActivity(), GroupFragment.class);
                 startActivity(intent);
+            }
+        });
+
+        leaveGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String groupOwnerEmail = groupNameInput.getText().toString();
+                controller.leaveFromGroup(groupOwnerEmail);
             }
         });
         return view;
