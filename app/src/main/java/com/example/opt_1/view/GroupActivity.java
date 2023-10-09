@@ -16,6 +16,7 @@ import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.model.CRUDCallbacks;
 import com.example.opt_1.model.User;
+import com.example.opt_1.model.CRUDCallbacks;
 
 
 public class GroupActivity extends Fragment {
@@ -41,10 +42,11 @@ public class GroupActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_group_activity_test, container, false);
+        userInstance = User.getInstance();
         //Set button references
         addGroupBtn = view.findViewById(R.id.addGroupButton);
         joinGroupBtn = view.findViewById(R.id.joinGroupButton);
-        leaveGroupBtn = view.findViewById(R.id.leaveGroupButton2);
+        leaveGroupBtn = view.findViewById(R.id.leaveGroupButton);
         //Set input references
         groupNameInput = view.findViewById(R.id.groupNameInput);
         groupNameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -84,7 +86,6 @@ public class GroupActivity extends Fragment {
 
                 }
             });
-            System.out.println("User in group: " + userInstance.isUserInGroup());
         }
 
 
@@ -95,6 +96,14 @@ public class GroupActivity extends Fragment {
                 controller.joinToGroup(groupOwnerEmail);
                 Intent intent = new Intent(getActivity(), GroupFragment.class);
                 startActivity(intent);
+            }
+        });
+
+        leaveGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String groupOwnerEmail = groupNameInput.getText().toString();
+                controller.leaveFromGroup(groupOwnerEmail);
             }
         });
         return view;
