@@ -213,6 +213,7 @@ public class Controller implements IModeltoView, IViewToModel {
      */
     @Override
     public void fecthGroupResults(String groupOwnerEmail,CRUDCallbacks callbacks) {
+        System.out.println("Fetch group results controller: " + groupOwnerEmail);
         database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {
             @Override
             public void onSucceed() {

@@ -86,7 +86,6 @@ public class GroupActivity extends Fragment {
 
                 }
             });
-            System.out.println("User in group: " + userInstance.isUserInGroup());
         }
 
 
