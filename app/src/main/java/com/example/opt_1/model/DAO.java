@@ -468,20 +468,26 @@ public class DAO implements IDAO {
                 if(handleTaskDS(task)){
                     DocumentSnapshot document = task.getResult();
                     Group group = document.toObject(Group.class);
-                    if(group.getGroupOfUserEmails() != null){
-                         fetchGroupParticipants(group, new CRUDCallbacks() {
-                             @Override
-                             public void onSucceed() {
-                                 System.out.println("Testi: " + groupResults);
-                                 controllerCallback.onSucceed();
-                             }
+                    try{
+                        if(group.getGroupOfUserEmails() != null){
+                            fetchGroupParticipants(group, new CRUDCallbacks() {
+                                @Override
+                                public void onSucceed() {
+                                    System.out.println("Testi: " + groupResults);
+                                    controllerCallback.onSucceed();
+                                }
 
-                             @Override
-                             public void onFailure() {
+                                @Override
+                                public void onFailure() {
 
-                             }
-                         });
+                                }
+                            });
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
+
                 }
             }
         });
