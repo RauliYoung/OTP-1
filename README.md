@@ -1,4 +1,12 @@
-# OTP-1 Health&Fitness application
+# Lenkkifrendi
+---
+### Käyttöönotto
+
+- Kloona repositorio koneellesi, asenna myös Android Studio.
+- Android studiossa Build > Build Bundle /APK > Build APK
+- Saat .apk päätteisen tiedoston jonka voit viedä android puhelimellesi.
+- Vaihtoehtoisesti voit myös ajaa sovellusta Android Studion emulaattorissa, Huomion arvoista on että GPS paikannus ei toimi emulaattorilla.
+---
 ## Projektin  tavoite
 
 Projektin  päämääränä on tuottaa  yksinkertainen ja helppokäyttöinen  liikuntaa  tukeva  Android-mobiilisovellus  matkapuhelimelle.  Sovelluksella  käyttäjä  voi  tallentaa ja  tarkkailla  omien  liikuntasuoritteiden  kestoa ja pituutta, sekä  perustaa  liikuntaryhmiä, johon  voidaan  kutsua  myös  ystävät ja harrastusporukat  mukaan.
@@ -156,6 +164,8 @@ Jos sovelluksesta  ei  saada  tarpeeksi  hyvää  kilpailijoihin  verrattaen  m�
 
 ### Luokkakaavio
 
+Luokkaaviolla kuvataan ohjelman koostuminen luokista.
+
 ![img_1.png](img_1.png)
 
 ![img_2.png](img_2.png)
@@ -182,6 +192,8 @@ Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain
 ---
 ### Aktiviteettikaavio
 
+Aktiviteettikaavio mallintaa järjestelmän dynaamista käyttäytymista, eli tarkka suorituspolku selviää mahdollisesti vasta suorituksen aikana.
+
 ![img_6.png](img_6.png)
 
 ---
@@ -193,5 +205,7 @@ Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain
 ---
 
 ### Sijoittelukaavio
+
+Sijoittelukaavio kuvantaa laitteistoa jolla järjestelmän on tarkoitus toimia. Kaavio osoittaa riippuvuudet ja tiedonsiirto tarpeet eri laitteiden välillä.
 
 ![img_8.png](img_8.png)
