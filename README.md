@@ -217,7 +217,7 @@ Sijoittelukaavio kuvantaa laitteistoa jolla järjestelmän on tarkoitus toimia. 
 ### Lopuksi
 
 Projektin tarkoituksena oli oppia projektin hallintaa, jokainen sai vuorollansa olla scrum master, eli nk. projektin johtaja.
-Vaikka yhdelläkään sprintillä ei saatu aivan kaikkia tehtäviä tehdyksi, mitkä oli sovittuu, ryhmässä vallitsi konsensus siitä, että tuote valmistui määräajassa vastaamaan odotuksia.
+Vaikka yhdelläkään sprintillä ei saatu aivan kaikkia tehtäviä tehdyksi, mitkä oli sovittu, mutta ne valmistuivat myöhemmissä sprinteissä. Ryhmässä vallitsi konsensus siitä, että tuote valmistui määräajassa vastaamaan odotuksia.
 Projektin tärkeimmät opit olivat varmasti:
 
 - Kommunikoinnin tärkeys.
