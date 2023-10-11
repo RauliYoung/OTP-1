@@ -213,3 +213,17 @@ Vuorovaikutuksia ovat mm. syötteet ja tulosteet mitä ohjelmaa saa ja tarjoaa.
 Sijoittelukaavio kuvantaa laitteistoa jolla järjestelmän on tarkoitus toimia. Kaavio osoittaa riippuvuudet ja tiedonsiirto tarpeet eri laitteiden välillä.
 
 ![img_8.png](img_8.png)
+---
+### Lopuksi
+
+Projektin tarkoituksena oli oppia projektin hallintaa, jokainen sai vuorollansa olla scrum master, eli nk. projektin johtaja.
+Vaikka yhdelläkään sprintillä ei saatu aivan kaikkia tehtäviä tehdyksi, mitkä oli sovittuu, ryhmässä vallitsi konsensus siitä, että tuote valmistui määräajassa vastaamaan odotuksia.
+Projektin tärkeimmät opit olivat varmasti:
+
+- Kommunikoinnin tärkeys.
+- Vaatimusten ja työtaakan asettaminen järkeväksi käytettävissä oleviin resursseihin katsoen.
+- Työn jakaminen.
+- Oikeiden teknologioiden valitseminen.
+- Työtehtävien pilkkominen pieniksi kokonaisuuksiksi.
+
+Lenkkifrendi tarjoaa perusominaisuudet joita Product owner meiltä toivoi, tuote ei toki ole valmis, mutta tästä on hyvä lähteä jatkokehittämään.
