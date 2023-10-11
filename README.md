@@ -200,6 +200,10 @@ Aktiviteettikaavio mallintaa järjestelmän dynaamista käyttäytymista, eli tar
 
 ### Käyttötapauskaavio
 
+Käyttötapauskaavio mallintaa sovelluksen vuorovaikutusta ympäristön kanssa.
+
+Vuorovaikutuksia ovat mm. syötteet ja tulosteet mitä ohjelmaa saa ja tarjoaa.
+
 ![img_7.png](img_7.png)
 
 ---
