@@ -1,4 +1,4 @@
-# Lenkkifrendi
+![lenkkifrendi.png](..%2F..%2FDownloads%2Flenkkifrendi.png)
 ---
 ### Käyttöönotto
 
