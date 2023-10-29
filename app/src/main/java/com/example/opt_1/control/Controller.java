@@ -97,7 +97,6 @@ public class Controller implements IModeltoView, IViewToModel {
     @Override
     public synchronized void stopActivity() {
         locationTracker.setActive(false);
-        database.addNewExerciseToDatabase(new Exercise(160,150,5.4));
         if(activityTimer != null) {
             activityTimer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();
@@ -107,6 +106,7 @@ public class Controller implements IModeltoView, IViewToModel {
             double distance = locationTracker.getTravelledDistance();
             textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
         }
+        database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));
         System.out.println("Activity Stopping!");
     }
 
@@ -114,6 +114,12 @@ public class Controller implements IModeltoView, IViewToModel {
     public void getTravelledDistanceModel() {
         textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
         //timer.setText(String.valueOf());
+    }
+
+    @Override
+    public Map<String, ArrayList<Double>> getGroupExericesforView() {
+        System.out.println(groupExercises +" TÄSSÄ OLLAAAN LISTA");
+        return groupExercises;
     }
 
     /**
@@ -125,11 +131,6 @@ public class Controller implements IModeltoView, IViewToModel {
      * @param email The email provided in register page form
      * @param callback Used for verifying that a new user has been created
      */
-    @Override
-    public Map<String, ArrayList<Double>> getGroupExericesforView() {
-        System.out.println(groupExercises +" TÄSSÄ OLLAAAN LISTA");
-        return groupExercises;
-    }
 
     @Override
     public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
@@ -212,6 +213,7 @@ public class Controller implements IModeltoView, IViewToModel {
      */
     @Override
     public void fecthGroupResults(String groupOwnerEmail,CRUDCallbacks callbacks) {
+        System.out.println("Fetch group results controller: " + groupOwnerEmail);
         database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {
             @Override
             public void onSucceed() {

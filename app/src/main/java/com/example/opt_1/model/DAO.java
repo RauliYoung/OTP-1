@@ -553,6 +553,7 @@ public class DAO implements IDAO {
                     exerciseResults.add(exerciseTime);
                     //Index 1 = sum of exercise meters
                     exerciseResults.add(exerciseInMeters);
+                    System.out.println("EXERLIST" + exerciseResults);
                     groupResults.put((String) user.get("username"),exerciseResults);
                     callbacks.onSucceed();
                 }
