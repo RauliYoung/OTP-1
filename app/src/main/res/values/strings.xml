@@ -53,8 +53,20 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="firstname">FirstName</string>
-    <string name="start_activity">Start Activity</string>
-    <string name="datahere"></string>
+    <string name="exercise_data"></string>
     <string name="username">UserName</string>
     <string name="timer">Timer</string>
+    <string name="delete_user">Delete User</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_username">New Username</string>
+    <string name="change_username">Change Username</string>
+    <string name="groups">Groups</string>
+    <string name="home">Home</string>
+    <string name="create_group">Create A Group</string>
+    <string name="join_group">Join Group</string>
+    <string name="leave_group">Leave Group</string>
+    <string name="start_activity">Start Activity</string>
+    <string name="stop_activity">Stop Activity</string>
 </resources>

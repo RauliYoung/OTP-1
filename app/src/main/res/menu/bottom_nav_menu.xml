@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Groups"
+    <item android:title="@string/groups"
         android:icon="@drawable/ic_launcher_background"
         android:id="@+id/groups"/>
-    <item android:title="Home"
+    <item android:title="@string/home"
         android:icon="@drawable/ic_launcher_background"
         android:id="@+id/home"/>
-    <item android:title="Activity"
+    <item android:title="@string/activity"
         android:icon="@drawable/ic_launcher_background"
         android:id="@+id/activity"/>
 

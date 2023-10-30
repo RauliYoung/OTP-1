@@ -32,7 +32,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="120dp"
             android:layout_marginBottom="5dp"
-            android:text="create a group" />
+            android:text="@string/create_group" />
 
         <Button
             android:id="@+id/joinGroupButton"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="120dp"
             android:layout_marginRight="120dp"
-            android:text="join group" />
+            android:text="@string/join_group" />
 
         <Button
             android:id="@+id/leaveGroupButton"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="120dp"
             android:layout_marginRight="120dp"
-            android:text="leave group" />
+            android:text="@string/leave_group" />
 
         <ScrollView
             android:id="@+id/GroupList"
