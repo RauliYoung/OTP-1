@@ -15,7 +15,6 @@
     <string name="logout">LogOut</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="firstname">FirstName</string>
     <string name="exercise_data"></string>
     <string name="username">UserName</string>
     <string name="timer">Timer</string>
@@ -32,4 +31,6 @@
     <string name="leave_group">Leave Group</string>
     <string name="start_activity">Start Activity</string>
     <string name="stop_activity">Stop Activity</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>

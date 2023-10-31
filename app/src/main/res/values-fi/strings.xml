@@ -16,7 +16,6 @@
     <string name="logout">Kirjaudu Ulos</string>
     <string name="email">Sähköposti</string>
     <string name="password">Salasana</string>
-    <string name="firstname">Etunimi</string>
     <string name="exercise_data"></string>
     <string name="username">Käyttäjätunnus</string>
     <string name="timer">Timer</string>
@@ -33,4 +32,6 @@
     <string name="leave_group">Poistu Ryhmästä</string>
     <string name="start_activity">Aloita Aktiviteetti</string>
     <string name="stop_activity">Lopeta Aktiviteetti</string>
+    <string name="first_name">Etunimi</string>
+    <string name="last_name">Sukunimi</string>
 </resources>
