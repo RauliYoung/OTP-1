@@ -484,7 +484,7 @@ public class DAO implements IDAO {
                             });
                         }
 
-                    }catch (NullPointerException e){
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
 

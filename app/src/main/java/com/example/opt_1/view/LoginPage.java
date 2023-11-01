@@ -1,8 +1,10 @@
 package com.example.opt_1.view;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;

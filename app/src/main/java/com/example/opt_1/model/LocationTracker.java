@@ -34,7 +34,7 @@ public class LocationTracker extends Thread implements ILocationTracker {
     private Controller controller;
     private LocationListener mLocationListener;
     private ActivityFragment fragmentfor;
-    private double travelledDistance;
+    private static double travelledDistance;
     private ArrayList<Location> locations = new ArrayList<>();
 
 
@@ -51,7 +51,7 @@ public class LocationTracker extends Thread implements ILocationTracker {
             if (locations.size() >= 2){
                 calculateDistance(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude(), locations.get(locations.size()-2).getLatitude(), locations.get(locations.size()-2).getLongitude());
             }
-
+            controller.getTravelledDistanceModel();
         }
     };
 
@@ -167,20 +167,11 @@ public class LocationTracker extends Thread implements ILocationTracker {
     }
 
     /*
-    * updateDistance is for sending the updated distance to controller to be shown in view as travelled distance.
-    * */
-    private void updateDistance(){
-        controller.getTravelledDistanceModel();
-    }
-
-
-
-    /*
     * calculateDistance-method calculates distance between two locations using Haversine-formula.
     * It takes in latitude and longitude values as parameters from the two locations it calculates the distance between,
     * and returns the difference as double.
     * */
-    double calculateDistance(double lat1, double lon1,
+    static double calculateDistance(double lat1, double lon1,
                             double lat2, double lon2)
     {
 
@@ -198,9 +189,6 @@ public class LocationTracker extends Thread implements ILocationTracker {
         double c = 2 * Math.asin(Math.sqrt(a));
 
         travelledDistance += rad * c;
-
-        updateDistance();
-
         return travelledDistance;
     }
 }
