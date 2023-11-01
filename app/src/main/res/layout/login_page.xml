@@ -26,8 +26,7 @@
                 android:id="@+id/loginUserNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:text="testi@testi.fi"/>
+                android:hint="@string/email" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -42,8 +41,7 @@
                 android:id="@+id/loginPasswordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:text="testi123"/>
+                android:hint="@string/password" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
