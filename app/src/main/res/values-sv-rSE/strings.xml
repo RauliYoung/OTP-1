@@ -18,6 +18,9 @@
     <string name="exercise_data">Träningsdata</string>
     <string name="username">Användarnamn</string>
     <string name="timer">Timer</string>
+    <string name="exercise_speed">The speed was %.1f km/h.</string>
+    <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
+    <string name="exercise_length">Length of your exercise was %.1f meters.</string>
     <string name="delete_user">Ta bort användare</string>
     <string name="current_password">Nuvarande lösenord</string>
     <string name="new_password">Nytt lösenord</string>

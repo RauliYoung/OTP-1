@@ -25,7 +25,18 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/activity_datatext"
+        android:id="@+id/activity_data_duration"
+        android:layout_width="351dp"
+        android:layout_height="69dp"
+        android:text="@string/exercise_duration"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_timer" />
+
+    <TextView
+        android:id="@+id/activity_data_speed"
         android:layout_width="289dp"
         android:layout_height="165dp"
         android:layout_marginTop="300dp"
@@ -50,9 +61,25 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/activity_StartActivityButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.311">
+        app:layout_constraintTop_toBottomOf="@+id/activity_data_duration"
+        app:layout_constraintVertical_bias="0.184">
 
+    </TextView>
+
+    <TextView
+        android:id="@+id/activity_data_length"
+        android:layout_width="353dp"
+        android:layout_height="73dp"
+        android:text="@string/exercise_length"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_StartActivityButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_data_speed"
+        app:layout_constraintVertical_bias="0.311">
     </TextView>
 
     <Button
