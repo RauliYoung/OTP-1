@@ -30,6 +30,7 @@ public class LoginPageUITest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        closeSoftKeyboard();
         onView(withId(R.id.loginButton)).perform(click());
         try {
             Thread.sleep(3000);
