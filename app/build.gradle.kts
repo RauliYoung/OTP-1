@@ -55,7 +55,6 @@ dependencies {
     implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("androidx.test:monitor:1.6.1")
-    androidTestImplementation("androidx.test:runner:1.4.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation ("org.mockito:mockito-core:5.6.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
