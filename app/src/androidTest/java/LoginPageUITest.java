@@ -6,6 +6,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import android.util.Log;
+
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -26,21 +28,22 @@ public class LoginPageUITest {
     public ActivityScenarioRule<LoginPage> mActivityRule = new ActivityScenarioRule<>(LoginPage.class);
     @Test
     public void testLoginButton() {
-        onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi")).check(matches(isDisplayed()));
-        onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard()).check(matches(isDisplayed()));
-
         try {
             Thread.sleep(3000);
+            onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi")).check(matches(isDisplayed()));
+            Thread.sleep(2000);
+            onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard() ).check(matches(isDisplayed()));
+            Thread.sleep(2000);
+            closeSoftKeyboard();
+            Thread.sleep(2000);
+            onView(withId(R.id.loginButton)).perform(click()).check(matches(isDisplayed()));
+            Log.d("BUTTON CLICKED", "Button has been clicked!");
+            Thread.sleep(2000);
+            onView(withId(R.id.oldPasswordInputField)).check(matches(isDisplayed()));
+            Log.d("DONE", "All tests are done!");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        closeSoftKeyboard();
-        onView(withId(R.id.loginButton)).perform(click()).check(matches(isDisplayed()));
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        onView(withId(R.id.oldPasswordInputField)).check(matches(isDisplayed()));
+
     }
 }
