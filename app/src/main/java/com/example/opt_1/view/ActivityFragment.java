@@ -33,7 +33,7 @@ public class ActivityFragment extends Fragment {
     ActivityFragment fragment;
     private FrameLayout activityDataLayout;
     private LinearLayout activityDataHistoryScrollView;
-    private TextView dataText;
+    private TextView dataText_duration, dataText_speed, dataText_length;
     private ArrayList<Button> activityHistoryButtonList = new ArrayList<>();
 
     public ActivityFragment() {
@@ -49,7 +49,12 @@ public class ActivityFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_activity, container, false);
         activityButton = (Button) v.findViewById(R.id.activity_StartActivityButton);
         stopActivityButton = (Button) v.findViewById(R.id.activity_StopActivityButton);
-        dataText = v.findViewById(R.id.activity_datatext);
+        dataText_duration = v.findViewById(R.id.activity_data_duration);
+        dataText_speed = v.findViewById(R.id.activity_data_speed);
+        dataText_length = v.findViewById(R.id.activity_data_length);
+        dataText_duration.setVisibility(View.INVISIBLE);
+        dataText_speed.setVisibility(View.INVISIBLE);
+        dataText_length.setVisibility(View.INVISIBLE);
         activityDataLayout = v.findViewById(R.id.ActivityDataFrame);
         activityDataHistoryScrollView = v.findViewById(R.id.ActivityListForData);
         timer = v.findViewById(R.id.activity_timer);
@@ -96,7 +101,10 @@ public class ActivityFragment extends Fragment {
 
                 try {
                     if (fragment != null) {
-                        controller.startActivity(fragment, dataText, timer);
+                        dataText_duration.setVisibility(View.INVISIBLE);
+                        dataText_speed.setVisibility(View.INVISIBLE);
+                        dataText_length.setVisibility(View.INVISIBLE);
+                        controller.startActivity(fragment, dataText_duration, timer);
 
                     }
                 } catch (Exception e) {
@@ -108,7 +116,27 @@ public class ActivityFragment extends Fragment {
         stopActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.stopActivity();
+                String durationText = dataText_duration.getText().toString();
+                String speedText = dataText_speed.getText().toString();
+                String lengthText = dataText_length.getText().toString();
+
+                Map<String,Double> results = controller.stopActivity();
+
+                String duration = String.format(durationText,
+                        results.get("duration"));
+                dataText_duration.setText(duration);
+
+                String speed = String.format(speedText,
+                        results.get("speed"));
+                dataText_speed.setText(speed);
+
+                String length = String.format(lengthText,
+                        results.get("length"));
+                dataText_length.setText(length);
+
+                dataText_duration.setVisibility(View.VISIBLE);
+                dataText_speed.setVisibility(View.VISIBLE);
+                dataText_length.setVisibility(View.VISIBLE);
             }
         });
 

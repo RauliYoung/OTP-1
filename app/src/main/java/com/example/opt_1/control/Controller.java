@@ -95,19 +95,24 @@ public class Controller implements IModeltoView, IViewToModel {
     }
 
     @Override
-    public synchronized void stopActivity() {
+    public Map<String,Double> stopActivity() {
+        Map<String,Double> results = new HashMap<>();
         locationTracker.setActive(false);
         if(activityTimer != null) {
             activityTimer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();
-            int seconds = (int) elapsedMillis / 1000;
-            this.activityLength = seconds;
-            activityTimer.setBase(SystemClock.elapsedRealtime());
+            double seconds = (int) elapsedMillis / 1000;
+            this.activityLength = (int) seconds;
             double distance = locationTracker.getTravelledDistance();
-            textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
+            results.put("duration",seconds);
+            results.put("speed", caclulatePace(this.activityLength));
+            results.put("length", locationTracker.getTravelledDistance());
+            activityTimer.setBase(SystemClock.elapsedRealtime());
+            //textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
         }
         database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));
         System.out.println("Activity Stopping!");
+        return results;
     }
 
     @Override

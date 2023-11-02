@@ -34,4 +34,7 @@
     <string name="stop_activity">توقف فعالیت</string>
     <string name="first_name">نام</string>
     <string name="last_name">نام خانوادگی</string>
+    <string name="exercise_speed">سرعت f1.% کیلومتر در ساعت بود.</string>
+    <string name="exercise_duration">فعالیت شما %.1f ثانیه طول کشید.</string>
+    <string name="exercise_length">طول تمرین شما f1.% متر بود.</string>
 </resources>

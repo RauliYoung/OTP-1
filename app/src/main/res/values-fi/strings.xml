@@ -34,4 +34,7 @@
     <string name="stop_activity">Lopeta Aktiviteetti</string>
     <string name="first_name">Etunimi</string>
     <string name="last_name">Sukunimi</string>
+    <string name="exercise_speed">Keskivauhti %.1f km/h.</string>
+    <string name="exercise_duration">Kesto %.1f sekunttia.</string>
+    <string name="exercise_length">Kuljit %.1f metriä.</string>
 </resources>
