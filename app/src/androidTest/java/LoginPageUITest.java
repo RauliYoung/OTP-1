@@ -25,9 +25,14 @@ public class LoginPageUITest {
     public void testLoginButton() {
         onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi"));
         onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard());
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.loginButton)).perform(click());
         try {
-            Thread.sleep(3000); // 2 seconds delay
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
