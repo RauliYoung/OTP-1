@@ -23,8 +23,11 @@ public class LoginPageUITest {
 
     @Test
     public void testLoginButton() {
+        onView(withId(R.id.loginUserNameInput)).check(matches(isDisplayed())).perform(click());
         onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi"));
+        onView(withId(R.id.loginPasswordInput)).check(matches(isDisplayed())).perform(click());
         onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard());
+
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -33,7 +36,7 @@ public class LoginPageUITest {
         closeSoftKeyboard();
         onView(withId(R.id.loginButton)).perform(click());
         try {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
