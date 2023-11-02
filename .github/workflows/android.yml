@@ -49,4 +49,5 @@ jobs:
           script: |
              pwd
              ls -a
+             emulator -avd test -memory 4096 -cores 4 -gpu swiftshader_indirect -no-audio -no-boot-anim -no-snapshot-save &
              ./gradlew connectedCheck
