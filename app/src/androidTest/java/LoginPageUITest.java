@@ -6,11 +6,15 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.opt_1.R;
 import com.example.opt_1.view.LoginPage;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +24,10 @@ public class LoginPageUITest {
 
     @Rule
     public ActivityScenarioRule<LoginPage> mActivityRule = new ActivityScenarioRule<>(LoginPage.class);
-
     @Test
     public void testLoginButton() {
-        onView(withId(R.id.loginUserNameInput)).check(matches(isDisplayed())).perform(click());
-        onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi"));
-        onView(withId(R.id.loginPasswordInput)).check(matches(isDisplayed())).perform(click());
-        onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard());
+        onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi")).check(matches(isDisplayed()));
+        onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard()).check(matches(isDisplayed()));
 
         try {
             Thread.sleep(3000);
@@ -34,7 +35,7 @@ public class LoginPageUITest {
             e.printStackTrace();
         }
         closeSoftKeyboard();
-        onView(withId(R.id.loginButton)).perform(click());
+        onView(withId(R.id.loginButton)).perform(click()).check(matches(isDisplayed()));
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
