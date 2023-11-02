@@ -49,4 +49,7 @@ jobs:
           script: |
              pwd
              ls -a
+             emulator -avd ${{ runner.os }}-30 -no-window -no-audio &
+             android-wait-for-emulator
+             ./gradlew assembleDebug
              ./gradlew connectedCheck
