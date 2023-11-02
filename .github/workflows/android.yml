@@ -49,6 +49,7 @@ jobs:
           script: |
              pwd
              ls -a
+             $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
              emulator -avd ${{ runner.os }}-30 -no-window -no-audio &
              ./gradlew assembleDebug
              ./gradlew connectedCheck
