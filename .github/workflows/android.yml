@@ -49,4 +49,6 @@ jobs:
           script: |
              pwd
              ls -a
+             ./gradlew assembleDebug
+             ./gradlew connectedDebugAndroidTest
              ./gradlew connectedCheck
