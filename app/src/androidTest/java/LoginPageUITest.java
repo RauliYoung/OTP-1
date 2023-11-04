@@ -3,8 +3,12 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.CoreMatchers.allOf;
 
 import android.util.Log;
 
@@ -30,15 +34,15 @@ public class LoginPageUITest {
     public void testLoginButton() {
         try {
             Thread.sleep(3000);
-            onView(withId(R.id.loginUserNameInput)).perform(typeText("testi@testi.fi")).check(matches(isDisplayed()));
+            onView(allOf(isDisplayed(), withId(R.id.loginUserNameInput), isClickable())).perform(typeText("testi@testi.fi")).check(matches(isDisplayed()));
             Thread.sleep(2000);
-            onView(withId(R.id.loginPasswordInput)).perform(typeText("testi123"),closeSoftKeyboard() ).check(matches(isDisplayed()));
+            onView(allOf(isDisplayed(), withId(R.id.loginPasswordInput), isClickable())).perform(typeText("testi123"),closeSoftKeyboard() ).check(matches(isDisplayed()));
             Thread.sleep(2000);
             closeSoftKeyboard();
             Thread.sleep(2000);
             onView(withId(R.id.loginButton)).perform(click()).check(matches(isDisplayed()));
             Log.d("BUTTON CLICKED", "Button has been clicked!");
-            Thread.sleep(2000);
+            Thread.sleep(5000);
             onView(withId(R.id.oldPasswordInputField)).check(matches(isDisplayed()));
             Log.d("DONE", "All tests are done!");
         } catch (InterruptedException e) {
