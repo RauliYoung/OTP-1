@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:backgroundTint="#FFFFFF"
+    android:background="@drawable/gradient2"
     tools:context=".view.Main_Page">
 
     <ScrollView
         android:id="@+id/ActivityDataHistoryList"
         android:layout_width="409dp"
         android:layout_height="143dp"
+        android:background="#A1FCF7E0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/ActivityListForData"
@@ -28,6 +28,7 @@
         android:layout_width="289dp"
         android:layout_height="165dp"
         android:layout_marginTop="300dp"
+        android:background="@drawable/cornerround"
         android:text="@string/exercise_data"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -41,6 +42,7 @@
         android:layout_width="245dp"
         android:layout_height="44dp"
         android:layout_marginBottom="32dp"
+        android:backgroundTint="#5C5669"
         android:text="@string/start_activity"
         app:layout_constraintBottom_toTopOf="@+id/activity_StopActivityButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +54,7 @@
         android:layout_width="246dp"
         android:layout_height="39dp"
         android:layout_marginBottom="64dp"
+        android:backgroundTint="#5D576B"
         android:text="@string/stop_activity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
