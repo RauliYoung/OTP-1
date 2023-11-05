@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBF9F9"
-    android:backgroundTint="#FFFFFF"
-    tools:context=".view.Main_Page" >
+    android:background="@drawable/gradient2"
+    tools:context=".view.Main_Page">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -29,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
+        android:backgroundTint="#5D576B"
         android:text="Leave group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
