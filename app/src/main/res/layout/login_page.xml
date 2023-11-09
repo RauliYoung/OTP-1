@@ -8,6 +8,15 @@
     android:fitsSystemWindows="true"
     tools:context=".view.LoginPage">
 
+    <Spinner
+        android:id="@+id/languageSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/cornerround" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"

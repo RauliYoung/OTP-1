@@ -1,4 +1,14 @@
 <resources>
+
+    <string-array name="languages_array">
+        <item>English</item>
+        <item>Estonia</item>
+        <item>Swedish</item>
+        <item>Suomi</item>
+        <item>Persian</item>
+        <!-- Add more languages as needed -->
+    </string-array>
+
     <string name="app_name">OPT-1</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
