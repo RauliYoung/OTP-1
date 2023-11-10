@@ -33,7 +33,7 @@ public class ActivityFragment extends Fragment {
     ActivityFragment fragment;
     private FrameLayout activityDataLayout;
     private LinearLayout activityDataHistoryScrollView;
-    private TextView dataText_duration, dataText_speed, dataText_length;
+    private TextView dataText_duration, dataText_speed, dataText_length, distance_travelled;
     private ArrayList<Button> activityHistoryButtonList = new ArrayList<>();
 
     public ActivityFragment() {
@@ -53,6 +53,8 @@ public class ActivityFragment extends Fragment {
         dataText_duration = v.findViewById(R.id.activity_data_duration);
         dataText_speed = v.findViewById(R.id.activity_data_speed);
         dataText_length = v.findViewById(R.id.activity_data_length);
+        distance_travelled = v.findViewById(R.id.distance_travelled);
+        distance_travelled.setVisibility(View.INVISIBLE);
         dataText_duration.setVisibility(View.INVISIBLE);
         dataText_speed.setVisibility(View.INVISIBLE);
         dataText_length.setVisibility(View.INVISIBLE);
@@ -107,10 +109,12 @@ public class ActivityFragment extends Fragment {
 
                 try {
                     if (fragment != null) {
+                        distance_travelled.setVisibility(View.VISIBLE);
                         dataText_duration.setVisibility(View.INVISIBLE);
                         dataText_speed.setVisibility(View.INVISIBLE);
                         dataText_length.setVisibility(View.INVISIBLE);
                         controller.startActivity(fragment, timer);
+
 
                     }
                 } catch (Exception e) {
@@ -122,6 +126,7 @@ public class ActivityFragment extends Fragment {
         stopActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                distance_travelled.setVisibility(View.INVISIBLE);
                 Map<String,Double> results = controller.stopActivity();
                 System.out.println("Dur results: " + results.get("duration"));
 

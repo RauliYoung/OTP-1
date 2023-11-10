@@ -36,4 +36,5 @@
     <string name="exercise_speed">سرعت f1.% کیلومتر در ساعت بود.</string>
     <string name="exercise_duration">عملیات شما f1.% ثانیه طول کشید.</string>
     <string name="exercise_length">طول تمرین f1.% متر بود.</string>
+    <string name="distance_travelled">Distance travelled: %.f1 meters</string>
 </resources>

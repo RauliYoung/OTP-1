@@ -110,4 +110,16 @@
         app:layout_constraintTop_toTopOf="@+id/ActivityDataHistoryList"
         app:layout_constraintVertical_bias="0.243" />
 
+    <TextView
+        android:id="@+id/distance_travelled"
+        android:layout_width="349dp"
+        android:layout_height="45dp"
+        android:text="@string/distance_travelled"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.349" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
