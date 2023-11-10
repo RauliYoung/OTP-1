@@ -32,6 +32,7 @@
     <string name="stop_activity">Sluta aktivitet</string>
     <string name="first_name">Förnamn</string>
     <string name="last_name">Efternamn</string>
+    <!-- TODO translate these strings-->
     <string name="exercise_speed">The speed was %.1f km/h.</string>
     <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
     <string name="exercise_length">Length of your exercise was %.1f meters.</string>
