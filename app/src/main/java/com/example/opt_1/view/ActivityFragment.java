@@ -16,13 +16,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.opt_1.R;
 import com.example.opt_1.control.Controller;
+import com.example.opt_1.model.LocationTracker;
 import com.example.opt_1.model.User;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ActivityFragment extends Fragment {
+public class ActivityFragment extends Fragment implements Observer {
 
+    private static final DecimalFormat decfor = new DecimalFormat("0.0");
     private static final int REQUEST_LOCATION = 1;
     private Controller controller;
     private ArrayList<Map<String,Object>> activityHistory;
@@ -41,7 +46,7 @@ public class ActivityFragment extends Fragment {
     }
 
     private TextView timer;
-    private String durationText, speedText, lengthText;
+    private String durationText, speedText, lengthText, travelledDistanceText;
 
 
     @Override
@@ -65,6 +70,7 @@ public class ActivityFragment extends Fragment {
         durationText = dataText_duration.getText().toString();
         speedText = dataText_speed.getText().toString();
         lengthText = dataText_length.getText().toString();
+        travelledDistanceText = distance_travelled.getText().toString();
 
 
         fragment = this;
@@ -149,5 +155,16 @@ public class ActivityFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void update(Observable observable, Object arg) {
+        if (observable instanceof LocationTracker) {
+            System.out.println("Distance from object: " + arg);
+            String distance = String.format(travelledDistanceText,
+                    arg);
+            distance_travelled.setText(distance);
+        }
+
     }
 }

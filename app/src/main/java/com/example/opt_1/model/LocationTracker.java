@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.view.ActivityFragment;
+import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -24,8 +25,9 @@ import com.google.android.gms.tasks.Task;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class LocationTracker extends Thread implements ILocationTracker {
+public class LocationTracker extends Observable implements ILocationTracker {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -51,12 +53,14 @@ public class LocationTracker extends Thread implements ILocationTracker {
             if (locations.size() >= 2){
                 calculateDistance(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude(), locations.get(locations.size()-2).getLatitude(), locations.get(locations.size()-2).getLongitude());
             }
-            controller.getTravelledDistanceModel();
+            //controller.getTravelledDistanceModel();
+            setChanged();
+            notifyObservers(getTravelledDistance());
         }
     };
 
-    public LocationTracker(){};
     public LocationTracker(ActivityFragment activityFragment, Controller controller) {
+        addObserver(activityFragment);
         this.controller = controller;
         this.fragmentfor = activityFragment;
         this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activityFragment.requireContext());

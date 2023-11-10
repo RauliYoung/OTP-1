@@ -103,6 +103,7 @@ public class Controller implements IModeltoView, IViewToModel {
             results.put("speed", caclulatePace(this.activityLength));
             results.put("length", locationTracker.getTravelledDistance());
             activityTimer.setBase(SystemClock.elapsedRealtime());
+            System.out.println("LENGTH: " + locationTracker.getTravelledDistance());
         }
         database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));
         System.out.println("Activity Stopping!");
@@ -110,9 +111,10 @@ public class Controller implements IModeltoView, IViewToModel {
     }
 
     @Override
-    public void getTravelledDistanceModel() {
+    public double getTravelledDistanceModel() {
         //textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
         //timer.setText(String.valueOf());
+        return locationTracker.getTravelledDistance();
     }
 
     @Override
