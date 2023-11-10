@@ -26,7 +26,8 @@ public class Controller implements IModeltoView, IViewToModel {
     /**
      * A variable for the Location Tracker
      */
-    private LocationTracker locationTracker;
+    //private LocationTracker locationTracker;
+    private ILocationTracker locationTracker;
     /**
      * A variable for the Timer
      */
@@ -39,7 +40,6 @@ public class Controller implements IModeltoView, IViewToModel {
      * A variable for UI ongoing exercise displayed in Activity page
      */
     private TextView timer;
-
     /**
      * Method is called login button in login page
      * @param email The email provided in the login form
@@ -60,8 +60,6 @@ public class Controller implements IModeltoView, IViewToModel {
     public void changePassword(String oldPassword, String newPassword) {
         database.changePassword(oldPassword,newPassword);
     }
-
-
     /**
      * Method for to remove the user from app
      */
@@ -71,12 +69,12 @@ public class Controller implements IModeltoView, IViewToModel {
     }
 
     @Override
-    public synchronized void startActivity(ActivityFragment fragment, TextView timer) {
+    public void startActivity(ActivityFragment fragment, TextView timer) {
         this.timer = timer;
         activityTimer = (Chronometer) timer;
         activityTimer.setBase(SystemClock.elapsedRealtime());
         activityTimer.start();
-        locationTracker = new LocationTracker(fragment, this);
+        locationTracker = new LocationTracker(fragment);
     }
 
     /**
@@ -98,12 +96,11 @@ public class Controller implements IModeltoView, IViewToModel {
             long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();
             double seconds = (int) elapsedMillis / 1000;
             this.activityLength = (int) seconds;
-            double distance = locationTracker.getTravelledDistance();
             results.put("duration",seconds);
             results.put("speed", caclulatePace(this.activityLength));
             results.put("length", locationTracker.getTravelledDistance());
             activityTimer.setBase(SystemClock.elapsedRealtime());
-            System.out.println("LENGTH: " + locationTracker.getTravelledDistance());
+            locationTracker.setTravelledDistance();
         }
         database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));
         System.out.println("Activity Stopping!");
@@ -111,15 +108,7 @@ public class Controller implements IModeltoView, IViewToModel {
     }
 
     @Override
-    public double getTravelledDistanceModel() {
-        //textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
-        //timer.setText(String.valueOf());
-        return locationTracker.getTravelledDistance();
-    }
-
-    @Override
     public Map<String, ArrayList<Double>> getGroupExericesforView() {
-        System.out.println(groupExercises +" TÄSSÄ OLLAAAN LISTA");
         return groupExercises;
     }
 
@@ -164,18 +153,13 @@ public class Controller implements IModeltoView, IViewToModel {
         database.addUserToTheGroup(groupOwnerEmail, new CRUDCallbacks() {
             @Override
             public void onSucceed() {
-                System.out.println("Added a new user into group");
-
                 database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {
                     @Override
                     public void onSucceed() {
                         groupExercises = database.getGroupResults();
-                        System.out.println("Groups exercises: " + groupExercises);
                     }
-
                     @Override
                     public void onFailure() {
-
                     }
                 });
             }

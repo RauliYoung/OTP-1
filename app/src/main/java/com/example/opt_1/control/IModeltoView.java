@@ -9,6 +9,5 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public interface IModeltoView {
- double getTravelledDistanceModel();
  Map<String,ArrayList<Double>> getGroupExericesforView();
 }

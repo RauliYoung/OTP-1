@@ -21,6 +21,7 @@ import com.example.opt_1.model.User;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -32,7 +33,6 @@ public class ActivityFragment extends Fragment implements Observer {
     private Controller controller;
     private ArrayList<Map<String,Object>> activityHistory;
     View v;
-    //private int click = 0;
     private Button activityButton;
     private Button stopActivityButton;
     ActivityFragment fragment;
@@ -66,15 +66,17 @@ public class ActivityFragment extends Fragment implements Observer {
         activityDataLayout = v.findViewById(R.id.ActivityDataFrame);
         activityDataHistoryScrollView = v.findViewById(R.id.ActivityListForData);
         timer = v.findViewById(R.id.activity_timer);
-        //Initializing for result strings
+
+        //Initializing result strings
         durationText = dataText_duration.getText().toString();
         speedText = dataText_speed.getText().toString();
         lengthText = dataText_length.getText().toString();
         travelledDistanceText = distance_travelled.getText().toString();
 
+        String distance = String.format(travelledDistanceText, 0.0f);
+        distance_travelled.setText(distance);
 
         fragment = this;
-        System.out.println("Activity fragment avautuu");
 
         for (int i = 0; i < activityHistory.size(); i++) {
             View clonedActivitySection = inflater.inflate(R.layout.activityobject, container, false);
@@ -119,9 +121,9 @@ public class ActivityFragment extends Fragment implements Observer {
                         dataText_duration.setVisibility(View.INVISIBLE);
                         dataText_speed.setVisibility(View.INVISIBLE);
                         dataText_length.setVisibility(View.INVISIBLE);
+                        String distance = String.format(travelledDistanceText, 0.0f);
+                        distance_travelled.setText(distance);
                         controller.startActivity(fragment, timer);
-
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -134,7 +136,6 @@ public class ActivityFragment extends Fragment implements Observer {
             public void onClick(View v) {
                 distance_travelled.setVisibility(View.INVISIBLE);
                 Map<String,Double> results = controller.stopActivity();
-                System.out.println("Dur results: " + results.get("duration"));
 
                 String duration = String.format(durationText,
                         results.get("duration"));
@@ -160,11 +161,8 @@ public class ActivityFragment extends Fragment implements Observer {
     @Override
     public void update(Observable observable, Object arg) {
         if (observable instanceof LocationTracker) {
-            System.out.println("Distance from object: " + arg);
-            String distance = String.format(travelledDistanceText,
-                    arg);
+            String distance = String.format(travelledDistanceText, arg);
             distance_travelled.setText(distance);
         }
-
     }
 }

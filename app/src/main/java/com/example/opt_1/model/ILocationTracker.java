@@ -7,8 +7,8 @@ import com.example.opt_1.view.ActivityFragment;
 
 public interface ILocationTracker {
 
-    void setLocation(ActivityFragment fragment, Controller controller);
-    Location getLocation();
+    double getTravelledDistance();
+    void setTravelledDistance();
     void setActive(boolean stopActivity);
 
 }

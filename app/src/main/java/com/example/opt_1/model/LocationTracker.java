@@ -33,7 +33,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
     private LocationRequest locationRequest;
     private Location currentLocation;
     private LocationManager mLocationManager;
-    private Controller controller;
     private LocationListener mLocationListener;
     private ActivityFragment fragmentfor;
     private static double travelledDistance;
@@ -53,15 +52,14 @@ public class LocationTracker extends Observable implements ILocationTracker {
             if (locations.size() >= 2){
                 calculateDistance(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude(), locations.get(locations.size()-2).getLatitude(), locations.get(locations.size()-2).getLongitude());
             }
-            //controller.getTravelledDistanceModel();
+            System.out.println("Distance: " + getTravelledDistance());
             setChanged();
             notifyObservers(getTravelledDistance());
         }
     };
 
-    public LocationTracker(ActivityFragment activityFragment, Controller controller) {
+    public LocationTracker(ActivityFragment activityFragment) {
         addObserver(activityFragment);
-        this.controller = controller;
         this.fragmentfor = activityFragment;
         this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activityFragment.requireContext());
         initLocationRequest();
@@ -116,11 +114,9 @@ public class LocationTracker extends Observable implements ILocationTracker {
     * */
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-
-        for (int i = 0; i < locations.size(); i++){
-            System.out.println("Locations list: " + locations.get(i));
-        }
-
+//        for (int i = 0; i < locations.size(); i++){
+//            System.out.println("Locations list: " + locations.get(i));
+//        }
     }
 
     /*
@@ -159,15 +155,8 @@ public class LocationTracker extends Observable implements ILocationTracker {
     }
 
     @Override
-    public void setLocation(ActivityFragment fragment, Controller controller) {
-    }
-
-    /*
-    * Returns the current location of users mobile device.
-    * */
-    @Override
-    public Location getLocation() {
-        return currentLocation;
+    public void setTravelledDistance() {
+        travelledDistance = 0f;
     }
 
     /*
