@@ -41,6 +41,7 @@ public class ActivityFragment extends Fragment {
     }
 
     private TextView timer;
+    private String durationText, speedText, lengthText;
 
 
     @Override
@@ -58,6 +59,11 @@ public class ActivityFragment extends Fragment {
         activityDataLayout = v.findViewById(R.id.ActivityDataFrame);
         activityDataHistoryScrollView = v.findViewById(R.id.ActivityListForData);
         timer = v.findViewById(R.id.activity_timer);
+        //Initializing for result strings
+        durationText = dataText_duration.getText().toString();
+        speedText = dataText_speed.getText().toString();
+        lengthText = dataText_length.getText().toString();
+
 
         fragment = this;
         System.out.println("Activity fragment avautuu");
@@ -104,7 +110,7 @@ public class ActivityFragment extends Fragment {
                         dataText_duration.setVisibility(View.INVISIBLE);
                         dataText_speed.setVisibility(View.INVISIBLE);
                         dataText_length.setVisibility(View.INVISIBLE);
-                        controller.startActivity(fragment, dataText_duration, timer);
+                        controller.startActivity(fragment, timer);
 
                     }
                 } catch (Exception e) {
@@ -116,11 +122,8 @@ public class ActivityFragment extends Fragment {
         stopActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String durationText = dataText_duration.getText().toString();
-                String speedText = dataText_speed.getText().toString();
-                String lengthText = dataText_length.getText().toString();
-
                 Map<String,Double> results = controller.stopActivity();
+                System.out.println("Dur results: " + results.get("duration"));
 
                 String duration = String.format(durationText,
                         results.get("duration"));

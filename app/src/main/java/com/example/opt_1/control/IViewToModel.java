@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface IViewToModel {
     void userLogin(String email, String password, CRUDCallbacks callbacks);
-    void startActivity(ActivityFragment fragment,TextView data,TextView timer);
+    void startActivity(ActivityFragment fragment,TextView timer);
     void changeUsername(String newUsername, CRUDCallbacks callbacks);
     void changePassword(String oldPassword, String newPassword);
     void removeUser();

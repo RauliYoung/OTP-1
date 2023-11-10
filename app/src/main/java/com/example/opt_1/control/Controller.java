@@ -38,10 +38,6 @@ public class Controller implements IModeltoView, IViewToModel {
     /**
      * A variable for UI ongoing exercise displayed in Activity page
      */
-    private TextView textViewData;
-    /**
-     * A variable for UI ongoing exercise time displayed in Activity page
-     */
     private TextView timer;
 
     /**
@@ -75,8 +71,7 @@ public class Controller implements IModeltoView, IViewToModel {
     }
 
     @Override
-    public synchronized void startActivity(ActivityFragment fragment,TextView data, TextView timer) {
-        this.textViewData = data;
+    public synchronized void startActivity(ActivityFragment fragment, TextView timer) {
         this.timer = timer;
         activityTimer = (Chronometer) timer;
         activityTimer.setBase(SystemClock.elapsedRealtime());
@@ -108,7 +103,6 @@ public class Controller implements IModeltoView, IViewToModel {
             results.put("speed", caclulatePace(this.activityLength));
             results.put("length", locationTracker.getTravelledDistance());
             activityTimer.setBase(SystemClock.elapsedRealtime());
-            //textViewData.setText("Your activity lasted \n"+ seconds + " seconds." + " and the speed was " + caclulatePace(this.activityLength) + "km/h \n" + "Length of your exercise was " + locationTracker.getTravelledDistance() + " meters");
         }
         database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));
         System.out.println("Activity Stopping!");
@@ -117,7 +111,7 @@ public class Controller implements IModeltoView, IViewToModel {
 
     @Override
     public void getTravelledDistanceModel() {
-        textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
+        //textViewData.setText(String.valueOf(locationTracker.getTravelledDistance()));
         //timer.setText(String.valueOf());
     }
 
