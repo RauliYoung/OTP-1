@@ -25,7 +25,6 @@
     <string name="logout">LogOut</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="exercise_data"></string>
     <string name="username">UserName</string>
     <string name="timer">Timer</string>
     <string name="delete_user">Delete User</string>

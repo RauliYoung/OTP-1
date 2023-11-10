@@ -3,12 +3,12 @@
     <string name="app_name">Lenkkifrendi</string>
     <string name="action_settings">تنظیمات</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="first_fragment_label">اولین قطعه</string>
+    <string name="second_fragment_label">دومین قطعه</string>
+    <string name="next">بعدی</string>
+    <string name="previous">قبلی</string>
     <string name="login">ورود</string>
-    <string name="register">ثبت‌نام</string>
+    <string name="register">ثبت نام</string>
     <string name="profile_image">تصویر پروفایل</string>
     <string name="activity">فعالیت</string>
     <string name="group">گروه</string>
@@ -16,7 +16,6 @@
     <string name="logout">خروج</string>
     <string name="email">ایمیل</string>
     <string name="password">رمز عبور</string>
-    <string name="exercise_data">داده‌های تمرین</string>
     <string name="username">نام کاربری</string>
     <string name="timer">زمان‌سنج</string>
     <string name="delete_user">حذف کاربر</string>
@@ -27,14 +26,14 @@
     <string name="change_username">تغییر نام کاربری</string>
     <string name="groups">گروه‌ها</string>
     <string name="home">خانه</string>
-    <string name="create_group">ساختن یک گروه</string>
+    <string name="create_group">ساخت گروه</string>
     <string name="join_group">پیوستن به گروه</string>
     <string name="leave_group">ترک گروه</string>
     <string name="start_activity">شروع فعالیت</string>
-    <string name="stop_activity">توقف فعالیت</string>
+    <string name="stop_activity">پایان فعالیت</string>
     <string name="first_name">نام</string>
     <string name="last_name">نام خانوادگی</string>
     <string name="exercise_speed">سرعت f1.% کیلومتر در ساعت بود.</string>
-    <string name="exercise_duration">فعالیت شما %.1f ثانیه طول کشید.</string>
-    <string name="exercise_length">طول تمرین شما f1.% متر بود.</string>
+    <string name="exercise_duration">عملیات شما f1.% ثانیه طول کشید.</string>
+    <string name="exercise_length">طول تمرین f1.% متر بود.</string>
 </resources>

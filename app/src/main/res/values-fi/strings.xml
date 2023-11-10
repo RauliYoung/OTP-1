@@ -16,7 +16,6 @@
     <string name="logout">Kirjaudu Ulos</string>
     <string name="email">Sähköposti</string>
     <string name="password">Salasana</string>
-    <string name="exercise_data"></string>
     <string name="username">Käyttäjätunnus</string>
     <string name="timer">Timer</string>
     <string name="delete_user">Poista Käyttäjätunnus</string>

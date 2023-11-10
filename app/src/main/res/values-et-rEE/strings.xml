@@ -16,7 +16,6 @@
     <string name="logout">Logi välja</string>
     <string name="email">E-post</string>
     <string name="password">Parool</string>
-    <string name="exercise_data">Treeningu andmed</string>
     <string name="username">Kasutajanimi</string>
     <string name="timer">Taimer</string>
     <string name="delete_user">Kustuta kasutajanimi</string>
