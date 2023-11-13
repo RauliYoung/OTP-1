@@ -15,7 +15,6 @@
     <string name="logout">Logga ut</string>
     <string name="email">E-mail</string>
     <string name="password">Lösenord</string>
-    <string name="exercise_data">Träningsdata</string>
     <string name="username">Användarnamn</string>
     <string name="timer">Timer</string>
     <string name="delete_user">Ta bort användare</string>
@@ -33,4 +32,9 @@
     <string name="stop_activity">Sluta aktivitet</string>
     <string name="first_name">Förnamn</string>
     <string name="last_name">Efternamn</string>
+    <!-- TODO translate these strings-->
+    <string name="exercise_speed">The speed was %.1f km/h.</string>
+    <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
+    <string name="exercise_length">Length of your exercise was %.1f meters.</string>
+    <string name="distance_travelled">Distance travelled: %.1f meters</string>
 </resources>

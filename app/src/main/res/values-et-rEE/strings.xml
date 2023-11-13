@@ -16,7 +16,6 @@
     <string name="logout">Logi välja</string>
     <string name="email">E-post</string>
     <string name="password">Parool</string>
-    <string name="exercise_data">Treeningu andmed</string>
     <string name="username">Kasutajanimi</string>
     <string name="timer">Taimer</string>
     <string name="delete_user">Kustuta kasutajanimi</string>
@@ -34,4 +33,9 @@
     <string name="stop_activity">Lõpeta</string>
     <string name="first_name">Eesnimi</string>
     <string name="last_name">Perekonnanimi</string>
+    <!-- TODO translate these strings-->
+    <string name="exercise_speed">The speed was %.1f km/h.</string>
+    <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
+    <string name="exercise_length">Length of your exercise was %.1f meters.</string>
+    <string name="distance_travelled">Distance travelled: %.1f meters.</string>
 </resources>

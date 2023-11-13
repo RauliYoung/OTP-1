@@ -25,7 +25,6 @@
     <string name="logout">LogOut</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="exercise_data"></string>
     <string name="username">UserName</string>
     <string name="timer">Timer</string>
     <string name="delete_user">Delete User</string>
@@ -43,4 +42,8 @@
     <string name="stop_activity">Stop Activity</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="exercise_speed">The speed was %.1f km/h.</string>
+    <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
+    <string name="exercise_length">Length of your exercise was %.1f meters.</string>
+    <string name="distance_travelled">Distance travelled: %.1f meters.</string>
 </resources>

@@ -20,40 +20,74 @@
             android:id="@+id/ActivityListForData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+        </LinearLayout>
     </ScrollView>
 
     <TextView
-        android:id="@+id/activity_datatext"
-        android:layout_width="289dp"
-        android:layout_height="165dp"
-        android:layout_marginTop="300dp"
-        android:background="@drawable/cornerround"
-        android:text="@string/exercise_data"
+        android:id="@+id/activity_data_duration"
+        android:layout_width="351dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:text="@string/exercise_duration"
         android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_StartActivityButton"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.434" />
+
+    <TextView
+        android:id="@+id/activity_data_speed"
+        android:layout_width="349dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:text="@string/exercise_speed"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ActivityDataHistoryList"
+        app:layout_constraintVertical_bias="0.535">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/activity_data_length"
+        android:layout_width="345dp"
+        android:layout_height="68dp"
+        android:text="@string/exercise_length"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ActivityDataHistoryList"
+        app:layout_constraintVertical_bias="0.648">
+
+    </TextView>
 
     <Button
         android:id="@+id/activity_StartActivityButton"
         android:layout_width="245dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="32dp"
         android:backgroundTint="#5C5669"
+        android:layout_marginBottom="24dp"
         android:text="@string/start_activity"
         app:layout_constraintBottom_toTopOf="@+id/activity_StopActivityButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/activity_StopActivityButton"
         android:layout_width="246dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="#5D576B"
         android:text="@string/stop_activity"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,9 +103,22 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="60sp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_datatext"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ActivityDataHistoryList" />
+        app:layout_constraintTop_toTopOf="@+id/ActivityDataHistoryList"
+        app:layout_constraintVertical_bias="0.243" />
+
+    <TextView
+        android:id="@+id/distance_travelled"
+        android:layout_width="349dp"
+        android:layout_height="45dp"
+        android:text="@string/distance_travelled"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.349" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

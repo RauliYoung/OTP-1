@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import com.example.opt_1.control.Controller;
 import com.example.opt_1.view.ActivityFragment;
+import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -24,14 +25,14 @@ import com.google.android.gms.tasks.Task;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class LocationTracker extends Thread implements ILocationTracker {
+public class LocationTracker extends Observable implements ILocationTracker {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private Location currentLocation;
     private LocationManager mLocationManager;
-    private Controller controller;
     private LocationListener mLocationListener;
     private ActivityFragment fragmentfor;
     private static double travelledDistance;
@@ -51,13 +52,14 @@ public class LocationTracker extends Thread implements ILocationTracker {
             if (locations.size() >= 2){
                 calculateDistance(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude(), locations.get(locations.size()-2).getLatitude(), locations.get(locations.size()-2).getLongitude());
             }
-            controller.getTravelledDistanceModel();
+            System.out.println("Distance: " + getTravelledDistance());
+            setChanged();
+            notifyObservers(getTravelledDistance());
         }
     };
 
-    public LocationTracker(){};
-    public LocationTracker(ActivityFragment activityFragment, Controller controller) {
-        this.controller = controller;
+    public LocationTracker(ActivityFragment activityFragment) {
+        addObserver(activityFragment);
         this.fragmentfor = activityFragment;
         this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activityFragment.requireContext());
         initLocationRequest();
@@ -112,11 +114,9 @@ public class LocationTracker extends Thread implements ILocationTracker {
     * */
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-
-        for (int i = 0; i < locations.size(); i++){
-            System.out.println("Locations list: " + locations.get(i));
-        }
-
+//        for (int i = 0; i < locations.size(); i++){
+//            System.out.println("Locations list: " + locations.get(i));
+//        }
     }
 
     /*
@@ -155,15 +155,8 @@ public class LocationTracker extends Thread implements ILocationTracker {
     }
 
     @Override
-    public void setLocation(ActivityFragment fragment, Controller controller) {
-    }
-
-    /*
-    * Returns the current location of users mobile device.
-    * */
-    @Override
-    public Location getLocation() {
-        return currentLocation;
+    public void setTravelledDistance() {
+        travelledDistance = 0f;
     }
 
     /*

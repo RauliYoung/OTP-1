@@ -16,7 +16,6 @@
     <string name="logout">Kirjaudu Ulos</string>
     <string name="email">Sähköposti</string>
     <string name="password">Salasana</string>
-    <string name="exercise_data"></string>
     <string name="username">Käyttäjätunnus</string>
     <string name="timer">Timer</string>
     <string name="delete_user">Poista Käyttäjätunnus</string>
@@ -34,4 +33,8 @@
     <string name="stop_activity">Lopeta Aktiviteetti</string>
     <string name="first_name">Etunimi</string>
     <string name="last_name">Sukunimi</string>
+    <string name="exercise_speed">Keskivauhti %.1f km/h.</string>
+    <string name="exercise_duration">Kesto %.1f sekunttia.</string>
+    <string name="exercise_length">Kuljit %.1f metriä.</string>
+    <string name="distance_travelled">Kuljettu: %.1f metriä.</string>
 </resources>
