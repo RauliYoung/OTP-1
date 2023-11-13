@@ -1,6 +1,7 @@
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
@@ -34,13 +35,13 @@ public class LoginPageUITest {
     public void testLoginButton() {
         try {
             Thread.sleep(3000);
-            onView(allOf(isDisplayed(), withId(R.id.loginUserNameInput), isClickable())).perform(typeText("testi@testi.fi")).check(matches(isDisplayed()));
+            onView(allOf(isDisplayed(), withId(R.id.loginUserNameInput), isClickable())).perform(typeText("testi@testi.fi"), closeSoftKeyboard()).check(matches(isDisplayed()));
             Thread.sleep(2000);
             onView(allOf(isDisplayed(), withId(R.id.loginPasswordInput), isClickable())).perform(typeText("testi123"),closeSoftKeyboard() ).check(matches(isDisplayed()));
             Thread.sleep(2000);
             closeSoftKeyboard();
             Thread.sleep(2000);
-            onView(withId(R.id.loginButton)).perform(click()).check(matches(isDisplayed()));
+            onView(withId(R.id.loginButton)).perform(scrollTo()).perform(click()).check(matches(isDisplayed()));
             Log.d("BUTTON CLICKED", "Button has been clicked!");
             Thread.sleep(5000);
             onView(withId(R.id.oldPasswordInputField)).check(matches(isDisplayed()));
