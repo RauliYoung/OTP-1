@@ -46,6 +46,7 @@ jobs:
           api-level: 30
           target: google_apis
           arch: x86_64
+          enable-hw-keyboard: true
           script: |
              pwd
              ls -a
