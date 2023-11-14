@@ -49,4 +49,4 @@ jobs:
           script: |
              pwd
              ls -a
-             ./gradlew connectedCheck
+             ./gradlew connectedCheck --stacktrace --scan
