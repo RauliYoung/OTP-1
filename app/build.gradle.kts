@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.dependency.getProvidedClasspath
 plugins {
     id("com.android.application")
     id ("com.google.gms.google-services")
+    id("com.google.secrets_gradle_plugin") version "0.6.1"
 }
 
 android {

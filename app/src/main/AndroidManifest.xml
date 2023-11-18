@@ -29,6 +29,12 @@
         android:name=".view.GroupFragment"
         android:label="Group Fragment">
         </activity>
+        <meta-data
+            android:name = "test_username"
+            android:value = "${test_username}"/>
+        <meta-data
+            android:name = "test_password"
+            android:value = "${test_password}"/>
     </application>
 
 </manifest>
