@@ -8,6 +8,7 @@
     tools:context=".view.Main_Page">
 
     <LinearLayout
+        android:id="@+id/fragmentHome"
         android:layout_width="411dp"
         android:layout_height="656dp"
         android:gravity="center|center_horizontal"

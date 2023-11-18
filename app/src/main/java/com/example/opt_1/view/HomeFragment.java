@@ -56,6 +56,7 @@ public class HomeFragment extends Fragment {
             usernameTextField.setText("NULL");
         }
 
+
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

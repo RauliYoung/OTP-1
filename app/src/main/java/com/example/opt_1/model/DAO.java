@@ -304,38 +304,48 @@ public class DAO implements IDAO {
      */
     @Override
     public void loginUser(String email, String password, CRUDCallbacks callbacks) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(handleTaskAuth(task)){
+        try {
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(handleTaskAuth(task)){
                         System.out.println(firebaseAuth.getCurrentUser()+" LOGGED IN");
-                            databaseInstance.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (handleTaskQS(task)) {
-                                        Map<String,Object> user = new HashMap<>();
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            user = document.getData();
-                                        }
-                                        User userInstance = User.getInstance();
-                                        userInstance.setFirstName((String) user.get("firstName"));
-                                        userInstance.setLastName((String) user.get("lastName"));
-                                        userInstance.setUsername((String) user.get("username"));
-                                        userInstance.setEmail((String) user.get("email"));
-                                        userInstance.setGroup((String) user.get("group"));
-                                        boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get("userInGroup")));
-                                        userInstance.setUserInGroup(userInGroup);
-                                        System.out.println("User instance: " + userInstance);
-                                        retrieveExercises();
-                                        callbacks.onSucceed();
-                                    }else{
-                                        callbacks.onFailure();
+                        databaseInstance.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (handleTaskQS(task)) {
+                                    Map<String,Object> user = new HashMap<>();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        user = document.getData();
                                     }
+                                    User userInstance = User.getInstance();
+                                    userInstance.setFirstName((String) user.get("firstName"));
+                                    userInstance.setLastName((String) user.get("lastName"));
+                                    userInstance.setUsername((String) user.get("username"));
+                                    userInstance.setEmail((String) user.get("email"));
+                                    userInstance.setGroup((String) user.get("group"));
+                                    boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get("userInGroup")));
+                                    userInstance.setUserInGroup(userInGroup);
+                                    System.out.println("User instance: " + userInstance);
+                                    retrieveExercises();
+                                    callbacks.onSucceed();
+                                }else{
+                                    callbacks.onFailure();
                                 }
-                            });
+                            }
+                        });
                     }
                 }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    callbacks.onFailure();
+                }
+            });
+        }catch (IllegalArgumentException err){
+            err.printStackTrace();
+            callbacks.onFailure();
+        }
     }
 
     /**
