@@ -42,14 +42,14 @@ public class LoginAndLogout {
     private String test_user;
     private String test_pass;
 
-    @Before
-    public void init() throws PackageManager.NameNotFoundException {
-        ApplicationInfo ai = getApplicationContext().getPackageManager()
-                .getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
-
-        test_user = (String) ai.metaData.get("test_username");
-        test_pass = (String) ai.metaData.get("test_password");
-    }
+//    @Before
+//    public void init() throws PackageManager.NameNotFoundException {
+//        ApplicationInfo ai = getApplicationContext().getPackageManager()
+//                .getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
+//
+//        test_user = (String) ai.metaData.get("test_username");
+//        test_pass = (String) ai.metaData.get("test_password");
+//    }
 
     @Rule
     public ActivityScenarioRule<LoginPage> mActivityScenarioRule =
@@ -65,7 +65,7 @@ public class LoginAndLogout {
                                         0),
                                 0),
                         isDisplayed()));
-        textInputEditText.perform(replaceText(test_user), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("testi@testi.fi"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.loginPasswordInput),
@@ -75,7 +75,7 @@ public class LoginAndLogout {
                                         0),
                                 0),
                         isDisplayed()));
-        textInputEditText2.perform(replaceText(test_pass), closeSoftKeyboard());
+        textInputEditText2.perform(replaceText("testi123"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.loginButton), withText("Login"),
