@@ -1,229 +1,115 @@
 ### Lenkkifrendi
 ---
-### Käyttöönotto
+### Deployment
 
-- Kloona repositorio koneellesi, asenna myös Android Studio.
-- Android studiossa Build > Build Bundle /APK > Build APK
-- Saat .apk päätteisen tiedoston jonka voit viedä android puhelimellesi.
-- Vaihtoehtoisesti voit myös ajaa sovellusta Android Studion emulaattorissa, Huomion arvoista on että GPS paikannus ei toimi emulaattorilla.
----
-## Projektin  tavoite
-
-Projektin  päämääränä on tuottaa  yksinkertainen ja helppokäyttöinen  liikuntaa  tukeva  Android-mobiilisovellus  matkapuhelimelle.  Sovelluksella  käyttäjä  voi  tallentaa ja  tarkkailla  omien  liikuntasuoritteiden  kestoa ja pituutta, sekä  perustaa  liikuntaryhmiä, johon  voidaan  kutsua  myös  ystävät ja harrastusporukat  mukaan.
-
-Sovellus  kerää  tietoa  käyttäjän  liikkeistä  sekä  liikuntatottumuksista.  Alkuperäisenä  tarkoituksena  oli  hyödyntää  käyttäjältä  saatua  dataa  kaupallisesti, myymällä  sitä  urheiluvälinevalmistajille, mutta  kriittisen  tarkastelun  jälkeen  tulimme  kuitenkin  lopputulokseen, että  käyttäjädataa  ei  tulla  käyttämään  kaupallisessa  tarkoituksessa  vaan  käyttäjadataa  sovelletaan  sovelluksen  käyttökokemuksen  parantamiseen, ja tuotteiden  mainostamisen  sijaan  koneoppimisen  avulla  tarjoamme  käyttäjäprofiilin  perusteella  liikuntasuosituksia, kuten  juoksua  harrastavalle  esim. Helsinki marathon.
-
-## Sovelluksen  määrittely
-
-### Toiminnallisuudet
-
-Projektin  aikana  luodaan  tarvittavat  toiminnallisuudet  joihin  kuuluvat:
-
--   Käyttöliittymä
-
--   Googlen  Location  Api-rajapinnan  implementointi
-
--   Tietokantayhdeydet
-
--   Sovelluslogiikan  luonti
-
--   Yksikkötestaus
-
--   Validointi
-
-
-Myöhemmässä  vaiheessa  toteutettavat  toiminnallisuudet:
-
--   Koneoppiminen
-
-
-### Käyttöliittymä
----
-Sovellus  avautuu  kirjautumissivulle, jossa  käyttäjä  voi  syöttää  sähköpostin ja salasanan. Vaihtoehtoisesti  jos  käyttäjällä  ei  vielä ole tunnuksia  sovellukseen  löytyy  kirjautumissivulta “Register”-painike, joka vie rekisteröitymissivulle. Rekisteröitymissivulla  käyttäjä  täyttää  vaaditut  kentät ja rekisteröityy.
-
-Kirjauduttuaan  sisään  käyttäjä  päätyy  oletusnäkymään, joka  vastaa  käyttäjän  profiilisivua. Alapaneelissa on navigointipalkki.
-
-Navigointipalkissa on oletusnäkymän (profiilisivu) lisäksi  myös  aktiviteetti- ja ryhmäsivu. Aktiviteettisivulla on “Start activity” ja “Stop activity” painikkeet. Nimensä  mukaan “Start activity”-painike  aloittaa  käyttäjän  aktiviteetin  keston ja kuljetun  matkan  mittaamisen. “Stop activity”-painike  pysäyttää  aktiviteetin ja visualisoi  saadun  datan  käyttäjälle, sekä  tallentaa  tiedon  tietokantaan.
-
-Ryhmäsivulla on mahdollisuus  liittyä  ryhmiin, joissa on muita  käyttäjiä. Kun käyttäjä on osallisena  ryhmään  pystyy  hän  tarkkailemaan  ryhmän  muiden  jäsenten  aktiviteetteja  näytölle  avautuvasta  listasta.
-___
-### Tekniset  määritelmät
-
-Ohjelmointikielet
-
--   Java 17
-
-
-Sovellusalusta
-
--   Android
-
-
-Tietokanta
-
--   NoSql  Firebase
-
-
-Android Api Level
-
--   34
-
-
-Muut Apit
-
--   Google Location
-
-
-Testaus
-
--   Junit 4
+- Clone the repository to your machine, also install Android Studio.
+- In Android Studio, go to Build > Build Bundle /APK > Build APK.
+- You will get a .apk file that you can transfer to your Android phone.
+- Alternatively, you can also run the app on the Android Studio emulator, but note that GPS tracking does not work on the emulator.
 
 ---
-### Projektinhallinta ja kommunikointi
+## Project Goal
 
--   Trello
+The main goal of the project is to create a simple and user-friendly Android mobile application for promoting physical activity. With the application, users can record and monitor the duration and distance of their physical activities, as well as create exercise groups that can invite friends and hobby groups to join.
 
--   Discord
+The application collects information about the user's movements and exercise habits. Initially, the intention was to commercially exploit the user data by selling it to sports equipment manufacturers. However, after careful consideration, it was decided that user data would not be used for commercial purposes. Instead, the data would be applied to improve the user experience of the application. Through machine learning, the app aims to provide activity recommendations based on user profiles rather than advertising products, such as suggesting the Helsinki Marathon for someone who enjoys running.
+
+## Application Definition
+
+### Functionalities
+
+During the project, the necessary functionalities will be developed, including:
+
+| Functionality            | Description                                                                                             |
+|--------------------------|---------------------------------------------------------------------------------------------------------|
+| User Interface           | Create a user-friendly interface for the application.                                                    |
+| Google Location API      | Implement the Google Location API for location services.                                                  |
+| Database Connections     | Establish connections to a NoSQL Firebase database.                                                        |
+| Application Logic        | Develop the core logic of the application.                                                               |
+| Unit Testing             | Implement JUnit 4 tests to ensure code reliability.                                                      |
+| Validation               | Validate user inputs and ensure data integrity.                                                          |
+| Machine learning (Later) | Implement machine learning for personalized recommendations based on user profiles.                      |
 
 ---
+
+### User Interface
+
+The application opens to the login page, where the user can enter their email and password. Alternatively, if the user does not have an account yet, the login page includes a "Register" button that takes them to the registration page. On the registration page, the user fills in the required fields and completes the registration process.
+
+After logging in, the user is directed to the default view, which corresponds to their profile page. The bottom panel contains a navigation bar.
+
+In the navigation bar, in addition to the default view (profile page), there are also activity and group pages. On the activity page, there are "Start activity" and "Stop activity" buttons. As the names suggest, the "Start activity" button initiates the measurement of the user's activity duration and distance traveled. The "Stop activity" button halts the activity, visualizes the data for the user, and stores the information in the database.
+
+The group page allows users to join groups with other members. When a user is part of a group, they can monitor the activities of other group members from a list that appears on the screen.
+
+---       
+
+### Technical Spesifications
+
+| Programming Languages | Java 17            |
+|------------------------|---------------------|
+| Application Platform   | Android             |
+| Database               | NoSQL Firebase      |
+| Android API Level      | 34                  |
+| Other APIs             | Google Location     |
+| Testing                | JUnit 4             |
+
+---
+
+### Project management and communication
+- Trello
+- Discord
+
+---
+
 ### Roadmap
 
-On going (Koko projektin  ajan  tapahtuvat  asiat)
+On going (Through out the project)
 
-- Ohjelman  dokumentaatio ja kaavioiden  piirtäminen
+- Documentation and diagrams.
 
-### 1. Viikko
+### Project Timeline
 
-- Projektin  visiointi
-
-### 2. Viikko
-
-- Resurssien  kerääminen
-
-- Tietokantayhteys
-
-### 3. Viikko
-
-- Käyttöliittymä
-
-- Käyttäjätili
-
-### 4. Viikko
-
--  GPS-anturi  yhteyden  luonti
-
--  Käyttäjäryhmien  lisääminen
-
-### 5. Viikko
-
-- Käyttäjädatan  kerääminen
-
-- Käyttäjädatan  visualisointi
-
-### 6. Viikko
-
-- Junit testaus
-
-### 7.Viikko
-
-- Ensimmäinen  testiversio  sovelluksesta
-
-- Sovelluksen  ulkoasun  parantelu
-
-### 8. Viikko
-
-- Sovelluksen  demotilaisuus
----
-### Kustannusarvio
-
-Noin 4 kuukautta  kestävän  projektimme  kustannus  arvio on 200.000 euroa. Pelkästään  ohjelmoijien  kuluihin  menee  noin 140.000 euroa.
+| Week | Tasks                                                      |
+|------|------------------------------------------------------------|
+| 1    | Project vision                                             |
+| 2    | Gather resources, establish database connection           |
+| 3    | Develop user interface, create user accounts              |
+| 4    | Establish GPS sensor connection, add user groups          |
+| 5    | Collect user data, visualize user data                    |
+| 6    | Conduct Junit testing                                      |
+| 7    | Release first test version, enhance application layout    |
+| 8    | Prepare for demo                                           |
+| 9    |                                                            |
+| 10   |                                                            |
+| 11   |                                                            |
+| 12   |                                                            |
+| 13   |                                                            |
+| 14   |                                                            |
+| 15   |                                                            |
+| 16   |                                                            |
 
 ---
 
-### Keskeiset  riskit
+### Cost Estimate
 
-Suurimpiin  riskeihin  projektissa  kuuluu  ehdottomasti  tiukka  aikataulu. Tiukkaa  aikataulua  noudattava  projekti  voi  helposti  myöhästyä  jonkin  teknisen  ongelman  tai  tiimin  vähäisen  tuntemuksen  ansiosta  jotain  tiettyä  teknologiaa  kohtaan.
-
-Jos sovelluksesta  ei  saada  tarpeeksi  hyvää  kilpailijoihin  verrattaen  määräajassa, voi se jäädä  kilpailijoiden  jalkoihi.
+The estimated cost for our project, lasting about 4 months, is 200,000 euros. The programming expenses alone account for approximately 140,000 euros.
 
 ---
 
-### Kehittäjät
+### Key Risks
 
--   Niko Mäenpää
+The major risks in the project include the tight schedule. Adhering to a tight schedule may lead to delays due to technical issues or the team's limited familiarity with specific technologies.
 
--   Tristan Ellenberg
-
--   Kaspar  Tullus
-
--   Samu Aikio
+If the application doesn't meet the competitive standards within the set timeframe, it may fall behind competitors.
 
 ---
 
-# Sovelluksen kuvantamiseen käytettyjä kaavioita
+### Developers
 
-### Luokkakaavio
-
-Luokkaaviolla kuvataan ohjelman koostuminen luokista.
-
-![img_1.png](img_1.png)
-
-![img_2.png](img_2.png)
-
-![img_3.png](img_3.png)
-
-![img_4.png](img_4.png)
-
-![img_5.png](img_5.png)
-
----
-
-### Sekvenssikaavio
-Sekvenssikaavio mallintaa sovelluksen sisäistä toimintaa käyttötapauksittain.
-
-![img.png](img.png)
-
-1. Käyttäjä luo käyttäjätunnuksen. Jos käyttäjätunnuksen luonnissa tapahtuu virhe, niin
-   palataan rekisteröitymissivulle, muuten jatketaan kirjautumisikkunaan.
-2. Jos käyttäjätunnuksen luonti onnistui, yritetään kirjautua sovellukseen.
-3. Jos kirjautumistiedot ovat oikein, siirrytään kotinäkymään, muussa tapauksessa palataan
-   kirjautumisikkunaan.
-
----
-### Aktiviteettikaavio
-
-Aktiviteettikaavio mallintaa järjestelmän dynaamista käyttäytymista, eli tarkka suorituspolku selviää mahdollisesti vasta suorituksen aikana.
-
-![img_6.png](img_6.png)
-
----
-
-### Käyttötapauskaavio
-
-Käyttötapauskaavio mallintaa sovelluksen vuorovaikutusta ympäristön kanssa.
-
-Vuorovaikutuksia ovat mm. syötteet ja tulosteet mitä ohjelmaa saa ja tarjoaa.
-
-![img_7.png](img_7.png)
-
----
-
-### Sijoittelukaavio
-
-Sijoittelukaavio kuvantaa laitteistoa jolla järjestelmän on tarkoitus toimia. Kaavio osoittaa riippuvuudet ja tiedonsiirto tarpeet eri laitteiden välillä.
-
-![img_8.png](img_8.png)
----
-### Lopuksi
-
-Projektin tarkoituksena oli oppia projektin hallintaa, jokainen sai vuorollansa olla scrum master, eli nk. projektin johtaja.
-Vaikka yhdelläkään sprintillä ei saatu aivan kaikkia tehtäviä tehdyksi, mitkä oli sovittu, mutta ne valmistuivat myöhemmissä sprinteissä. Ryhmässä vallitsi konsensus siitä, että tuote valmistui määräajassa vastaamaan odotuksia.
-Projektin tärkeimmät opit olivat varmasti:
-
-- Kommunikoinnin tärkeys.
-- Vaatimusten ja työtaakan asettaminen järkeväksi käytettävissä oleviin resursseihin katsoen.
-- Työn jakaminen.
-- Oikeiden teknologioiden valitseminen.
-- Työtehtävien pilkkominen pieniksi kokonaisuuksiksi.
-
-Lenkkifrendi tarjoaa perusominaisuudet joita Product owner meiltä toivoi, tuote ei toki ole valmis, mutta tästä on hyvä lähteä jatkokehittämään.
+| Developer          |
+|--------------------|
+| Niko Mäenpää       |
+| Tristan Ellenberg  |
+| Kaspar Tullus      |
+| Samu Aikio         |
