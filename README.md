@@ -10,7 +10,9 @@
 ---
 ## Project Goal
 
-The main goal of the project is to create a simple and user-friendly Android mobile application for promoting physical activity. With the application, users can record and monitor the duration and distance of their physical activities, as well as create exercise groups that can invite friends and hobby groups to join.
+The main goal of the project is to create a simple and user-friendly Android mobile application for promoting physical activity.
+With the application, users can record and monitor the duration and distance of their physical activities,
+as well as create exercise groups that can invite friends and hobby groups to join.
 
 The application collects information about the user's movements and exercise habits. Initially, the intention was to commercially exploit the user data by selling it to sports equipment manufacturers. However, after careful consideration, it was decided that user data would not be used for commercial purposes. Instead, the data would be applied to improve the user experience of the application. Through machine learning, the app aims to provide activity recommendations based on user profiles rather than advertising products, such as suggesting the Helsinki Marathon for someone who enjoys running.
 
