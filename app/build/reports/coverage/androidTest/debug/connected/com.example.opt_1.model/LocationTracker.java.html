@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocationTracker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.opt_1.model</a> &gt; <span class="el_source">LocationTracker.java</span></div><h1>LocationTracker.java</h1><pre class="source lang-java linenums">package com.example.opt_1.model;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Looper;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import com.example.opt_1.control.Controller;
+import com.example.opt_1.view.ActivityFragment;
+import com.google.android.gms.common.data.DataBufferObserver;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Observable;
+
+public class LocationTracker extends Observable implements ILocationTracker {
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
+    private Location currentLocation;
+    private LocationManager mLocationManager;
+    private LocationListener mLocationListener;
+    private ActivityFragment fragmentfor;
+    private static double travelledDistance;
+<span class="fc" id="L39">    private ArrayList&lt;Location&gt; locations = new ArrayList&lt;&gt;();</span>
+
+
+    /*
+    * Adds the requested locations into list and their latitudes and longitudes.
+    * */
+<span class="fc" id="L45">    private LocationCallback locationCallback = new LocationCallback() {</span>
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            for (Location location : locationResult.getLocations()) {</span>
+<span class="fc" id="L49">                locations.add(location);</span>
+<span class="fc" id="L50">            }</span>
+
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            if (locations.size() &gt;= 2){</span>
+<span class="nc" id="L53">                calculateDistance(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude(), locations.get(locations.size()-2).getLatitude(), locations.get(locations.size()-2).getLongitude());</span>
+            }
+<span class="fc" id="L55">            System.out.println(&quot;Distance: &quot; + getTravelledDistance());</span>
+<span class="fc" id="L56">            setChanged();</span>
+<span class="fc" id="L57">            notifyObservers(getTravelledDistance());</span>
+<span class="fc" id="L58">        }</span>
+    };
+
+<span class="fc" id="L61">    public LocationTracker(ActivityFragment activityFragment) {</span>
+<span class="fc" id="L62">        addObserver(activityFragment);</span>
+<span class="fc" id="L63">        this.fragmentfor = activityFragment;</span>
+<span class="fc" id="L64">        this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activityFragment.requireContext());</span>
+<span class="fc" id="L65">        initLocationRequest();</span>
+<span class="fc" id="L66">        getLastLocation();</span>
+<span class="fc" id="L67">        checkSettingsAndStartGps(activityFragment);</span>
+<span class="fc" id="L68">    }</span>
+
+    /*
+    * Is used to to adjust to the intervals in which the location is requested
+    * and sets a radius for the smallest displacement.
+    * */
+    private void initLocationRequest(){
+<span class="fc" id="L75">        locationRequest = LocationRequest.create();</span>
+<span class="fc" id="L76">        locationRequest.setInterval(0);</span>
+<span class="fc" id="L77">        locationRequest.setFastestInterval(0);</span>
+<span class="fc" id="L78">        locationRequest.setSmallestDisplacement(3);</span>
+<span class="fc" id="L79">        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);</span>
+<span class="fc" id="L80">    }</span>
+
+    /*
+    * Checks the settings for location requests and calls for locations updates to start.
+    * */
+    private void checkSettingsAndStartGps(ActivityFragment fragment) {
+<span class="fc" id="L86">        LocationSettingsRequest request = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();</span>
+<span class="fc" id="L87">        SettingsClient client = LocationServices.getSettingsClient(fragment.getContext());</span>
+<span class="fc" id="L88">        Task&lt;LocationSettingsResponse&gt; locationSettingsResponseTask = client.checkLocationSettings(request);</span>
+<span class="fc" id="L89">        locationSettingsResponseTask.addOnSuccessListener(new OnSuccessListener&lt;LocationSettingsResponse&gt;() {</span>
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+<span class="fc" id="L92">                startLocationUpdates();</span>
+<span class="fc" id="L93">            }</span>
+        });
+<span class="fc" id="L95">        locationSettingsResponseTask.addOnFailureListener(new OnFailureListener() {</span>
+            @Override
+            public void onFailure(@NonNull Exception e) {
+<span class="nc" id="L98">                e.printStackTrace();</span>
+<span class="nc" id="L99">            }</span>
+        });
+<span class="fc" id="L101">    }</span>
+
+    /*
+    * Starts the location updates if permissions are granted.
+    * */
+    private void startLocationUpdates() {
+<span class="pc bpc" id="L107" title="3 of 4 branches missed.">        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &amp;&amp; ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {</span>
+        }
+<span class="fc" id="L109">        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());</span>
+<span class="fc" id="L110">    }</span>
+
+    /*
+    * Used for stopping the location updates.
+    * */
+    private void stopLocationUpdates() {
+<span class="fc" id="L116">        fusedLocationProviderClient.removeLocationUpdates(locationCallback);</span>
+//        for (int i = 0; i &lt; locations.size(); i++){
+//            System.out.println(&quot;Locations list: &quot; + locations.get(i));
+//        }
+<span class="fc" id="L120">    }</span>
+
+    /*
+    * Checks the permission for location use and returns the last known location.
+    * */
+    private void getLastLocation() {
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(),</span>
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)  {
+        }
+<span class="fc" id="L129">        Task&lt;Location&gt; locationTask = fusedLocationProviderClient.getLastLocation();</span>
+<span class="fc" id="L130">        locationTask.addOnSuccessListener(new OnSuccessListener&lt;Location&gt;() {</span>
+            @Override
+            public void onSuccess(Location location) {
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">                if (location != null) {</span>
+<span class="fc" id="L134">                    System.out.println(&quot;Location from getLastLocation() : &quot; + location);</span>
+                } else {
+<span class="nc" id="L136">                    System.out.println(&quot;Location from getLastLocation() was null : &quot; + location);</span>
+                }
+<span class="fc" id="L138">            }</span>
+        });
+<span class="fc" id="L140">    }</span>
+
+    /*
+    * Is used to stop the activity running.
+    * */
+    @Override
+    public void setActive(boolean stopActivity) {
+<span class="fc" id="L147">        stopLocationUpdates();</span>
+<span class="fc" id="L148">    }</span>
+
+    /*
+    * Returns the rounded value of travelled distance.
+    * */
+    public double getTravelledDistance() {
+<span class="fc" id="L154">        return BigDecimal.valueOf(travelledDistance).setScale(2, RoundingMode.HALF_UP).doubleValue();</span>
+    }
+
+    @Override
+    public void setTravelledDistance() {
+<span class="fc" id="L159">        travelledDistance = 0f;</span>
+<span class="fc" id="L160">    }</span>
+
+    /*
+    * calculateDistance-method calculates distance between two locations using Haversine-formula.
+    * It takes in latitude and longitude values as parameters from the two locations it calculates the distance between,
+    * and returns the difference as double.
+    * */
+    static double calculateDistance(double lat1, double lon1,
+                            double lat2, double lon2)
+    {
+
+<span class="nc" id="L171">        double dLat = Math.toRadians(lat2 - lat1);</span>
+<span class="nc" id="L172">        double dLon = Math.toRadians(lon2 - lon1);</span>
+
+<span class="nc" id="L174">        lat1 = Math.toRadians(lat1);</span>
+<span class="nc" id="L175">        lat2 = Math.toRadians(lat2);</span>
+
+<span class="nc" id="L177">        double a = Math.pow(Math.sin(dLat / 2), 2) +</span>
+<span class="nc" id="L178">                Math.pow(Math.sin(dLon / 2), 2) *</span>
+<span class="nc" id="L179">                        Math.cos(lat1) *</span>
+<span class="nc" id="L180">                        Math.cos(lat2);</span>
+<span class="nc" id="L181">        double rad = 6371000;</span>
+<span class="nc" id="L182">        double c = 2 * Math.asin(Math.sqrt(a));</span>
+
+<span class="nc" id="L184">        travelledDistance += rad * c;</span>
+<span class="nc" id="L185">        return travelledDistance;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.1.1</div></body></html>
