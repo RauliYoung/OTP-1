@@ -23,6 +23,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+      - name: Touch local properties
+        run: touch local.properties
       - name: Run linter
         run: ./gradlew lint
       - name: Grant execute permission for gradlew
@@ -40,6 +42,8 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: 'gradle'
+      - name: Touch local properties
+        run: touch local.properties
       - name: Run unit tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
