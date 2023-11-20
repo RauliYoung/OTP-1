@@ -113,3 +113,9 @@ If the application doesn't meet the competitive standards within the set timefra
 | Tristan Ellenberg  |
 | Kaspar Tullus      |
 | Samu Aikio         |
+
+---
+
+### Note
+- You can find a finnish readme, in the root folder, named README_FI.
+- For the sake of readability images and diagrams are in a separate folder(root --> diagrams).
