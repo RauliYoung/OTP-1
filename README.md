@@ -48,13 +48,14 @@ The group page allows users to join groups with other members. When a user is pa
 
 ### Technical Spesifications
 
-| Programming Languages | Java 17            |
-|------------------------|---------------------|
-| Application Platform   | Android             |
-| Database               | NoSQL Firebase      |
-| Android API Level      | 34                  |
-| Other APIs             | Google Location     |
-| Testing                | JUnit 4             |
+| Programming Languages | Java 17             |
+|-----------------------|---------------------|
+| Application Platform  | Android             |
+| Database              | NoSQL Firebase      |
+| Android API Level     | 34                  |
+| Other APIs            | Google Location     |
+| Testing               | JUnit 4             |
+| Github Actions(test)  | run build ./gradlew |
 
 ---
 
@@ -72,24 +73,24 @@ On going (Through out the project)
 
 ### Project Timeline
 
-| Week | Tasks                                                      |
-|------|------------------------------------------------------------|
-| 1    | Project vision                                             |
-| 2    | Gather resources, establish database connection           |
-| 3    | Develop user interface, create user accounts              |
-| 4    | Establish GPS sensor connection, add user groups          |
-| 5    | Collect user data, visualize user data                    |
-| 6    | Conduct Junit testing                                      |
-| 7    | Release first test version, enhance application layout    |
-| 8    | Prepare for demo                                           |
-| 9    |                                                            |
-| 10   |                                                            |
-| 11   |                                                            |
-| 12   |                                                            |
-| 13   |                                                            |
-| 14   |                                                            |
-| 15   |                                                            |
-| 16   |                                                            |
+| Week | Tasks                                                  |
+|------|--------------------------------------------------------|
+| 1    | Project vision                                         |
+| 2    | Gather resources, establish database connection        |
+| 3    | Develop user interface, create user accounts           |
+| 4    | Establish GPS sensor connection, add user groups       |
+| 5    | Collect user data, visualize user data                 |
+| 6    | Conduct Junit testing                                  |
+| 7    | Release first test version, enhance application layout |
+| 8    | Prepare for demo                                       |
+| 9    | Localization                                           |
+| 10   | Testing/Pipeline                                       |
+| 11   |                                                        |
+| 12   |                                                        |
+| 13   |                                                        |
+| 14   |                                                        |
+| 15   |                                                        |
+| 16   |                                                        |
 
 ---
 
