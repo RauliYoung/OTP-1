@@ -67,7 +67,7 @@ Our test cases in the pipeline include the following steps.
 
 ---
 # Testing and Test Generation
-### NOTE: To be able to perform test recording the emulator and application needs to be up&running.
+#### NOTE: To be able to perform test recording the emulator and application needs to be up&running.
 
 - Open Run in Android studio and choose record Espresso test.
 - You can click and run the application and the recorder will automatically generate the test, once all steps are done stop recording and the test will appear in androidTest folder.
@@ -102,7 +102,7 @@ Our test cases in the pipeline include the following steps.
 test_username = testi@testi.fi
 test_password = testi123
 ```
-### NOTE: local.properties should always be gitignored, so the setup provided works only locally.
+#### NOTE: local.properties should always be gitignored, so the setup provided works only locally.
 
 ### Pipeline instructions.
 
