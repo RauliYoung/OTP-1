@@ -44,7 +44,7 @@
             android:layout_marginTop="130dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="-130dp"
-            android:background="@drawable/cornerround"
+            android:background="@color/fui_transparent"
             android:gravity="center"
             android:shadowColor="#000000"
             android:shadowDx="10"
