@@ -66,6 +66,64 @@ Our test cases in the pipeline include the following steps.
 |             |            |                | 2. Run Checkstyle (`dbelyaev/action-checkstyle@master`) with GitHub token, GitHub PR review reporter, and warning level |
 
 ---
+# Testing and Test Generation
+### NOTE: To be able to perform test recording the emulator and application needs to be up&running.
+
+- Open Run in Android studio and choose record Espresso test.
+- You can click and run the application and the recorder will automatically generate the test, once all steps are done stop recording and the test will appear in androidTest folder.
+---
+### The test is a public class, insert this block in the beginning of the class.
+```
+    private String test_user;
+    private String test_pass;
+    private final int timeout = 5000;
+
+    @Before
+    public void init() throws PackageManager.NameNotFoundException {
+        ApplicationInfo ai = getApplicationContext().getPackageManager()
+                .getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
+
+        test_user = (String) ai.metaData.get("test_username");
+        test_pass = (String) ai.metaData.get("test_password");
+    }
+```
+- Next open app --> src --> AndroidManifest and inside the application and outside of activity add 
+
+```
+        <meta-data
+            android:name = "test_username"
+            android:value = "${test_username}"/>
+        <meta-data
+            android:name = "test_password"
+            android:value = "${test_password}"/>
+```
+- Also in local.properties add 
+```
+test_username = testi@testi.fi
+test_password = testi123
+```
+### NOTE: local.properties should always be gitignored, so the setup provided works only locally.
+
+### Pipeline instructions.
+
+- In your Github repository check settings ---> secrets and variables --> actions
+- Create a new Environment and name it production or etc.
+- add TEST_PASSWORD = <password for a user in the database>
+- add TEST_USER = <email of a excisting user>
+
+### Configure pipeline
+
+- In youre workflow file add the following line where the test jobs use these secrets.
+```
+      - name: Add secrets to local properties
+        run: |
+          touch local.properties
+          echo "test_username=${{ secrets.TEST_USER }}" > local.properties
+          echo "test_password=${{ secrets.TEST_PASSWORD }}" >> local.properties
+```
+
+---
+
 
 ### Technical Spesifications
 
