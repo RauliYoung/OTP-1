@@ -99,8 +99,8 @@ Our test cases in the pipeline include the following steps.
 ```
 - Also in local.properties add 
 ```
-test_username = testi@testi.fi
-test_password = testi123
+test_username = testi@testi.fi(should excist in the database)
+test_password = testi123(should be password of the given user)
 ```
 #### NOTE: local.properties should always be gitignored, so the setup provided works only locally.
 
@@ -108,8 +108,8 @@ test_password = testi123
 
 - In your Github repository check settings ---> secrets and variables --> actions
 - Create a new Environment and name it production or etc.
-- add TEST_PASSWORD = <password for a user in the database>
-- add TEST_USER = <email of a excisting user>
+- add TEST_PASSWORD = password for a user in the database
+- add TEST_USER = email of a excisting user
 
 ### Configure pipeline
 
@@ -118,10 +118,10 @@ test_password = testi123
       - name: Add secrets to local properties
         run: |
           touch local.properties
-          echo "test_username=${{ secrets.TEST_USER }}" > local.properties
-          echo "test_password=${{ secrets.TEST_PASSWORD }}" >> local.properties
+          echo "test_username=${{ secrets.YOUR_SECRET_USERNAME_NAME }}" > local.properties
+          echo "test_password=${{ secrets.YOURE_SECRET_PASSWORD_NAME }}" >> local.properties
 ```
-
+#### More instructions ----> https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
 ---
 
 
