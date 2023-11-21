@@ -121,4 +121,4 @@ If the application doesn't meet the competitive standards within the set timefra
 
 ### Note
 - You can find a finnish readme, in the root folder, named README_FI.
-- For the sake of readability images and diagrams are in a separate folder(root --> diagrams).
+- For the sake of readability, images and diagrams are in a separate folder(root --> diagrams).
