@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.opt_1.control</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package com.example.opt_1.control;
+import android.os.SystemClock;
+import android.widget.Chronometer;
+import android.widget.TextView;
+import com.example.opt_1.model.*;
+import com.example.opt_1.view.ActivityFragment;
+import java.util.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+/**
+ * Controller class represents acts as the coordinator that handles the overall behavior and interaction of the application
+ */
+
+<span class="fc" id="L15">public class Controller implements IModeltoView, IViewToModel {</span>
+
+    /**
+     * A variable for the Data access object
+     * used for the database interactions
+     */
+<span class="fc" id="L21">    private IDAO database = new DAO();</span>
+    /**
+     * A list variable for the exercise group results
+     */
+<span class="fc" id="L25">    private Map&lt;String,ArrayList&lt;Double&gt;&gt; groupExercises = new HashMap&lt;&gt;();</span>
+    /**
+     * A variable for the Location Tracker
+     */
+    //private LocationTracker locationTracker;
+    private ILocationTracker locationTracker;
+    /**
+     * A variable for the Timer
+     */
+    private Chronometer activityTimer;
+    /**
+     * A variable for exercise time
+     */
+    private int activityLength;
+    /**
+     * A variable for UI ongoing exercise displayed in Activity page
+     */
+    private TextView timer;
+    /**
+     * Method is called login button in login page
+     * @param email The email provided in the login form
+     * @param password The password provided in the login form
+     * @param callbacks Used for verifying log in
+     */
+    @Override
+    public void userLogin(String email, String password, CRUDCallbacks callbacks) {
+<span class="fc" id="L51">        database.loginUser(email,password, callbacks);</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Method is called change password button in home fragment page
+     * @param oldPassword An old password provided in home fragment page form
+     * @param newPassword A new password provided in home fragment page form
+     */
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+<span class="nc" id="L61">        database.changePassword(oldPassword,newPassword);</span>
+<span class="nc" id="L62">    }</span>
+    /**
+     * Method for to remove the user from app
+     */
+    @Override
+    public void removeUser() {
+<span class="nc" id="L68">        database.removeUser();</span>
+<span class="nc" id="L69">    }</span>
+
+    @Override
+    public void startActivity(ActivityFragment fragment, TextView timer) {
+<span class="fc" id="L73">        this.timer = timer;</span>
+<span class="fc" id="L74">        activityTimer = (Chronometer) timer;</span>
+<span class="fc" id="L75">        activityTimer.setBase(SystemClock.elapsedRealtime());</span>
+<span class="fc" id="L76">        activityTimer.start();</span>
+<span class="fc" id="L77">        locationTracker = new LocationTracker(fragment);</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Method is called change username button in home fragment page
+     * @param newUsername A new username provided in home fragment page form
+     * @param callbacks Used for verifying that username has been changed
+     */
+    @Override
+    public void changeUsername(String newUsername, CRUDCallbacks callbacks) {
+<span class="nc" id="L87">        database.checksIfUsernameExist(newUsername, callbacks);</span>
+<span class="nc" id="L88">    }</span>
+
+    @Override
+    public Map&lt;String,Double&gt; stopActivity() {
+<span class="fc" id="L92">        Map&lt;String,Double&gt; results = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L93">        locationTracker.setActive(false);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if(activityTimer != null) {</span>
+<span class="fc" id="L95">            activityTimer.stop();</span>
+<span class="fc" id="L96">            long elapsedMillis = SystemClock.elapsedRealtime() - activityTimer.getBase();</span>
+<span class="fc" id="L97">            double seconds = (int) elapsedMillis / 1000;</span>
+<span class="fc" id="L98">            this.activityLength = (int) seconds;</span>
+<span class="fc" id="L99">            results.put(&quot;duration&quot;,seconds);</span>
+<span class="fc" id="L100">            results.put(&quot;speed&quot;, caclulatePace(this.activityLength));</span>
+<span class="fc" id="L101">            results.put(&quot;length&quot;, locationTracker.getTravelledDistance());</span>
+<span class="fc" id="L102">            activityTimer.setBase(SystemClock.elapsedRealtime());</span>
+<span class="fc" id="L103">            locationTracker.setTravelledDistance();</span>
+        }
+<span class="fc" id="L105">        database.addNewExerciseToDatabase(new Exercise(activityLength, locationTracker.getTravelledDistance(), caclulatePace(activityLength)));</span>
+<span class="fc" id="L106">        System.out.println(&quot;Activity Stopping!&quot;);</span>
+<span class="fc" id="L107">        return results;</span>
+    }
+
+    @Override
+    public Map&lt;String, ArrayList&lt;Double&gt;&gt; getGroupExericesforView() {
+<span class="nc" id="L112">        return groupExercises;</span>
+    }
+
+    /**
+     * Method creating a new hashmap for saving using to the database
+     * @param firstName The first name provided in register page form
+     * @param lastName The last name provided in register page form
+     * @param username The username provided in register page form
+     * @param password The password provided in register page form
+     * @param email The email provided in register page form
+     * @param callback Used for verifying that a new user has been created
+     */
+
+    @Override
+    public void setRegisterInformation(String firstName, String lastName, String username, String password, String email, CRUDCallbacks callback) {
+<span class="nc" id="L127">        Map&lt;String, String&gt; user = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L128">        user.put(&quot;firstName&quot;, firstName);</span>
+<span class="nc" id="L129">        user.put(&quot;lastName&quot;, lastName);</span>
+<span class="nc" id="L130">        user.put(&quot;username&quot;, username);</span>
+<span class="nc" id="L131">        user.put(&quot;email&quot;, email);</span>
+<span class="nc" id="L132">        user.put(&quot;userInGroup&quot;,&quot;false&quot;);</span>
+<span class="nc" id="L133">        user.put(&quot;group&quot;,&quot;null&quot;);</span>
+<span class="nc" id="L134">        database.createUser(user, password, callback);</span>
+<span class="nc" id="L135">    }</span>
+
+    /**
+     * Method is called in the group activity page
+     * @param groupName The group name provided in the group activity page form
+     */
+    @Override
+    public void createNewGroup(String groupName) {
+<span class="nc" id="L143">        database.addNewGroupIntoDatabase(groupName);</span>
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Method is called in the group activity page
+     * @param groupOwnerEmail The group owner email provided in the group activity page form
+     */
+    @Override
+    public void joinToGroup(String groupOwnerEmail) {
+
+<span class="nc" id="L153">        database.addUserToTheGroup(groupOwnerEmail, new CRUDCallbacks() {</span>
+            @Override
+            public void onSucceed() {
+<span class="nc" id="L156">                database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {</span>
+                    @Override
+                    public void onSucceed() {
+<span class="nc" id="L159">                        groupExercises = database.getGroupResults();</span>
+<span class="nc" id="L160">                    }</span>
+                    @Override
+                    public void onFailure() {
+<span class="nc" id="L163">                    }</span>
+                });
+<span class="nc" id="L165">            }</span>
+
+            @Override
+            public void onFailure() {
+
+<span class="nc" id="L170">                System.out.println(&quot;Error while adding user into the group&quot;);</span>
+<span class="nc" id="L171">            }</span>
+        });
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * Method is called in the group activity page
+     * @param groupOwnerEmail The group owner email provided in the group activity page form
+     */
+    @Override
+    public void leaveFromGroup(String groupOwnerEmail) {
+<span class="nc" id="L181">        database.removeUserFromTheGroup(groupOwnerEmail);</span>
+<span class="nc" id="L182">    }</span>
+    /*
+    * calculatePace takes the length(time) and time as parameter
+    * then calculates the pace of the activity and returns the value by km/h.
+    * */
+    @Override
+    public double caclulatePace(double activityLength) {
+        //Calculate pace, also refactor the method to take the distance of the activity as a parameter.
+<span class="fc" id="L190">        double speed = (locationTracker.getTravelledDistance()/activityLength) * 3.6;</span>
+
+<span class="fc" id="L192">        return BigDecimal.valueOf(speed).setScale(2, RoundingMode.HALF_UP).doubleValue();</span>
+    }
+
+    /**
+     * Method is called in the group activity page
+     * @param groupOwnerEmail The group owner email provided in the user instance variable
+     */
+    @Override
+    public void fecthGroupResults(String groupOwnerEmail,CRUDCallbacks callbacks) {
+<span class="nc" id="L201">        System.out.println(&quot;Fetch group results controller: &quot; + groupOwnerEmail);</span>
+<span class="nc" id="L202">        database.fetchGroupFromDatabase(groupOwnerEmail, new CRUDCallbacks() {</span>
+            @Override
+            public void onSucceed() {
+<span class="nc" id="L205">                groupExercises = database.getGroupResults();</span>
+<span class="nc" id="L206">                System.out.println(&quot;Groups exercises: &quot; + groupExercises);</span>
+<span class="nc" id="L207">                callbacks.onSucceed();</span>
+<span class="nc" id="L208">            }</span>
+
+            @Override
+            public void onFailure() {
+
+<span class="nc" id="L213">            }</span>
+        });
+<span class="nc" id="L215">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.1.1</div></body></html>

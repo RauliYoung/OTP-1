@@ -1,18 +1,18 @@
 package com.example.opt_1.view;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opt_1.R;
@@ -24,15 +24,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 public class LoginPage extends AppCompatActivity {
-
+    private CompletableFuture<String> futureResult;
     private EditText usernameField;
     private EditText passwordField;
     private Button loginButton;
     private Button registerButton;
     private IViewToModel controller;
+    private String done = "";
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser fireUser = auth.getCurrentUser();
@@ -44,6 +47,9 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         controller = new Controller();
         setContentView(R.layout.login_page);
+
+
+
 
         //Language Selector Spinner.
 
@@ -141,21 +147,30 @@ public class LoginPage extends AppCompatActivity {
     }
 
 
-    private void userLogin(){
-        controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {
-            @Override
-            public void onSucceed() {
-                System.out.println("User logged in: " + User.getInstance().getEmail());
-                Intent intent = new Intent(LoginPage.this, Main_Page.class);
-                startActivity(intent);
-                finish();
+    private CompletableFuture<String> userLogin(){
+        CompletableFuture<String> futureResult = new CompletableFuture<>();
+            controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {
+                @Override
+                public void onSucceed(){
+                    System.out.println("User logged in: " + User.getInstance().getEmail());
+                    Intent intent = new Intent(LoginPage.this, Main_Page.class);
+                    startActivity(intent);
+                    finish();
+                    futureResult.complete("True");
+                    System.out.println(futureResult);
+                }
 
-            }
+                @Override
+                public void onFailure() {
+                    futureResult.complete("False");
+                    CharSequence text = "Email or Password is incorrect, or empty fields!";
+                    int duration = Toast.LENGTH_SHORT;
 
-            @Override
-            public void onFailure() {
-                System.out.println("Kaikki paskana!");
-            }
-        });
+                    Toast toast = Toast.makeText(LoginPage.this, text, duration);
+                    toast.show();
+                    System.out.println(futureResult);
+                }
+            });
+            return futureResult;
     }
 }

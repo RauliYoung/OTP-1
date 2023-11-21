@@ -1,8 +1,15 @@
-import com.android.build.gradle.internal.dependency.getProvidedClasspath
+import com.android.build.gradle.internal.tasks.JacocoTask
+import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.type
 
 plugins {
     id("com.android.application")
     id ("com.google.gms.google-services")
+    id("com.google.secrets_gradle_plugin") version "0.6.1"
+    id("jacoco")
+}
+
+jacoco{
+    version = "0.8.8"
 }
 
 android {
@@ -14,19 +21,25 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+        }
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -70,4 +83,24 @@ tasks.withType<Test> {
         events("started", "skipped", "passed", "failed")
         showStandardStreams = true
     }
+    finalizedBy(tasks.withType<JacocoReport>())
+}
+// ./gradlew createDebugCoverageReport for coverage
+// ./gradlew test for unit test
+tasks.withType<JacocoReport> {
+    dependsOn(tasks.withType<Test>())
+    group = "Verification" // existing group containing tasks for generating linting reports etc.
+    description = "Generate Jacoco coverage reports for the 'local' debug build."
+
+    reports {
+        html.required = true
+        xml.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
+
+    executionData.from("${layout.buildDirectory}/outputs/unit_test_code_coverage/localDebugUnitTest/testLocalDebugUnitTest.exec")
+
+    classDirectories.from("${layout.buildDirectory}/tmp/kotlin-classes/localDebug")
+
+    sourceDirectories.from("${layout.buildDirectory}/src/main/java")
 }

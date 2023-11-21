@@ -16,19 +16,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
-    - name: Run linter
-      run: ./gradlew lint
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      - uses: actions/checkout@v3
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Touch local properties
+        run: touch local.properties
+      - name: Run linter
+        run: ./gradlew lint
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
   test:
     runs-on: macos-latest
     steps:
@@ -40,13 +42,15 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: 'gradle'
-      - name: Run connected tests
+      - name: Touch local properties
+        run: touch local.properties
+      - name: Run unit tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 30
           target: google_apis
           arch: x86_64
           script: |
-             pwd
-             ls -a
-             ./gradlew connectedCheck --stacktrace --scan
+            pwd
+            ls -a
+            ./gradlew test

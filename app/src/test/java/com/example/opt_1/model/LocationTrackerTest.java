@@ -1,15 +1,8 @@
 package com.example.opt_1.model;
 
 import static org.junit.Assert.*;
-
-import androidx.fragment.app.Fragment;
-
-import com.example.opt_1.control.Controller;
-import com.example.opt_1.view.ActivityFragment;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
