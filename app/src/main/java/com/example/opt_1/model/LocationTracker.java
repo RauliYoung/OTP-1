@@ -2,40 +2,22 @@ package com.example.opt_1.model;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import com.example.opt_1.control.Controller;
 import com.example.opt_1.view.ActivityFragment;
-import com.google.android.gms.common.data.DataBufferObserver;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-
+import com.google.android.gms.location.*;
+import com.google.android.gms.tasks.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Observable;
 
 public class LocationTracker extends Observable implements ILocationTracker {
-
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
-    private Location currentLocation;
-    private LocationManager mLocationManager;
-    private LocationListener mLocationListener;
     private ActivityFragment fragmentfor;
-    private static double travelledDistance;
+    private double travelledDistance;
     private ArrayList<Location> locations = new ArrayList<>();
 
 
@@ -66,6 +48,7 @@ public class LocationTracker extends Observable implements ILocationTracker {
         getLastLocation();
         checkSettingsAndStartGps(activityFragment);
     }
+    public LocationTracker(){};
 
     /*
     * Is used to to adjust to the intervals in which the location is requested
@@ -114,9 +97,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
     * */
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-//        for (int i = 0; i < locations.size(); i++){
-//            System.out.println("Locations list: " + locations.get(i));
-//        }
     }
 
     /*
@@ -164,8 +144,8 @@ public class LocationTracker extends Observable implements ILocationTracker {
     * It takes in latitude and longitude values as parameters from the two locations it calculates the distance between,
     * and returns the difference as double.
     * */
-    static double calculateDistance(double lat1, double lon1,
-                            double lat2, double lon2)
+
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
 
         double dLat = Math.toRadians(lat2 - lat1);
