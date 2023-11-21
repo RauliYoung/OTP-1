@@ -45,6 +45,27 @@ In the navigation bar, in addition to the default view (profile page), there are
 The group page allows users to join groups with other members. When a user is part of a group, they can monitor the activities of other group members from a list that appears on the screen.
 
 ---       
+# Github Actions
+
+Pipeline configuration is done in the ./Github/workflows/android.yml file.
+Github automatically locates the file and runs it in the pipeline as configured.
+
+Our test cases in the pipeline include the following steps.
+
+| Stage       | Job   | OS             | Steps                                                                                             |
+|-------------|-------|----------------|---------------------------------------------------------------------------------------------------|
+| Build       | build | ubuntu-latest  | 1. Checkout repository (`actions/checkout@v3`)                                                     |
+|             |       |                | 2. Set up JDK 11 (`actions/setup-java@v3`) with Java 17, Temurin distribution, and Gradle cache   |
+|             |       |                | 3. Run linter (`./gradlew lint`)                                                                   |
+|             |       |                | 4. Grant execute permission for gradlew (`chmod +x gradlew`)                                       |
+|             |       |                | 5. Build with Gradle (`./gradlew build`)                                                          |
+| Test        | test  | macos-latest   | 1. Checkout repository (`actions/checkout@v3`)                                                     |
+|             |       |                | 2. Set up JDK 11 (`actions/setup-java@v3`) with Java 17, Adopt distribution, and Gradle cache      |
+|             |       |                | 3. Run connected tests with Android emulator (`./gradlew connectedCheck --stacktrace --scan`)    |
+| Checkstyle  | checkstyle | ubuntu-latest | 1. Checkout repository (`actions/checkout@v4`)                                                    |
+|             |            |                | 2. Run Checkstyle (`dbelyaev/action-checkstyle@master`) with GitHub token, GitHub PR review reporter, and warning level |
+
+---
 
 ### Technical Spesifications
 
@@ -129,23 +150,4 @@ If the application doesn't meet the competitive standards within the set timefra
 
 ---
 
-# Github Actions
-
-Pipeline configuration is done in the ./Github/workflows/android.yml file.
-Github automatically locates the file and runs it in the pipeline as configured.
-
-Our test cases in the pipeline include the following steps.
-
-| Stage       | Job   | OS             | Steps                                                                                             |
-|-------------|-------|----------------|---------------------------------------------------------------------------------------------------|
-| Build       | build | ubuntu-latest  | 1. Checkout repository (`actions/checkout@v3`)                                                     |
-|             |       |                | 2. Set up JDK 11 (`actions/setup-java@v3`) with Java 17, Temurin distribution, and Gradle cache   |
-|             |       |                | 3. Run linter (`./gradlew lint`)                                                                   |
-|             |       |                | 4. Grant execute permission for gradlew (`chmod +x gradlew`)                                       |
-|             |       |                | 5. Build with Gradle (`./gradlew build`)                                                          |
-| Test        | test  | macos-latest   | 1. Checkout repository (`actions/checkout@v3`)                                                     |
-|             |       |                | 2. Set up JDK 11 (`actions/setup-java@v3`) with Java 17, Adopt distribution, and Gradle cache      |
-|             |       |                | 3. Run connected tests with Android emulator (`./gradlew connectedCheck --stacktrace --scan`)    |
-| Checkstyle  | checkstyle | ubuntu-latest | 1. Checkout repository (`actions/checkout@v4`)                                                    |
-|             |            |                | 2. Run Checkstyle (`dbelyaev/action-checkstyle@master`) with GitHub token, GitHub PR review reporter, and warning level |
 
