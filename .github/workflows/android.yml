@@ -24,7 +24,12 @@ jobs:
           distribution: 'temurin'
           cache: gradle
       - name: Add secrets to local properties
-        run: ls -a
+        run: |
+          touch local.properties
+          echo "test_user=${{ secrets.TEST_USER }}" > local.properties
+          echo "test_password=${{ secrets.TEST_PASSWORD }}" >> local.properties
+          ls -a
+          echo local.properties
       - name: Run linter
         run: ./gradlew lint
       - name: Grant execute permission for gradlew
