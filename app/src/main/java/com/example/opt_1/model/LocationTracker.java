@@ -6,8 +6,17 @@ import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import com.example.opt_1.view.ActivityFragment;
-import com.google.android.gms.location.*;
-import com.google.android.gms.tasks.*;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -19,7 +28,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
     private ActivityFragment fragmentfor;
     private double travelledDistance;
     private ArrayList<Location> locations = new ArrayList<>();
-
 
     /*
     * Adds the requested locations into list and their latitudes and longitudes.
@@ -39,7 +47,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
             notifyObservers(getTravelledDistance());
         }
     };
-
     public LocationTracker(ActivityFragment activityFragment) {
         addObserver(activityFragment);
         this.fragmentfor = activityFragment;
@@ -61,7 +68,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
         locationRequest.setSmallestDisplacement(3);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
-
     /*
     * Checks the settings for location requests and calls for locations updates to start.
     * */
@@ -82,7 +88,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
             }
         });
     }
-
     /*
     * Starts the location updates if permissions are granted.
     * */
@@ -91,14 +96,12 @@ public class LocationTracker extends Observable implements ILocationTracker {
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
-
     /*
     * Used for stopping the location updates.
     * */
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
-
     /*
     * Checks the permission for location use and returns the last known location.
     * */
@@ -118,7 +121,6 @@ public class LocationTracker extends Observable implements ILocationTracker {
             }
         });
     }
-
     /*
     * Is used to stop the activity running.
     * */
@@ -126,41 +128,33 @@ public class LocationTracker extends Observable implements ILocationTracker {
     public void setActive(boolean stopActivity) {
         stopLocationUpdates();
     }
-
     /*
     * Returns the rounded value of travelled distance.
     * */
     public double getTravelledDistance() {
         return BigDecimal.valueOf(travelledDistance).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
-
     @Override
     public void setTravelledDistance() {
         travelledDistance = 0f;
     }
-
     /*
     * calculateDistance-method calculates distance between two locations using Haversine-formula.
     * It takes in latitude and longitude values as parameters from the two locations it calculates the distance between,
     * and returns the difference as double.
     * */
-
     public double calculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
-
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
-
         lat1 = Math.toRadians(lat1);
         lat2 = Math.toRadians(lat2);
-
         double a = Math.pow(Math.sin(dLat / 2), 2) +
                 Math.pow(Math.sin(dLon / 2), 2) *
                         Math.cos(lat1) *
                         Math.cos(lat2);
         double rad = 6371000;
         double c = 2 * Math.asin(Math.sqrt(a));
-
         travelledDistance += rad * c;
         return travelledDistance;
     }
