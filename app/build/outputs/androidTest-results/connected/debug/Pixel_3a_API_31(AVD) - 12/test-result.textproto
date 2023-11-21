@@ -1,0 +1,68 @@
+# 2023-11-21T16:53:03.181Z:
+test_suite_meta_data {
+  scheduled_test_case_count: 1
+}
+test_status: PASSED
+test_result {
+  test_case {
+    test_class: "TimerLogoutTest"
+    test_package: "com.example.opt_1.view"
+    test_method: "timerLogoutTest"
+    start_time {
+      seconds: 1700585564
+      nanos: 188000000
+    }
+    end_time {
+      seconds: 1700585582
+      nanos: 136000000
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/tristan/AndroidStudioProjects/OTP-1/app/build/outputs/androidTest-results/connected/debug/Pixel_3a_API_31(AVD) - 12/logcat-com.example.opt_1.view.TimerLogoutTest-timerLogoutTest.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/tristan/AndroidStudioProjects/OTP-1/app/build/outputs/androidTest-results/connected/debug/Pixel_3a_API_31(AVD) - 12/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/tristan/AndroidStudioProjects/OTP-1/app/build/outputs/androidTest-results/connected/debug/Pixel_3a_API_31(AVD) - 12/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/tristan/AndroidStudioProjects/OTP-1/app/build/outputs/androidTest-results/connected/debug/Pixel_3a_API_31(AVD) - 12/cpuinfo"
+    }
+  }
+}
+output_artifact {
+  label {
+    label: "test-results.log"
+    namespace: "com.google.testing.platform.runtime.android.driver.AndroidInstrumentationDriver"
+  }
+  source_path {
+    path: "/home/tristan/AndroidStudioProjects/OTP-1/app/build/outputs/androidTest-results/connected/debug/Pixel_3a_API_31(AVD) - 12/testlog/test-results.log"
+  }
+  type: TEST_DATA
+  mime_type: "text/plain"
+}

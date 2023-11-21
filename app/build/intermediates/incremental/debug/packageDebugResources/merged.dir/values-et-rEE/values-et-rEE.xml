@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Seaded</string>
+    <string name="activity">Tegevus</string>
+    <string name="app_name">Lenkkifrendi</string>
+    <string name="change_password">Vaheta salasõna</string>
+    <string name="change_username">Vaheta kasutajanimi</string>
+    <string name="create_group">Loo grupp</string>
+    <string name="current_password">Praegune salasõna</string>
+    <string name="delete_user">Kustuta kasutajanimi</string>
+    <string name="distance_travelled">Distance travelled: %.1f meters.</string>
+    <string name="email">E-post</string>
+    <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
+    <string name="exercise_length">Length of your exercise was %.1f meters.</string>
+    <string name="exercise_speed">The speed was %.1f km/h.</string>
+    <string name="first_fragment_label">Esimene Fragment</string>
+    <string name="first_name">Eesnimi</string>
+    <string name="group">Rühm</string>
+    <string name="groups">Rühmad</string>
+    <string name="home">Kodu</string>
+    <string name="join_group">Liitu gruppi</string>
+    <string name="last_name">Perekonnanimi</string>
+    <string name="leave_group">Lahku grupist</string>
+    <string name="login">Logi Sisse</string>
+    <string name="logout">Logi välja</string>
+    <string name="new_password">Uus salasõna</string>
+    <string name="new_username">Uus kasutajanimi</string>
+    <string name="next">Järgmine</string>
+    <string name="password">Parool</string>
+    <string name="previous">Eelmine</string>
+    <string name="profile_image">Profiili pilt</string>
+    <string name="register">Registeeri</string>
+    <string name="results">Tulemused</string>
+    <string name="second_fragment_label">Teine Fragment</string>
+    <string name="start_activity">Alusta</string>
+    <string name="stop_activity">Lõpeta</string>
+    <string name="timer">Taimer</string>
+    <string name="username">Kasutajanimi</string>
+</resources>
