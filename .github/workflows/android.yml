@@ -25,6 +25,7 @@ jobs:
           cache: gradle
       - name: Add secrets to local properties
         run: |
+          touch local.properties
           echo "test_user=${{ secrets.TEST_USER }}" > $HOME/.gradle/local.properties
           echo "test_password=${{ secrets.TEST_PASSWORD }}" >> $HOME/.gradle/local.properties
       - name: Run linter
