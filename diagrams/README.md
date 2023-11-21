@@ -4,7 +4,7 @@
 
 Luokkaaviolla kuvataan ohjelman koostuminen luokista.
 
-![img_1.png](diagrams/img_1.png)
+![img_1.png](img_1.png)
 
 ![img_2.png](diagrams/img_2.png)
 
