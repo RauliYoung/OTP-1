@@ -83,14 +83,14 @@ On going (Through out the project)
 | 6    | Conduct Junit testing                                  |
 | 7    | Release first test version, enhance application layout |
 | 8    | Prepare for demo                                       |
-| 9    | Localization                                           |
-| 10   | Testing/Pipeline                                       |
-| 11   |                                                        |
-| 12   |                                                        |
-| 13   |                                                        |
-| 14   |                                                        |
-| 15   |                                                        |
-| 16   |                                                        |
+| 1    | Localization                                           |
+| 2    | Testing/Pipeline                                       |
+| 3    |                                                        |
+| 4    |                                                        |
+| 5    |                                                        |
+| 6    |                                                        |
+| 7    |                                                        |
+| 8    |                                                        |
 
 ---
 
