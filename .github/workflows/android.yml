@@ -26,8 +26,8 @@ jobs:
       - name: Add secrets to local properties
         run: |
           touch local.properties
-          echo "test_user=${{ secrets.TEST_USER }}" > $HOME/.gradle/local.properties
-          echo "test_password=${{ secrets.TEST_PASSWORD }}" >> $HOME/.gradle/local.properties
+          echo "test_user=${{ secrets.TEST_USER }}" > local.properties
+          echo "test_password=${{ secrets.TEST_PASSWORD }}" >> local.properties
       - name: Run linter
         run: ./gradlew lint
       - name: Grant execute permission for gradlew
