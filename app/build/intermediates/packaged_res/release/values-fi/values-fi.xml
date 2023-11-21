@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Asetukset</string>
+    <string name="activity">Aktiviteetti</string>
+    <string name="app_name">Lenkkifrendi</string>
+    <string name="change_password">Vaihda Salasana</string>
+    <string name="change_username">Vaihda Käyttäjätunnus</string>
+    <string name="create_group">Luo Ryhmä</string>
+    <string name="current_password">Nykyinen Salasana</string>
+    <string name="delete_user">Poista Käyttäjätunnus</string>
+    <string name="distance_travelled">Kuljettu: %.1f metriä.</string>
+    <string name="email">Sähköposti</string>
+    <string name="exercise_duration">Kesto %.1f sekunttia.</string>
+    <string name="exercise_length">Kuljit %.1f metriä.</string>
+    <string name="exercise_speed">Keskivauhti %.1f km/h.</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="first_name">Etunimi</string>
+    <string name="group">Group</string>
+    <string name="groups">Ryhmät</string>
+    <string name="home">Koti</string>
+    <string name="join_group">Liity Ryhmään</string>
+    <string name="last_name">Sukunimi</string>
+    <string name="leave_group">Poistu Ryhmästä</string>
+    <string name="login">Kirjaudu</string>
+    <string name="logout">Kirjaudu Ulos</string>
+    <string name="new_password">Uusi Salasana</string>
+    <string name="new_username">Uusi Käyttäjätunnus</string>
+    <string name="next">Seuraava</string>
+    <string name="password">Salasana</string>
+    <string name="previous">Edellinen</string>
+    <string name="profile_image">Profiilikuva</string>
+    <string name="register">Rekisteröidy</string>
+    <string name="results">Results</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="start_activity">Aloita Aktiviteetti</string>
+    <string name="stop_activity">Lopeta Aktiviteetti</string>
+    <string name="timer">Timer</string>
+    <string name="username">Käyttäjätunnus</string>
+</resources>

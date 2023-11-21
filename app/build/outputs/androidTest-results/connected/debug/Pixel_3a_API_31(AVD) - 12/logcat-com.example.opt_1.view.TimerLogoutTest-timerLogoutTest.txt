@@ -1,0 +1,265 @@
+11-21 18:52:43.421 17456 17480 I TestRunner: started: timerLogoutTest(com.example.opt_1.view.TimerLogoutTest)
+11-21 18:52:43.430 15808 15839 I A       : NGA disabled due to not being eligible.
+11-21 18:52:43.432 17456 17480 I UiAutomationShellCmd: Requesting permission: pm grant com.example.opt_1 android.permission.ACCESS_FINE_LOCATION
+11-21 18:52:43.432 17456 17480 W UiAutomation: UiAutomation.grantRuntimePermission() is more robust and should be used instead of 'pm grant'
+11-21 18:52:43.443 17456 17480 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-21 18:52:43.453 17456 17488 I FA      : App measurement initialized, version: 80069
+11-21 18:52:43.453 17456 17488 I FA      : To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+11-21 18:52:43.453 17456 17488 I FA      : To enable faster debug mode event logging run:
+11-21 18:52:43.453 17456 17488 I FA      :   adb shell setprop debug.firebase.analytics.app com.example.opt_1
+11-21 18:52:43.461 17456 17495 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-21 18:52:43.462 17456 17495 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-21 18:52:43.463 17456 17495 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-21 18:52:43.463 17456 17488 W m.example.opt_: Class com.google.android.gms.tasks.zzn failed lock verification and will run slower.
+11-21 18:52:43.463 17456 17488 W m.example.opt_: Class com.google.android.gms.tasks.zzl failed lock verification and will run slower.
+11-21 18:52:43.464 17456 17488 W m.example.opt_: Class com.google.android.gms.tasks.zzh failed lock verification and will run slower.
+11-21 18:52:43.466 17456 17498 W m.example.opt_: Class com.google.android.gms.tasks.zzm failed lock verification and will run slower.
+11-21 18:52:43.474 17456 17456 W m.example.opt_: Class com.google.firebase.auth.FirebaseAuth failed lock verification and will run slower.
+11-21 18:52:43.475   349   349 D goldfish-address-space: claimShared: Ask to claim region [0x3f1827000 0x3f214d000]
+11-21 18:52:43.478   349   349 D goldfish-address-space: claimShared: Ask to claim region [0x3f214d000 0x3f2a73000]
+11-21 18:52:43.479   349   386 D goldfish-address-space: claimShared: Ask to claim region [0x3f2a73000 0x3f3399000]
+11-21 18:52:43.480 17456 17456 W m.example.opt_: Class com.google.android.gms.internal.firebase-auth-api.zzacq failed lock verification and will run slower.
+11-21 18:52:43.489  7916  7916 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+11-21 18:52:43.489  7916  7916 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+11-21 18:52:43.492   720   934 D EGL_emulation: app_time_stats: avg=1799.89ms min=14.90ms max=38884.81ms count=22
+11-21 18:52:43.494   720   934 D EGL_emulation: app_time_stats: avg=2438.47ms min=15.43ms max=38771.11ms count=16
+11-21 18:52:43.494 17456 17456 D AppCompatDelegate: Checking for metadata for AppLocalesMetadataHolderService : Service not found
+11-21 18:52:43.497 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: PRE_ON_CREATE
+11-21 18:52:43.497 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-21 18:52:43.499 17456 17488 I FA      : Tag Manager is not found and thus will not be used
+11-21 18:52:43.507  1019  1470 D EGL_emulation: app_time_stats: avg=1247.47ms min=1247.47ms max=1247.47ms count=1
+11-21 18:52:43.525 17456 17456 W m.example.opt_: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (unsupported, reflection, allowed)
+11-21 18:52:43.525 17456 17456 W m.example.opt_: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (unsupported, reflection, allowed)
+11-21 18:52:43.557  1325  1325 I GsaVoiceInteractionSrv: Handling ACTION_STOP_HOTWORD
+11-21 18:52:43.557  1325  1325 E HwDetectorWithState: a: 3
+11-21 18:52:43.599 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: CREATED
+11-21 18:52:43.599 17456 17456 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=com.example.opt_1.view.LoginPage@76bdc91
+11-21 18:52:43.601 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: STARTED
+11-21 18:52:43.601 17456 17456 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=com.example.opt_1.view.LoginPage@76bdc91
+11-21 18:52:43.601 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: RESUMED
+11-21 18:52:43.602 17456 17456 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=com.example.opt_1.view.LoginPage@76bdc91
+11-21 18:52:43.636   379   468 W ServiceManager: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10155 pid=17456
+11-21 18:52:43.636   379   468 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10155 => denied (135 us)
+11-21 18:52:43.636   379   468 W ServiceManager: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10155 pid=17456
+11-21 18:52:43.636   379   468 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10155 => denied (56 us)
+11-21 18:52:43.637 17456 17494 D HostConnection: createUnique: call
+11-21 18:52:43.638 17456 17494 D HostConnection: HostConnection::get() New Host Connection established 0x738a033e4e50, tid 17494
+11-21 18:52:43.644 17456 17494 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-21 18:52:43.644   191   191 I hwservicemanager: getTransport: Cannot find entry android.hardware.configstore@1.0::ISurfaceFlingerConfigs/default in either framework or device VINTF manifest.
+11-21 18:52:43.645 17456 17494 W OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+11-21 18:52:43.645 17456 17494 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-21 18:52:43.645 17456 17494 D EGL_emulation: eglCreateContext: 0x738a033e8750: maj 3 min 0 rcv 3
+11-21 18:52:43.645 17456 17494 D EGL_emulation: eglMakeCurrent: 0x738a033e8750: ver 3 0 (tinfo 0x738c271f7080) (first time)
+11-21 18:52:43.648   379   961 E HWComposer: getSupportedContentTypes: getSupportedContentTypes failed for display 4619827259835644672: Unsupported (8)
+11-21 18:52:43.648   191   191 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-21 18:52:43.648 17456 17494 I Gralloc4: mapper 4.x is not supported
+11-21 18:52:43.649 17456 17494 D HostConnection: createUnique: call
+11-21 18:52:43.649 17456 17494 D HostConnection: HostConnection::get() New Host Connection established 0x738a033e7790, tid 17494
+11-21 18:52:43.649 17456 17494 D goldfish-address-space: allocate: Ask for block of size 0x100
+11-21 18:52:43.649 17456 17494 D goldfish-address-space: allocate: ioctl allocate returned offset 0x3efffe000 size 0x2000
+11-21 18:52:43.670   191   191 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.allocator@4.0::IAllocator/default in either framework or device VINTF manifest.
+11-21 18:52:43.671 17456 17494 W Gralloc4: allocator 4.x is not supported
+11-21 18:52:43.672   349   386 D goldfish-address-space: claimShared: Ask to claim region [0x3f3399000 0x3f3cbf000]
+11-21 18:52:43.680 17456 17494 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-21 18:52:43.680   349   386 D goldfish-address-space: claimShared: Ask to claim region [0x3f6498000 0x3f6dbe000]
+11-21 18:52:43.681   349   386 D goldfish-address-space: claimShared: Ask to claim region [0x3f6dbe000 0x3f76e4000]
+11-21 18:52:43.688   363   363 E android.hardware.power.stats@1.0-service-mock: Failed to getEnergyData
+11-21 18:52:43.715   546   564 I ActivityTaskManager: Displayed com.example.opt_1/.view.LoginPage: +267ms
+11-21 18:52:43.733  1280  1280 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3420
+11-21 18:52:43.733  1280  1280 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():2002
+11-21 18:52:43.734  1280  1280 I DeviceUnlockedTag: DeviceUnlockedTag.notifyDeviceLockStatusChanged():31 Notify device unlocked.
+11-21 18:52:43.759 15205 15225 I Finsky  : [40] aixa.Q(63): Package com.google.android.gms is verified.
+11-21 18:52:43.762  7916 17516 W FA-SVC  : Service response is missing Install Referrer install timestamp
+11-21 18:52:43.778 17456 17480 W FileTestStorage: Output properties is not supported.
+11-21 18:52:43.779 17456 17480 I Tracing : Tracer added: class androidx.test.platform.tracing.AndroidXTracer
+11-21 18:52:43.782 17456 17480 D EventInjectionStrategy: Creating injection strategy with input manager.
+11-21 18:52:43.782 17456 17480 W m.example.opt_: Accessing hidden method Landroid/hardware/input/InputManager;->getInstance()Landroid/hardware/input/InputManager; (unsupported, reflection, allowed)
+11-21 18:52:43.782 15808 15808 I A       : onApplyWindowInsets: systemWindowInsets=Insets{left=0, top=66, right=0, bottom=132}
+11-21 18:52:43.782 17456 17480 W m.example.opt_: Accessing hidden method Landroid/hardware/input/InputManager;->injectInputEvent(Landroid/view/InputEvent;I)Z (unsupported, reflection, allowed)
+11-21 18:52:43.782 17456 17480 W m.example.opt_: Accessing hidden field Landroid/hardware/input/InputManager;->INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH:I (unsupported, reflection, allowed)
+11-21 18:52:43.782 15808 15808 I A       : onApplyWindowInsets: systemWindowInsets=Insets{left=0, top=66, right=0, bottom=132}
+11-21 18:52:43.789 17456 17456 W m.example.opt_: Accessing hidden method Landroid/os/MessageQueue;->next()Landroid/os/Message; (unsupported, reflection, allowed)
+11-21 18:52:43.789 17456 17456 W m.example.opt_: Accessing hidden field Landroid/os/MessageQueue;->mMessages:Landroid/os/Message; (unsupported, reflection, allowed)
+11-21 18:52:43.789 17456 17456 W m.example.opt_: Accessing hidden method Landroid/os/Message;->recycleUnchecked()V (unsupported, reflection, allowed)
+11-21 18:52:43.790 17456 17456 W m.example.opt_: Accessing hidden method Landroid/view/WindowManagerGlobal;->getInstance()Landroid/view/WindowManagerGlobal; (unsupported, reflection, allowed)
+11-21 18:52:43.790 17456 17456 W m.example.opt_: Accessing hidden field Landroid/view/WindowManagerGlobal;->mViews:Ljava/util/ArrayList; (unsupported, reflection, allowed)
+11-21 18:52:43.790 17456 17456 W m.example.opt_: Accessing hidden field Landroid/view/WindowManagerGlobal;->mParams:Ljava/util/ArrayList; (unsupported, reflection, allowed)
+11-21 18:52:43.792 17456 17456 I ViewInteraction: Performing 'replace text(testi@testi.fi)' action on view (view.getId() is <2131296571/com.example.opt_1:id/loginUserNameInput> and Child at position 0 in parent Child at position 0 in parent view.getClass().getName() matches: is "com.google.android.material.textfield.TextInputLayout" and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:43.796  1280  1280 I ShortcutsDataManager: ShortcutsDataManager.onContentChanged():73 onContentChanged()
+11-21 18:52:43.800 17456 17456 D CompatibilityChangeReporter: Compat change id reported: 163400105; UID 10155; state: ENABLED
+11-21 18:52:43.802 17456 17456 I AssistStructure: Flattened final assist data: 2872 bytes, containing 1 windows, 17 views
+11-21 18:52:43.805   379   379 W SurfaceFlinger: couldn't log to binary event log: overflow.
+11-21 18:52:43.805   379   379 W SurfaceFlinger: couldn't log to binary event log: overflow.
+11-21 18:52:43.824 17456 17456 I ViewInteraction: Performing 'close keyboard' action on view (view.getId() is <2131296571/com.example.opt_1:id/loginUserNameInput> and Child at position 0 in parent Child at position 0 in parent view.getClass().getName() matches: is "com.google.android.material.textfield.TextInputLayout" and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:43.824 17456 17456 D IdlingRegistry: Registering idling resources: [androidx.test.espresso.action.CloseKeyboardAction$CloseKeyboardIdlingResult@3866f06]
+11-21 18:52:43.824 17456 17456 W CloseKeyboardAction: Attempting to close soft keyboard, while it is not shown.
+11-21 18:52:43.824 17456 17456 D IdlingRegistry: Unregistering idling resources: [androidx.test.espresso.action.CloseKeyboardAction$CloseKeyboardIdlingResult@3866f06]
+11-21 18:52:43.826 17456 17456 I ViewInteraction: Performing 'replace text(testi123)' action on view (view.getId() is <2131296570/com.example.opt_1:id/loginPasswordInput> and Child at position 0 in parent Child at position 0 in parent view.getClass().getName() matches: is "com.google.android.material.textfield.TextInputLayout" and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:43.841 17456 17456 I ViewInteraction: Performing 'close keyboard' action on view (view.getId() is <2131296570/com.example.opt_1:id/loginPasswordInput> and Child at position 0 in parent Child at position 0 in parent view.getClass().getName() matches: is "com.google.android.material.textfield.TextInputLayout" and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:43.841 17456 17456 D IdlingRegistry: Registering idling resources: [androidx.test.espresso.action.CloseKeyboardAction$CloseKeyboardIdlingResult@3be32b7]
+11-21 18:52:43.841 17456 17456 W CloseKeyboardAction: Attempting to close soft keyboard, while it is not shown.
+11-21 18:52:43.841 17456 17456 D IdlingRegistry: Unregistering idling resources: [androidx.test.espresso.action.CloseKeyboardAction$CloseKeyboardIdlingResult@3be32b7]
+11-21 18:52:43.843 17456 17480 W m.example.opt_: Accessing hidden method Landroid/view/ViewConfiguration;->getDoubleTapMinTime()I (unsupported, reflection, allowed)
+11-21 18:52:43.846 17456 17456 I ViewInteraction: Performing 'single click' action on view (view.getId() is <2131296568/com.example.opt_1:id/loginButton> and an instance of android.widget.TextView and view.getText() with or without transformation to match: is "Login" and Child at position 4 in parent (view.getId() is <2131296569/com.example.opt_1:id/loginPage> and Child at position 2 in parent view.getClass().getName() matches: is "androidx.coordinatorlayout.widget.CoordinatorLayout") and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:43.862  7916  7932 W System  : A resource failed to call close.
+11-21 18:52:43.912 17456 17456 I FirebaseAuth: Logging in as testi@testi.fi with empty reCAPTCHA token
+11-21 18:52:43.914 17456 17456 W m.example.opt_: Class com.google.android.gms.tasks.zzj failed lock verification and will run slower.
+11-21 18:52:43.917 17456 17500 W System  : Ignoring header X-Firebase-Locale because its value was null.
+11-21 18:52:43.995   546  1399 W InputManager-JNI: Input channel object '947505b Splash Screen com.example.opt_1 (client)' was disposed without first being removed with the input manager!
+11-21 18:52:44.116  5313  5345 I FontLog : (REDACTED) Received query %s, URI %s
+11-21 18:52:44.117  5313  5345 I FontLog : (REDACTED) Query [%s] resolved to %s
+11-21 18:52:44.119  5313  5345 I FontLog : (REDACTED) Fetch %s end status %s
+11-21 18:52:44.123  5313  5345 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+11-21 18:52:44.126  5313  5345 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+11-21 18:52:44.137 17456 17500 W System  : Ignoring header X-Firebase-Locale because its value was null.
+11-21 18:52:44.341 17456 17500 D FirebaseAuth: Notifying id token listeners about user ( B9WTEsqpnbZbY2v9FYGxbugDHI93 ).
+11-21 18:52:44.341 17456 17500 D FirebaseAuth: Notifying auth state listeners about user ( B9WTEsqpnbZbY2v9FYGxbugDHI93 ).
+11-21 18:52:44.343 17456 17456 W m.example.opt_: Class com.google.android.gms.tasks.zzi failed lock verification and will run slower.
+11-21 18:52:44.344 17456 17456 I System.out: com.google.firebase.auth.internal.zzx@217604a LOGGED IN
+11-21 18:52:44.379 17456 17512 W m.example.opt_: Class com.google.android.gms.security.ProviderInstaller failed lock verification and will run slower.
+11-21 18:52:44.382 17456 17512 W DynamiteModule: Local module descriptor class for com.google.android.gms.providerinstaller.dynamite not found.
+11-21 18:52:44.385  5313  5345 W ProviderHelper: Unknown dynamite feature providerinstaller.dynamite
+11-21 18:52:44.386 17456 17512 I DynamiteModule: Considering local module com.google.android.gms.providerinstaller.dynamite:0 and remote module com.google.android.gms.providerinstaller.dynamite:0
+11-21 18:52:44.386 17456 17512 W ProviderInstaller: Failed to load providerinstaller module: No acceptable module com.google.android.gms.providerinstaller.dynamite found. Local version is 0 and remote version is 0.
+11-21 18:52:44.436   546  1404 D ConnectivityService: requestNetwork for uid/pid:10155/17456 activeRequest: null callbackRequest: 393 [NetworkRequest [ REQUEST id=394, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]] callback flags: 0 priority: 2147483647
+11-21 18:52:44.437   546   661 D ConnectivityService: NetReassign [394 : null → 101]
+11-21 18:52:44.439 17456 17512 V NativeCrypto: Registering com/google/android/gms/org/conscrypt/NativeCrypto's 295 native methods...
+11-21 18:52:44.440   546   654 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=394, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]
+11-21 18:52:44.440   546   654 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=394, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]
+11-21 18:52:44.440   546   654 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=394, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]
+11-21 18:52:44.451 17456 17512 W m.example.opt_: Accessing hidden method Ljava/security/spec/ECParameterSpec;->getCurveName()Ljava/lang/String; (unsupported, reflection, allowed)
+11-21 18:52:44.471 17456 17512 I ProviderInstaller: Installed default security provider GmsCore_OpenSSL
+11-21 18:52:44.520   546  1404 D ConnectivityService: requestNetwork for uid/pid:10155/17456 activeRequest: null callbackRequest: 395 [NetworkRequest [ REQUEST id=396, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]] callback flags: 0 priority: 2147483647
+11-21 18:52:44.521   546   661 D ConnectivityService: NetReassign [396 : null → 101]
+11-21 18:52:44.522   546   654 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=396, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]
+11-21 18:52:44.523   546   654 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=396, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]
+11-21 18:52:44.523   546   654 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=396, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10155 RequestorUid: 10155 RequestorPkg: com.example.opt_1] ]
+11-21 18:52:44.542 17456 17541 W m.example.opt_: Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (unsupported, reflection, allowed)
+11-21 18:52:44.553 17456 17541 W m.example.opt_: Accessing hidden method Ljava/security/spec/ECParameterSpec;->setCurveName(Ljava/lang/String;)V (unsupported, reflection, allowed)
+11-21 18:52:44.563 17456 17542 W m.example.opt_: Class com.google.android.gms.tasks.zzaf failed lock verification and will run slower.
+11-21 18:52:44.563 17456 17542 W m.example.opt_: Class com.google.android.gms.tasks.zzk failed lock verification and will run slower.
+11-21 18:52:44.693 17456 17456 I System.out: User instance: com.example.opt_1.model.User@7f93132
+11-21 18:52:44.693 17456 17456 I System.out: User logged in: testi@testi.fi
+11-21 18:52:44.699 17456 17456 I System.out: java.util.concurrent.CompletableFuture@c35e83[Completed normally]
+11-21 18:52:44.700 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: PAUSED
+11-21 18:52:44.701 17456 17456 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=com.example.opt_1.view.LoginPage@76bdc91
+11-21 18:52:44.709 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.Main_Page@566c130 in: PRE_ON_CREATE
+11-21 18:52:44.709 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.Main_Page }, activity=com.example.opt_1.view.Main_Page@566c130
+11-21 18:52:44.726 17456 17494 D EGL_emulation: app_time_stats: avg=9.27ms min=0.66ms max=31.84ms count=60
+11-21 18:52:44.756 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.Main_Page@566c130 in: CREATED
+11-21 18:52:44.756 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.Main_Page }, activity=com.example.opt_1.view.Main_Page@566c130
+11-21 18:52:44.776 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.Main_Page@566c130 in: STARTED
+11-21 18:52:44.776 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.Main_Page }, activity=com.example.opt_1.view.Main_Page@566c130
+11-21 18:52:44.776 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.Main_Page@566c130 in: RESUMED
+11-21 18:52:44.776 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.Main_Page }, activity=com.example.opt_1.view.Main_Page@566c130
+11-21 18:52:44.800   349   386 D goldfish-address-space: claimShared: Ask to claim region [0x3f05db000 0x3f0f01000]
+11-21 18:52:44.802   349   386 D goldfish-address-space: claimShared: Ask to claim region [0x3f0f01000 0x3f1827000]
+11-21 18:52:44.803   349   349 D goldfish-address-space: claimShared: Ask to claim region [0x3f1827000 0x3f214d000]
+11-21 18:52:44.824   546   564 I ActivityTaskManager: Displayed com.example.opt_1/.view.Main_Page: +129ms
+11-21 18:52:44.860  1280  1280 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3420
+11-21 18:52:44.860  1280  1280 W KeyboardViewController: KeyboardViewController.show():477 Requesting to show sub view with id 2131428268(#0x7f0b03ac) when keyboard HEADER view is not ready to show
+11-21 18:52:44.861  1280  1280 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():2002
+11-21 18:52:44.861  1280  1280 I DeviceUnlockedTag: DeviceUnlockedTag.notifyDeviceLockStatusChanged():31 Notify device unlocked.
+11-21 18:52:44.861  1280  1280 I ShortcutsDataManager: AbstractContentDataManager.startImportContentTask():235 startImportContentTask()
+11-21 18:52:44.861  1280  2255 I ShortcutsDataManager: AbstractContentDataManager$ImportContentTask.doInBackground():249 doInBackground()
+11-21 18:52:44.862  1280  2255 I PersonalDictionaryDataHandler: PersonalDictionaryDataHandler.beginProcess():111 LanguageTags = [en-US]
+11-21 18:52:44.868  1280  2255 I ShortcutsDataManager: AbstractContentDataManager.importRecords():339 importRecords() : Success : Count = 0
+11-21 18:52:44.869  1280  2255 I ShortcutsDataManager: AbstractContentDataManager.importContentData():289 importContentData() : Ending import process
+11-21 18:52:44.870  1280  2436 I Delight5Decoder: Delight5DecoderWrapper.unloadLanguageModel():820 unloadLanguageModel() : 4, version [n/a]
+11-21 18:52:44.874  1280  2255 I PersonalLanguageModelUpdater: PersonalLanguageModelUpdater$UpdateOperation.performInternal():162 run() : Added 0 words and 0 shortcuts
+11-21 18:52:44.874  1280  2255 I DynamicLanguageModelOperation: DynamicLanguageModelOperation.perform():38 perform() : 4 : cny : Completed
+11-21 18:52:44.875  1280  2436 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():614 loadLanguageModel() : 4, version [n/a]
+11-21 18:52:44.875  1280  2436 I Delight5Decoder: Delight5DecoderWrapper.loadLanguageModel():652 Loaded dynamic LM 4.en
+11-21 18:52:44.875  1280  1280 I ShortcutsDataManager: AbstractContentDataManager$ImportContentTask.onPostExecute():260 onPostExecute() : Result = [2,0]
+11-21 18:52:44.875  1280  1280 I ShortcutsDataManager: ShortcutsDataManager.onImportFinished():83 onImportFinished() : Result = 2 : Count = 0
+11-21 18:52:44.932 17456 17464 I m.example.opt_: Compiler allocated 4760KB to compile void com.google.protobuf.MessageSchema.mergeFromHelper(com.google.protobuf.UnknownFieldSchema, com.google.protobuf.ExtensionSchema, java.lang.Object, com.google.protobuf.Reader, com.google.protobuf.ExtensionRegistryLite)
+11-21 18:52:44.948 17456 17464 I m.example.opt_: Compiler allocated 4686KB to compile void com.google.protobuf.MessageSchema.mergeFromHelper(com.google.protobuf.UnknownFieldSchema, com.google.protobuf.ExtensionSchema, java.lang.Object, com.google.protobuf.Reader, com.google.protobuf.ExtensionRegistryLite)
+11-21 18:52:45.258 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: STOPPED
+11-21 18:52:45.258 17456 17456 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=com.example.opt_1.view.LoginPage@76bdc91
+11-21 18:52:45.259 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@76bdc91 in: DESTROYED
+11-21 18:52:45.259 17456 17456 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-21 18:52:45.259   900   900 V InlineSuggestionRenderService: handleDestroySuggestionViews called for 0:354980684
+11-21 18:52:45.261   546  1399 W InputManager-JNI: Input channel object '41a7b58 com.example.opt_1/com.example.opt_1.view.LoginPage (client)' was disposed without first being removed with the input manager!
+11-21 18:52:49.145 17456 17456 I ViewInteraction: Performing 'single click' action on view (view.getId() is <2131296332/com.example.opt_1:id/activity> and view.getContentDescription() is "Activity" and Child at position 2 in parent Child at position 0 in parent view.getId() is <2131296370/com.example.opt_1:id/bottomNavigationView> and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:49.191 17456 17494 D EGL_emulation: app_time_stats: avg=397.38ms min=7.35ms max=4218.36ms count=11
+11-21 18:52:49.212 17456 17456 D CompatibilityChangeReporter: Compat change id reported: 171228096; UID 10155; state: ENABLED
+11-21 18:52:50.048 17456 17456 I ViewInteraction: Performing 'single click' action on view (view.getId() is <2131296333/com.example.opt_1:id/activity_StartActivityButton> and an instance of android.widget.TextView and view.getText() with or without transformation to match: is "Start Activity" and Child at position 4 in parent Child at position 0 in parent view.getId() is <2131296501/com.example.opt_1:id/flFragment> and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:50.095 17456 17456 W m.example.opt_: Class com.google.android.gms.common.api.GoogleApiClient failed lock verification and will run slower.
+11-21 18:52:50.096 17456 17456 W m.example.opt_: Class com.google.android.gms.common.api.internal.GoogleApiManager failed lock verification and will run slower.
+11-21 18:52:50.096 17456 17456 W m.example.opt_: Class com.google.android.gms.common.internal.GmsClientSupervisor failed lock verification and will run slower.
+11-21 18:52:50.097 17456 17456 W m.example.opt_: Class com.google.android.gms.common.GoogleApiAvailability failed lock verification and will run slower.
+11-21 18:52:50.099 17456 17549 W m.example.opt_: Class com.google.android.gms.common.internal.BaseGmsClient failed lock verification and will run slower.
+11-21 18:52:50.100 17456 17549 W m.example.opt_: Class com.google.android.gms.internal.location.zzda failed lock verification and will run slower.
+11-21 18:52:50.101 17456 17549 W m.example.opt_: Class com.google.android.gms.common.internal.zzr failed lock verification and will run slower.
+11-21 18:52:50.102 17456 17549 W m.example.opt_: Class com.google.android.gms.common.internal.zzo failed lock verification and will run slower.
+11-21 18:52:50.106 17456 17456 W m.example.opt_: Class com.google.android.gms.common.internal.zzc failed lock verification and will run slower.
+11-21 18:52:50.122 17456 17456 I System.out: Location from getLastLocation() was null : null
+11-21 18:52:50.130  5313  5401 W SystemServiceRegistry: No service published for: wifirtt
+11-21 18:52:50.133  5313  5401 W AlarmManager: alarm window unlikely to be respected [CONTEXT service_id=231 ]
+11-21 18:52:50.133  5313  5401 W AlarmManager: java.lang.IllegalArgumentException: alarm "NetworkLocationActivityDetection" has short window length
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at bbhg.b(:com.google.android.gms@233316047@23.33.16 (190800-560149061):45)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at djnt.f(:com.google.android.gms@233316047@23.33.16 (190800-560149061):121)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at dhrh.w(:com.google.android.gms@233316047@23.33.16 (190800-560149061):65)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at dhsz.q(:com.google.android.gms@233316047@23.33.16 (190800-560149061):138)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at dhsz.V(:com.google.android.gms@233316047@23.33.16 (190800-560149061):6)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at dhrp.p(:com.google.android.gms@233316047@23.33.16 (190800-560149061):11)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at djuj.p(:com.google.android.gms@233316047@23.33.16 (190800-560149061):22)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at djmj.run(:com.google.android.gms@233316047@23.33.16 (190800-560149061):9)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at djmw.handleMessage(:com.google.android.gms@233316047@23.33.16 (190800-560149061):91)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at bbrt.lG(:com.google.android.gms@233316047@23.33.16 (190800-560149061):1)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at bbrt.dispatchMessage(:com.google.android.gms@233316047@23.33.16 (190800-560149061):143)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at android.os.Looper.loopOnce(Looper.java:201)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at android.os.Looper.loop(Looper.java:288)
+11-21 18:52:50.133  5313  5401 W AlarmManager: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-21 18:52:50.142   720   934 D EGL_emulation: app_time_stats: avg=738.79ms min=14.76ms max=6517.79ms count=9
+11-21 18:52:50.206 17456 17494 D EGL_emulation: app_time_stats: avg=19.15ms min=6.16ms max=160.68ms count=53
+11-21 18:52:50.898   546  2031 D WifiNl80211Manager: Scan result ready event
+11-21 18:52:50.898   546  2031 D WifiNative: Scan result ready event
+11-21 18:52:50.908   546   564 E GnssUtilsJni: IGnss injectLocation() failed.
+11-21 18:52:51.223 17456 17494 D EGL_emulation: app_time_stats: avg=19.55ms min=13.08ms max=166.68ms count=52
+11-21 18:52:53.125 17456 17494 D EGL_emulation: app_time_stats: avg=190.20ms min=16.40ms max=1000.94ms count=10
+11-21 18:52:54.126 17456 17494 D EGL_emulation: app_time_stats: avg=1000.58ms min=1000.58ms max=1000.58ms count=1
+11-21 18:52:54.621   546   564 W AlarmManager: Unrecognized alarm listener com.android.server.location.gnss.GnssLocationProvider$$ExternalSyntheticLambda1@23dc355
+11-21 18:52:54.623 17456 17456 I System.out: Distance: 0.0
+11-21 18:52:54.813  7916  7916 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+11-21 18:52:55.126 17456 17494 D EGL_emulation: app_time_stats: avg=500.03ms min=486.29ms max=513.78ms count=2
+11-21 18:52:55.131  5313  5401 W SystemServiceRegistry: No service published for: wifirtt
+11-21 18:52:55.346 17456 17456 I ViewInteraction: Performing 'single click' action on view (view.getId() is <2131296334/com.example.opt_1:id/activity_StopActivityButton> and an instance of android.widget.TextView and view.getText() with or without transformation to match: is "Stop Activity" and Child at position 5 in parent Child at position 0 in parent view.getId() is <2131296501/com.example.opt_1:id/flFragment> and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:52:55.390   546   564 W AlarmManager: Unrecognized alarm listener com.android.server.location.gnss.GnssLocationProvider$$ExternalSyntheticLambda1@23dc355
+11-21 18:52:55.390   546   564 W AlarmManager: Unrecognized alarm listener com.android.server.location.gnss.GnssLocationProvider$$ExternalSyntheticLambda0@e8e416a
+11-21 18:52:55.392 17456 17456 I System.out: Activity Stopping!
+11-21 18:52:55.407   720   934 D EGL_emulation: app_time_stats: avg=404.94ms min=15.69ms max=5001.09ms count=13
+11-21 18:52:55.898   546  2792 D WifiNl80211Manager: Scan result ready event
+11-21 18:52:55.898   546  2792 D WifiNative: Scan result ready event
+11-21 18:52:56.126 17456 17494 D EGL_emulation: app_time_stats: avg=21.28ms min=13.11ms max=232.75ms count=47
+11-21 18:53:00.006   720   934 D EGL_emulation: app_time_stats: avg=4599.25ms min=4599.25ms max=4599.25ms count=1
+11-21 18:53:00.136  5313  5401 W SystemServiceRegistry: No service published for: wifirtt
+11-21 18:53:00.626 17456 17456 I ViewInteraction: Performing 'single click' action on view (view.getId() is <2131296527/com.example.opt_1:id/home> and view.getContentDescription() is "Home" and Child at position 1 in parent Child at position 0 in parent view.getId() is <2131296370/com.example.opt_1:id/bottomNavigationView> and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:53:00.674 17456 17494 D EGL_emulation: app_time_stats: avg=649.66ms min=12.89ms max=4451.07ms count=7
+11-21 18:53:00.723 17456 17464 I m.example.opt_: JIT allocated 77KB for compiled code of void android.view.View.<init>(android.content.Context, android.util.AttributeSet, int, int)
+11-21 18:53:00.906   546  2792 D WifiNl80211Manager: Scan result ready event
+11-21 18:53:00.906   546  2792 D WifiNative: Scan result ready event
+11-21 18:53:00.978 17456 17456 I ViewInteraction: Performing 'single click' action on view (view.getId() is <2131296567/com.example.opt_1:id/logOut_Button> and an instance of android.widget.TextView and view.getText() with or without transformation to match: is "LogOut" and Child at position 7 in parent (view.getId() is <2131296505/com.example.opt_1:id/fragmentHome> and Child at position 0 in parent view.getClass().getName() matches: is "androidx.constraintlayout.widget.ConstraintLayout") and (view has effective visibility <VISIBLE> and view.getGlobalVisibleRect() to return non-empty rectangle))
+11-21 18:53:01.020 17456 17456 D FirebaseAuth: Notifying id token listeners about a sign-out event.
+11-21 18:53:01.020 17456 17456 D FirebaseAuth: Notifying auth state listeners about a sign-out event.
+11-21 18:53:01.026 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.Main_Page@566c130 in: PAUSED
+11-21 18:53:01.026 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.Main_Page }, activity=com.example.opt_1.view.Main_Page@566c130
+11-21 18:53:01.032  7916  7916 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+11-21 18:53:01.032  7916  7916 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.measurement.START pkg=com.google.android.gms }
+11-21 18:53:01.041 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@9877b97 in: PRE_ON_CREATE
+11-21 18:53:01.042 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.LoginPage }, activity=com.example.opt_1.view.LoginPage@9877b97
+11-21 18:53:01.071 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@9877b97 in: CREATED
+11-21 18:53:01.071 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.LoginPage }, activity=com.example.opt_1.view.LoginPage@9877b97
+11-21 18:53:01.072 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@9877b97 in: STARTED
+11-21 18:53:01.073 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.LoginPage }, activity=com.example.opt_1.view.LoginPage@9877b97
+11-21 18:53:01.073 17456 17456 D LifecycleMonitor: Lifecycle status change: com.example.opt_1.view.LoginPage@9877b97 in: RESUMED
+11-21 18:53:01.073 17456 17456 V ActivityScenario: Activity lifecycle changed event received but ignored because the intent does not match. startActivityIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.opt_1/.view.LoginPage }, activity.getIntent()=Intent { cmp=com.example.opt_1/.view.LoginPage }, activity=com.example.opt_1.view.LoginPage@9877b97
+11-21 18:53:01.084   349   349 D goldfish-address-space: claimShared: Ask to claim region [0x3f214d000 0x3f2a73000]
+11-21 18:53:01.085   349   349 D goldfish-address-space: claimShared: Ask to claim region [0x3f2a73000 0x3f3399000]
+11-21 18:53:01.085   349   349 D goldfish-address-space: claimShared: Ask to claim region [0x3f3399000 0x3f3cbf000]
+11-21 18:53:01.093   546   564 I ActivityTaskManager: Displayed com.example.opt_1/.view.LoginPage: +71ms
+11-21 18:53:01.111  1280  1280 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3420
+11-21 18:53:01.111  1280  1280 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():2002
+11-21 18:53:01.111  1280  1280 I DeviceUnlockedTag: DeviceUnlockedTag.notifyDeviceLockStatusChanged():31 Notify device unlocked.
+11-21 18:53:01.356 17456 17480 I TestRunner: finished: timerLogoutTest(com.example.opt_1.view.TimerLogoutTest)

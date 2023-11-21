@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/fragment_groups.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/fragment_groups.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/activityobject.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/activityobject.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/fragment_group_activity_test.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/fragment_group_activity_test.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/usernameframe.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/usernameframe.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/fragment_home.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/register_page.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/register_page.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/main_page.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/main_page.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/popup_windowactivity.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/popup_windowactivity.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/fragment_activity.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/fragment_activity.xml"
+    },
+    {
+        "merged": "com.example.opt_1.app-mergeDebugResources-49:/layout/login_page.xml",
+        "source": "com.example.opt_1.app-main-52:/layout/login_page.xml"
+    }
+]
