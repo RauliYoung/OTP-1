@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.opt_1.view</a> &gt; <span class="el_source">LoginPage.java</span></div><h1>LoginPage.java</h1><pre class="source lang-java linenums">package com.example.opt_1.view;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.activity.ComponentActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.opt_1.R;
+import com.example.opt_1.control.Controller;
+import com.example.opt_1.control.IViewToModel;
+import com.example.opt_1.model.CRUDCallbacks;
+import com.example.opt_1.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+
+<span class="fc" id="L31">public class LoginPage extends AppCompatActivity {</span>
+    private CompletableFuture&lt;String&gt; futureResult;
+    private EditText usernameField;
+    private EditText passwordField;
+    private Button loginButton;
+    private Button registerButton;
+    private IViewToModel controller;
+<span class="fc" id="L38">    private String done = &quot;&quot;;</span>
+
+<span class="fc" id="L40">    private FirebaseAuth auth = FirebaseAuth.getInstance();</span>
+<span class="fc" id="L41">    private FirebaseUser fireUser = auth.getCurrentUser();</span>
+    private boolean languageChanged;
+    FirebaseAuth.AuthStateListener authlistener;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="fc" id="L47">        super.onCreate(savedInstanceState);</span>
+<span class="fc" id="L48">        controller = new Controller();</span>
+<span class="fc" id="L49">        setContentView(R.layout.login_page);</span>
+
+
+
+
+        //Language Selector Spinner.
+
+<span class="fc" id="L56">        Spinner languageSpinner = findViewById(R.id.languageSpinner);</span>
+<span class="fc" id="L57">        ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(this,</span>
+                R.array.languages_array, android.R.layout.simple_spinner_item);
+<span class="fc" id="L59">        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);</span>
+<span class="fc" id="L60">        languageSpinner.setAdapter(adapter);</span>
+
+<span class="fc" id="L62">        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {</span>
+            @Override
+            public void onItemSelected(AdapterView&lt;?&gt; parentView, View selectedItemView, int position, long id) {
+<span class="fc" id="L65">                    String selectedLanguage = parentView.getItemAtPosition(position).toString();</span>
+
+<span class="fc" id="L67">                    String languageCode = &quot;&quot;;</span>
+<span class="fc" id="L68">                    Locale locale = null;</span>
+<span class="pc bpc" id="L69" title="5 of 6 branches missed.">                    switch (selectedLanguage) {</span>
+                        case &quot;English&quot;:
+<span class="fc" id="L71">                            locale = new Locale(&quot;en&quot;);</span>
+<span class="fc" id="L72">                            languageCode = &quot;en&quot;;</span>
+<span class="fc" id="L73">                            break;</span>
+
+                        case &quot;Estonia&quot;:
+<span class="nc" id="L76">                            locale = new Locale(&quot;et&quot;);</span>
+<span class="nc" id="L77">                            languageCode = &quot;et&quot;;</span>
+<span class="nc" id="L78">                            break;</span>
+
+                        case &quot;Swedish&quot;:
+<span class="nc" id="L81">                            locale = new Locale(&quot;sv&quot;);</span>
+<span class="nc" id="L82">                            languageCode = &quot;sv&quot;;</span>
+<span class="nc" id="L83">                            break;</span>
+
+                        case &quot;Suomi&quot;:
+<span class="nc" id="L86">                            locale = new Locale(&quot;fi&quot;);</span>
+<span class="nc" id="L87">                            languageCode = &quot;fi&quot;;</span>
+<span class="nc" id="L88">                            break;</span>
+
+                        case &quot;Persian&quot;:
+<span class="nc" id="L91">                            locale = new Locale(&quot;fa&quot;);</span>
+<span class="nc" id="L92">                            languageCode = &quot;fa&quot;;</span>
+<span class="nc" id="L93">                            break;</span>
+
+                        default:
+<span class="nc" id="L96">                            locale = Locale.getDefault();</span>
+                            break;
+                    }
+
+<span class="fc" id="L100">                Locale newLocale = new Locale(languageCode);</span>
+<span class="fc" id="L101">                Locale currentLocale = getResources().getConfiguration().locale;</span>
+
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">                if (!currentLocale.getLanguage().equals(languageCode)) {</span>
+<span class="nc" id="L104">                    Locale.setDefault(newLocale);</span>
+<span class="nc" id="L105">                    Configuration config = new Configuration();</span>
+<span class="nc" id="L106">                    config.locale = newLocale;</span>
+
+<span class="nc" id="L108">                    Resources resources = getResources();</span>
+<span class="nc" id="L109">                    resources.updateConfiguration(config, resources.getDisplayMetrics());</span>
+<span class="nc" id="L110">                    recreate();</span>
+
+                }
+<span class="fc" id="L113">            }</span>
+
+            @Override
+            public void onNothingSelected(AdapterView&lt;?&gt; parentView) {
+
+<span class="nc" id="L118">            }</span>
+
+        });
+
+
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if(auth.getCurrentUser() != null){</span>
+<span class="fc" id="L125">            auth.signOut();</span>
+<span class="fc" id="L126">            System.out.println(&quot;Login page user: &quot; + auth.getCurrentUser());</span>
+        }
+<span class="fc" id="L128">        loginButton = findViewById(R.id.loginButton);</span>
+<span class="fc" id="L129">        registerButton = findViewById(R.id.registerButton);</span>
+
+        //LoginPage Fields
+<span class="fc" id="L132">        usernameField = findViewById(R.id.loginUserNameInput);</span>
+<span class="fc" id="L133">        passwordField = findViewById(R.id.loginPasswordInput);</span>
+
+<span class="fc" id="L135">        loginButton.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="fc" id="L138">                userLogin();</span>
+<span class="fc" id="L139">            }});</span>
+<span class="fc" id="L140">        registerButton.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L143">                Intent intent = new Intent(LoginPage.this, RegisterPage.class);</span>
+<span class="nc" id="L144">                startActivity(intent);</span>
+<span class="nc" id="L145">            }</span>
+        });
+<span class="fc" id="L147">    }</span>
+
+
+    private CompletableFuture&lt;String&gt; userLogin(){
+<span class="fc" id="L151">        CompletableFuture&lt;String&gt; futureResult = new CompletableFuture&lt;&gt;();</span>
+<span class="fc" id="L152">            controller.userLogin(usernameField.getText().toString(), passwordField.getText().toString(), new CRUDCallbacks() {</span>
+                @Override
+                public void onSucceed(){
+<span class="fc" id="L155">                    System.out.println(&quot;User logged in: &quot; + User.getInstance().getEmail());</span>
+<span class="fc" id="L156">                    Intent intent = new Intent(LoginPage.this, Main_Page.class);</span>
+<span class="fc" id="L157">                    startActivity(intent);</span>
+<span class="fc" id="L158">                    finish();</span>
+<span class="fc" id="L159">                    futureResult.complete(&quot;True&quot;);</span>
+<span class="fc" id="L160">                    System.out.println(futureResult);</span>
+<span class="fc" id="L161">                }</span>
+
+                @Override
+                public void onFailure() {
+<span class="nc" id="L165">                    futureResult.complete(&quot;False&quot;);</span>
+<span class="nc" id="L166">                    CharSequence text = &quot;Email or Password is incorrect, or empty fields!&quot;;</span>
+<span class="nc" id="L167">                    int duration = Toast.LENGTH_SHORT;</span>
+
+<span class="nc" id="L169">                    Toast toast = Toast.makeText(LoginPage.this, text, duration);</span>
+<span class="nc" id="L170">                    toast.show();</span>
+<span class="nc" id="L171">                    System.out.println(futureResult);</span>
+<span class="nc" id="L172">                }</span>
+            });
+<span class="fc" id="L174">            return futureResult;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.1.1</div></body></html>

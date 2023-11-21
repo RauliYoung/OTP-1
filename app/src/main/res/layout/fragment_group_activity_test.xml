@@ -10,6 +10,7 @@
     tools:layout_editor_absoluteY="32dp">
 
     <LinearLayout
+        android:id="@+id/groupPage"
         android:layout_width="410dp"
         android:layout_height="612dp"
         android:orientation="vertical"

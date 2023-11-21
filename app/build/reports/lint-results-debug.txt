@@ -1,0 +1,421 @@
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\GroupFragment.java:43: Warning: The id R.id.groupUsers has already been looked up in this method; possible cut & paste error? [CutPasteId]
+        userNameListForData = findViewById(R.id.groupUsers);
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\GroupFragment.java:42: First usage here
+
+   Explanation for issues of type "CutPasteId":
+   This lint check looks for cases where you have cut & pasted calls to
+   findViewById but have forgotten to update the R.id field. It's possible
+   that your code is simply (redundantly) looking up the field repeatedly, but
+   lint cannot distinguish that from a case where you for example want to
+   initialize fields prev and next and you cut & pasted
+   findViewById(R.id.prev) and forgot to update the second initialization to
+   R.id.next.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\build.gradle.kts:21: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+        targetSdk = 33
+        ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application runs on a version of Android that is more recent than
+   your targetSdkVersion specifies that it has been tested with, various
+   compatibility modes kick in. This ensures that your application continues
+   to work, but it may look out of place. For example, if the targetSdkVersion
+   is less than 14, your app may get an option button in the UI.
+
+   To fix this issue, set the targetSdkVersion to the highest available value.
+   Then test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+   as well as follow this guide:
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\LoginPage.java:106: Warning: Found dynamic locale changes, but did not find corresponding Play Core library calls for downloading languages and splitting by language is not disabled in the bundle configuration [AppBundleLocaleChanges]
+                    config.locale = newLocale;
+                           ~~~~~~
+
+   Explanation for issues of type "AppBundleLocaleChanges":
+   When changing locales at runtime (e.g. to provide an in-app language
+   switcher), the Android App Bundle must be configured to not split by locale
+   or the Play Core library must be used to download additional locales at
+   runtime.
+
+   https://developer.android.com/guide/app-bundle/configure-base#handling_language_changes
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\ActivityFragment.java:87: Warning: Avoid passing null as the view root (needed to resolve layout parameters on the inflated layout's root element) [InflateParams]
+            View popupView = inflater.inflate(R.layout.popup_windowactivity, null);
+                                                                             ~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\GroupFragment.java:73: Warning: Avoid passing null as the view root (needed to resolve layout parameters on the inflated layout's root element) [InflateParams]
+            View clonedUserSection = LayoutInflater.from(this).inflate(R.layout.usernameframe,null);
+                                                                                              ~~~~
+
+   Explanation for issues of type "InflateParams":
+   When inflating a layout, avoid passing in null as the parent view, since
+   otherwise any layout parameters on the root of the inflated layout will be
+   ignored.
+
+   https://www.bignerdranch.com/blog/understanding-androids-layoutinflater-inflate/
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\build.gradle.kts:56: Warning: A newer version of com.google.android.material:material than 1.9.0 is available: 1.10.0 [GradleDependency]
+    implementation("com.google.android.material:material:1.9.0")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\build.gradle.kts:58: Warning: A newer version of androidx.navigation:navigation-fragment than 2.5.3 is available: 2.7.5 [GradleDependency]
+    implementation("androidx.navigation:navigation-fragment:2.5.3")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\build.gradle.kts:59: Warning: A newer version of androidx.navigation:navigation-ui than 2.5.3 is available: 2.7.5 [GradleDependency]
+    implementation("androidx.navigation:navigation-ui:2.5.3")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\build.gradle.kts:73: Warning: A newer version of org.mockito:mockito-core than 5.6.0 is available: 5.7.0 [GradleDependency]
+    testImplementation ("org.mockito:mockito-core:5.6.0")
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\login_page.xml:89: Warning: android:password is deprecated: Use inputType instead [Deprecated]
+                android:password="true"
+                ~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Deprecated":
+   Deprecated views, attributes and so on are deprecated because there is a
+   better way to do something. Do it that new way. You've been warned.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:45: Warning: Inconsistent number of arguments in formatting string exercise_speed; found both 1 here and 0 in values-fa-rIRstrings.xml [StringFormatCount]
+    <string name="exercise_speed">The speed was %.1f km/h.</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values-fa-rIR\strings.xml:36: Conflicting number of arguments (0) here
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:46: Warning: Inconsistent number of arguments in formatting string exercise_duration; found both 1 here and 0 in values-fa-rIRstrings.xml [StringFormatCount]
+    <string name="exercise_duration">Your activity lasted %.1f seconds.</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values-fa-rIR\strings.xml:37: Conflicting number of arguments (0) here
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:47: Warning: Inconsistent number of arguments in formatting string exercise_length; found both 1 here and 0 in values-fa-rIRstrings.xml [StringFormatCount]
+    <string name="exercise_length">Length of your exercise was %.1f meters.</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values-fa-rIR\strings.xml:38: Conflicting number of arguments (0) here
+
+   Explanation for issues of type "StringFormatCount":
+   When a formatted string takes arguments, it usually needs to reference the
+   same arguments in all translations (or all arguments if there are no
+   translations.
+
+   There are cases where this is not the case, so this issue is a warning
+   rather than an error by default. However, this usually happens when a
+   language is not translated or updated correctly.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\mipmap-anydpi-v26: Warning: This folder configuration (v26) is unnecessary; minSdkVersion is 26. Merge all the resources in this folder into mipmap-anydpi. [ObsoleteSdkInt]
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values-v23: Warning: This folder configuration (v23) is unnecessary; minSdkVersion is 26. Merge all the resources in this folder into values. [ObsoleteSdkInt]
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\popup_windowactivity.xml:6: Warning: Possible overdraw: Root element paints background #62def8 with a theme that also paints a background (inferred theme is @style/Theme.OPT1) [Overdraw]
+    android:background="#62def8">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\colors.xml:4: Warning: The resource R.color.white appears to be unused [UnusedResources]
+    <color name="white">#FFFFFFFF</color>
+           ~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\dimens.xml:2: Warning: The resource R.dimen.fab_margin appears to be unused [UnusedResources]
+    <dimen name="fab_margin">16dp</dimen>
+           ~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\drawable\gradient_text.xml:2: Warning: The resource R.drawable.gradient_text appears to be unused [UnusedResources]
+<gradient xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\drawable\ic_launcher_foreground.xml:1: Warning: The resource R.drawable.ic_launcher_foreground appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:13: Warning: The resource R.string.action_settings appears to be unused [UnusedResources]
+    <string name="action_settings">Settings</string>
+            ~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:15: Warning: The resource R.string.first_fragment_label appears to be unused [UnusedResources]
+    <string name="first_fragment_label">First Fragment</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:16: Warning: The resource R.string.second_fragment_label appears to be unused [UnusedResources]
+    <string name="second_fragment_label">Second Fragment</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:17: Warning: The resource R.string.next appears to be unused [UnusedResources]
+    <string name="next">Next</string>
+            ~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:18: Warning: The resource R.string.previous appears to be unused [UnusedResources]
+    <string name="previous">Previous</string>
+            ~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:21: Warning: The resource R.string.profile_image appears to be unused [UnusedResources]
+    <string name="profile_image">profile image</string>
+            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:23: Warning: The resource R.string.group appears to be unused [UnusedResources]
+    <string name="group">Group</string>
+            ~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\values\strings.xml:24: Warning: The resource R.string.results appears to be unused [UnusedResources]
+    <string name="results">Results</string>
+            ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\activityobject.xml:16: Warning: This LinearLayout layout or its FrameLayout parent is unnecessary [UselessParent]
+        <LinearLayout
+         ~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\popup_windowactivity.xml:8: Warning: This FrameLayout layout or its RelativeLayout parent is unnecessary; transfer the background attribute to the other view [UselessParent]
+    <FrameLayout
+     ~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\popup_windowactivity.xml:12: Warning: This LinearLayout layout or its FrameLayout parent is unnecessary [UselessParent]
+        <LinearLayout
+         ~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\usernameframe.xml:14: Warning: This LinearLayout layout or its FrameLayout parent is unnecessary [UselessParent]
+        <LinearLayout
+         ~~~~~~~~~~~~
+
+   Explanation for issues of type "UselessParent":
+   A layout with children that has no siblings, is not a scrollview or a root
+   layout, and does not have a background, can be removed and have its
+   children moved directly into the parent for a flatter and more efficient
+   layout hierarchy.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\drawable-xxhdpi\activitylogo.png: Warning: The following images appear both as density independent .xml files and as bitmap files: srcmainresdrawable-anydpiactivitylogo.xml, srcmainresdrawable-hdpiactivitylogo.png [IconXmlAndPng]
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\drawable-xxhdpi\grouplogo.png: Warning: The following images appear both as density independent .xml files and as bitmap files: srcmainresdrawable-anydpigrouplogo.xml, srcmainresdrawable-hdpigrouplogo.png [IconXmlAndPng]
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\drawable-xxhdpi\homelogo.png: Warning: The following images appear both as density independent .xml files and as bitmap files: srcmainresdrawable-anydpihomelogo.xml, srcmainresdrawable-hdpihomelogo.png [IconXmlAndPng]
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\mipmap-xxxhdpi\ic_launcher_foreground.webp: Warning: The following images appear both as density independent .xml files and as bitmap files: srcmainresdrawableic_launcher_foreground.xml, srcmainresmipmap-hdpiic_launcher_foreground.webp [IconXmlAndPng]
+
+   Explanation for issues of type "IconXmlAndPng":
+   If a drawable resource appears as an .xml file in the drawable/ folder,
+   it's usually not intentional for it to also appear as a bitmap using the
+   same name; generally you expect the drawable XML file to define states and
+   each state has a corresponding drawable bitmap.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\mipmap-anydpi-v26\ic_launcher.xml:2: Warning: The application adaptive icon is missing a monochrome tag [MonochromeLauncherIcon]
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+^
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\mipmap-anydpi-v26\ic_launcher_round.xml:2: Warning: The application adaptive roundIcon is missing a monochrome tag [MonochromeLauncherIcon]
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+^
+
+   Explanation for issues of type "MonochromeLauncherIcon":
+   If android:roundIcon and android:icon are both in your manifest, you must
+   either remove the reference to android:roundIcon if it is not needed; or,
+   supply the monochrome icon in the drawable defined by the android:roundIcon
+   and android:icon attribute.
+
+   For example, if android:roundIcon and android:icon are both in the
+   manifest, a launcher might choose to use android:roundIcon over
+   android:icon to display the adaptive app icon. Therefore, your themed
+   application iconwill not show if your monochrome attribute is not also
+   specified in android:roundIcon.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_group_activity_test.xml:21: Warning: Missing autofillHints attribute [Autofill]
+        <EditText
+         ~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_home.xml:57: Warning: Missing autofillHints attribute [Autofill]
+        <EditText
+         ~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_home.xml:77: Warning: Missing autofillHints attribute [Autofill]
+        <EditText
+         ~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_home.xml:114: Warning: Missing autofillHints attribute [Autofill]
+        <EditText
+         ~~~~~~~~
+
+   Explanation for issues of type "Autofill":
+   Specify an autofillHints attribute when targeting SDK version 26 or higher
+   or explicitly specify that the view is not important for autofill. Your app
+   can help an autofill service classify the data correctly by providing the
+   meaning of each view that could be autofillable, such as views representing
+   usernames, passwords, credit card fields, email addresses, etc.
+
+   The hints can have any value, but it is recommended to use predefined
+   values like 'username' for a username or 'creditCardNumber' for a credit
+   card number. For a list of all predefined autofill hint constants, see the
+   AUTOFILL_HINT_ constants in the View reference at
+   https://developer.android.com/reference/android/view/View.html.
+
+   You can mark a view unimportant for autofill by specifying an
+   importantForAutofill attribute on that view or a parent view. See
+   https://developer.android.com/reference/android/view/View.html#setImportant
+   ForAutofill(int).
+
+   https://developer.android.com/guide/topics/text/autofill.html
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\login_page.xml:20: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageView
+     ~~~~~~~~~
+
+   Explanation for issues of type "ContentDescription":
+   Non-textual widgets like ImageViews and ImageButtons should use the
+   contentDescription attribute to specify a textual description of the widget
+   such that screen readers and other accessibility tools can adequately
+   describe the user interface.
+
+   Note that elements in application screens that are purely decorative and do
+   not provide any content or enable a user action should not have
+   accessibility content descriptions. In this case, set their descriptions to
+   @null. If your app's minSdkVersion is 16 or higher, you can instead set
+   these graphical elements' android:importantForAccessibility attributes to
+   no.
+
+   Note that for text fields, you should not set both the hint and the
+   contentDescription attributes since the hint will never be shown. Just set
+   the hint.
+
+   https://developer.android.com/guide/topics/ui/accessibility/apps#special-cases
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_group_activity_test.xml:21: Warning: Missing accessibility label: provide either a view with an android:labelFor that references this view or provide an android:hint [LabelFor]
+        <EditText
+         ~~~~~~~~
+
+   Explanation for issues of type "LabelFor":
+   Editable text fields should provide an android:hint or, provided your
+   minSdkVersion is at least 17, they may be referenced by a view with a
+   android:labelFor attribute.
+
+   When using android:labelFor, be sure to provide an android:text or an
+   android:contentDescription.
+
+   If your view is labeled but by a label in a different layout which includes
+   this one, just suppress this warning from lint.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\GroupActivity.java:61: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        groupNameInput.setText("Insert group name");
+                                               ~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\GroupFragment.java:80: Warning: Number formatting does not take into account locale settings. Consider using String.format instead. [SetTextI18n]
+            userSumResult.setText(resultKeyList.get(i).toString());
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\GroupFragment.java:85: Warning: Number formatting does not take into account locale settings. Consider using String.format instead. [SetTextI18n]
+            userSumResult2.setText(resultKeyList.get(i).toString());
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\java\com\example\opt_1\view\HomeFragment.java:56: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            usernameTextField.setText("NULL");
+                                      ~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\activityobject.xml:25: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+                android:text="TextView"
+                ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\activityobject.xml:33: Warning: Hardcoded string "Open", should use @string resource [HardcodedText]
+                android:text="Open" />
+                ~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_group_activity_test.xml:27: Warning: Hardcoded string "testiryhma", should use @string resource [HardcodedText]
+            android:text="testiryhma"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_groups.xml:32: Warning: Hardcoded string "Leave group", should use @string resource [HardcodedText]
+        android:text="Leave group"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_groups.xml:42: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+        android:text="TextView"
+        ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_groups.xml:52: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+        android:text="TextView"
+        ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\fragment_home.xml:45: Warning: Hardcoded string "Username", should use @string resource [HardcodedText]
+            android:text="Username"
+            ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\login_page.xml:54: Warning: Hardcoded string "LenkkiFriendi", should use @string resource [HardcodedText]
+            android:text="LenkkiFriendi"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\popup_windowactivity.xml:23: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+                android:text="TextView"
+                ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\usernameframe.xml:24: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+                android:text="TextView" />
+                ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\usernameframe.xml:31: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+                android:text="TextView" />
+                ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\usernameframe.xml:38: Warning: Hardcoded string "TextView", should use @string resource [HardcodedText]
+                android:text="TextView" />
+                ~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait) you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   There are quickfixes to automatically extract this hardcoded string into a
+   resource lookup.
+
+C:\Users\samua\AndroidStudioProjects\OTP-1\app\src\main\res\layout\activityobject.xml:32: Warning: Consider replacing android:layout_marginLeft with android:layout_marginStart="10dp" to better support right-to-left layouts [RtlHardcoded]
+                android:layout_marginLeft="10dp"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "RtlHardcoded":
+   Using Gravity#LEFT and Gravity#RIGHT can lead to problems when a layout is
+   rendered in locales where text flows from right to left. Use Gravity#START
+   and Gravity#END instead. Similarly, in XML gravity and layout_gravity
+   attributes, use start rather than left.
+
+   For XML attributes such as paddingLeft and layout_marginLeft, use
+   paddingStart and layout_marginStart. NOTE: If your minSdkVersion is less
+   than 17, you should add both the older left/right attributes as well as the
+   new start/end attributes. On older platforms, where RTL is not supported
+   and the start/end attributes are unknown and therefore ignored, you need
+   the older left/right attributes. There is a separate lint check which
+   catches that type of error.
+
+   (Note: For Gravity#LEFT and Gravity#START, you can use these constants even
+   when targeting older platforms, because the start bitmask is a superset of
+   the left bitmask. Therefore, you can use gravity="start" rather than
+   gravity="left|start".)
+
+0 errors, 61 warnings

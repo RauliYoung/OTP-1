@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.opt_1.model</a> &gt; <span class="el_source">DAO.java</span></div><h1>DAO.java</h1><pre class="source lang-java linenums">package com.example.opt_1.model;
+import androidx.annotation.NonNull;
+import com.google.android.gms.tasks.*;
+import com.google.firebase.auth.*;
+import com.google.firebase.firestore.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+/**
+ *
+ * DAO class represents CRUD operations of application
+ *
+ */
+<span class="fc" id="L15">public class DAO implements IDAO {</span>
+
+    /**
+     * A variable for the database instance
+     */
+<span class="fc" id="L20">    private FirebaseFirestore databaseInstance = FirebaseFirestore.getInstance();</span>
+    /**
+     * A variable for the database auth instance
+     */
+<span class="fc" id="L24">    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();</span>
+    /**
+     * A variable for the user instance
+     */
+<span class="fc" id="L28">    private User userInstance = User.getInstance();</span>
+    /**
+     * A list variable for the exercise group results
+     *
+     */
+<span class="fc" id="L33">    private Map&lt;String,ArrayList&lt;Double&gt;&gt; groupResults = null;</span>
+    /**
+     * A variable for participants count
+     */
+<span class="fc" id="L37">    private int emailCount = 0;</span>
+    /**
+     * A variable for sum of exercise time for the day
+     */
+<span class="fc" id="L41">    private double exerciseTime = 0;</span>
+    /**
+     * A variable for sum of exercise meters for the day
+     */
+<span class="fc" id="L45">    private double exerciseInMeters = 0;</span>
+
+    /**
+     * Method adds a new exercise data to the database
+     * This method is called by controller after the user has stopped the activity
+     * @param newExercise The exercise data to be added to the database
+     */
+    @Override
+    public void addNewExerciseToDatabase(Exercise newExercise) {
+<span class="fc" id="L54">        databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                if (handleTaskQS(task)) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="fc" id="L59">                        DocumentReference userRef = databaseInstance.collection(&quot;users&quot;).document(document.getId());</span>
+<span class="fc" id="L60">                        CollectionReference userExercise = userRef.collection(&quot;exercises&quot;);</span>
+<span class="fc" id="L61">                        userExercise.add(newExercise);</span>
+<span class="fc" id="L62">                        retrieveExercises();</span>
+<span class="fc" id="L63">                    }</span>
+                }
+<span class="fc" id="L65">            }</span>
+        });
+<span class="fc" id="L67">    }</span>
+    /**
+     * Method retrieves the user exercises from database and updates the user's instance
+     */
+    private void retrieveExercises(){
+<span class="fc" id="L72">        Query usersExercises = databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());</span>
+<span class="fc" id="L73">        usersExercises.get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                if(handleTaskQS(task)){</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="fc" id="L78">                        databaseInstance.collection(&quot;users/&quot; + document.getId() + &quot;/exercises&quot;).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                            @Override
+                            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">                                if(handleTaskQS(task)){</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                                    for (QueryDocumentSnapshot snapshot : task.getResult()){</span>
+<span class="fc" id="L83">                                        ArrayList&lt;Map&lt;String,Object&gt;&gt; userInstanceArrayList = userInstance.getExercises();</span>
+<span class="fc" id="L84">                                        userInstanceArrayList.add(snapshot.getData());</span>
+<span class="fc" id="L85">                                        userInstance.setExercises(userInstanceArrayList);</span>
+<span class="fc" id="L86">                                    }</span>
+                                }
+<span class="fc" id="L88">                            }</span>
+                        });
+<span class="fc" id="L90">                    }</span>
+                }
+<span class="fc" id="L92">            }</span>
+        });
+
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Method adds a new user to the database
+     * @param user A Hashmap containing username, email, first name and last name
+     * @param password The password provided in the registration form
+     * @param callbacks Callback verifies that the user has been created
+     */
+    @Override
+    public void createUser(Map&lt;String,String&gt; user, String password, CRUDCallbacks callbacks) {
+<span class="nc" id="L105">        firebaseAuth.createUserWithEmailAndPassword((String) Objects.requireNonNull(user.get(&quot;email&quot;)), password).addOnCompleteListener(new OnCompleteListener&lt;AuthResult&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;AuthResult&gt; task) {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if(handleTaskAuth(task)){</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    if (task.isSuccessful()) {</span>
+<span class="nc" id="L110">                        databaseInstance.collection(&quot;users&quot;).add(user).addOnSuccessListener(new OnSuccessListener&lt;DocumentReference&gt;() {</span>
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+<span class="nc" id="L113">                                firebaseAuth.signOut();</span>
+<span class="nc" id="L114">                                callbacks.onSucceed();</span>
+<span class="nc" id="L115">                            }</span>
+
+<span class="nc" id="L117">                        }).addOnFailureListener(new OnFailureListener() {</span>
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+<span class="nc" id="L120">                                e.printStackTrace();</span>
+<span class="nc" id="L121">                                callbacks.onFailure();</span>
+<span class="nc" id="L122">                            }</span>
+                        });
+                    } else {
+<span class="nc" id="L125">                        System.out.println(&quot;Something went wrong while creating new user &quot; + task.getException());</span>
+                    }
+                }
+<span class="nc" id="L128">            }</span>
+        });
+<span class="nc" id="L130">    }</span>
+
+    /**
+     * Method deletes a user and associated data from the database
+     */
+    @Override
+    public void removeUser() {
+        try {
+<span class="nc" id="L138">            DocumentReference docRefGroup = databaseInstance.collection(&quot;groups&quot;).document(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()));</span>
+
+<span class="nc" id="L140">            docRefGroup.get().addOnCompleteListener(new OnCompleteListener&lt;DocumentSnapshot&gt;() {</span>
+                @Override
+                public void onComplete(@NonNull Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                    if (handleTaskDS(task)) {</span>
+<span class="nc" id="L144">                        DocumentSnapshot document = task.getResult();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                        if (document.exists()) {</span>
+<span class="nc" id="L146">                            docRefGroup.delete();</span>
+                        } else {
+<span class="nc" id="L148">                            System.out.println(&quot;Group doesn't exist&quot;);</span>
+                        }
+<span class="nc" id="L150">                    } else {</span>
+<span class="nc" id="L151">                        System.out.println(&quot;Err: &quot; + task.getException());</span>
+                    }
+<span class="nc" id="L153">                }</span>
+            });
+<span class="nc" id="L155">            Query usersExercises = databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, firebaseAuth.getCurrentUser().getEmail());</span>
+<span class="nc" id="L156">            usersExercises.get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                @Override
+                public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                    if(handleTaskQS(task)){</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                        for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc" id="L161">                             databaseInstance.collection(&quot;users/&quot; + document.getId() + &quot;/exercises&quot;).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                                @Override
+                                public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                                    if(handleTaskQS(task)){</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                                        for (QueryDocumentSnapshot snapshot : task.getResult()){</span>
+<span class="nc" id="L166">                                            databaseInstance.collection(&quot;users/&quot; + document.getId() +&quot;/exercises&quot;).document(snapshot.getId()).delete();</span>
+<span class="nc" id="L167">                                        }</span>
+                                    }
+<span class="nc" id="L169">                                }</span>
+                            });
+<span class="nc" id="L171">                        }</span>
+                    }
+<span class="nc" id="L173">                }</span>
+            });
+
+<span class="nc" id="L176">            Query usersCollectionRef = databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, firebaseAuth.getCurrentUser().getEmail());</span>
+<span class="nc" id="L177">            usersCollectionRef.get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                @Override
+                public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                    if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                        for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc" id="L183">                            DocumentReference userRef = databaseInstance.collection(&quot;users&quot;).document(document.getId());</span>
+<span class="nc" id="L184">                            userRef.delete().addOnSuccessListener(new OnSuccessListener&lt;Void&gt;() {</span>
+                                @Override
+                                public void onSuccess(Void unused) {
+<span class="nc" id="L187">                                    System.out.println(&quot;Poistettu user collection&quot;);</span>
+<span class="nc" id="L188">                                }</span>
+                            });
+<span class="nc" id="L190">                        }</span>
+                    }
+<span class="nc" id="L192">                }</span>
+            });
+<span class="nc" id="L194">            firebaseAuth.getCurrentUser().delete().addOnSuccessListener(new OnSuccessListener&lt;Void&gt;() {</span>
+                @Override
+                public void onSuccess(Void unused) {
+<span class="nc" id="L197">                    System.out.println(&quot;Poistettu auth&quot;);</span>
+<span class="nc" id="L198">                }</span>
+<span class="nc" id="L199">            }).addOnFailureListener(new OnFailureListener() {</span>
+                @Override
+                public void onFailure(@NonNull Exception e) {
+<span class="nc" id="L202">                    System.out.println(&quot;Ei poistettu auth&quot;);</span>
+<span class="nc" id="L203">                }</span>
+            });
+<span class="nc" id="L205">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L206">            throw new RuntimeException(e);</span>
+<span class="nc" id="L207">        }</span>
+<span class="nc" id="L208">    }</span>
+
+    /**
+     * Method verifies login credentials and updates the user's password
+     * @param oldPassword The old password provided in the main page form
+     * @param newPassword The new password provided in the main page form
+     */
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+<span class="nc" id="L217">        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();</span>
+<span class="nc" id="L218">        AuthCredential credential = EmailAuthProvider</span>
+<span class="nc" id="L219">                .getCredential(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()), oldPassword);</span>
+
+        try {
+<span class="nc" id="L222">            firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener&lt;Void&gt;() {</span>
+                @Override
+                public void onComplete(@NonNull Task&lt;Void&gt; task) {
+<span class="nc" id="L225">                    firebaseUser.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener&lt;Void&gt;() {</span>
+                        @Override
+                        public void onComplete(@NonNull Task&lt;Void&gt; task) {
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                            if (task.isSuccessful()) {</span>
+<span class="nc" id="L229">                                System.out.println(&quot;Password has been changed&quot;);</span>
+<span class="nc" id="L230">                                databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                                    @Override
+                                    public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                                        if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                                            for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc" id="L235">                                                DocumentReference userRef = databaseInstance.collection(&quot;users&quot;).document(document.getId());</span>
+<span class="nc" id="L236">                                                userRef.update(&quot;password&quot;, newPassword);</span>
+<span class="nc" id="L237">                                            }</span>
+                                        }
+<span class="nc" id="L239">                                    }</span>
+                                });
+                            }
+<span class="nc" id="L242">                        }</span>
+                    });
+<span class="nc" id="L244">                }</span>
+            });
+<span class="nc" id="L246">        }catch (NullPointerException err){</span>
+<span class="nc" id="L247">            err.printStackTrace();</span>
+<span class="nc" id="L248">        }</span>
+<span class="nc" id="L249">    }</span>
+
+    /**
+     * Method checks if new username is already in use
+     * @param newUsername The new username provided in the main page form
+     * @param callbacks callbacks ensures that the username check has been processed
+     */
+    @Override
+    public void checksIfUsernameExist(String newUsername, CRUDCallbacks callbacks) {
+<span class="nc" id="L258">        Query usernames = databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;username&quot;, newUsername);</span>
+<span class="nc" id="L259">        usernames.get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L262" title="All 2 branches missed.">                if(task.isSuccessful()){</span>
+<span class="nc" id="L263">                    QuerySnapshot querySnapshot = task.getResult();</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                    if(!querySnapshot.isEmpty()){</span>
+<span class="nc" id="L265">                        System.out.println(&quot;Username is already on use&quot;);</span>
+                    }else {
+<span class="nc" id="L267">                        System.out.println(&quot;Username is available to use&quot;);</span>
+<span class="nc" id="L268">                        changeUsername(newUsername, callbacks);</span>
+                    }
+                }
+<span class="nc" id="L271">            }</span>
+        });
+<span class="nc" id="L273">    }</span>
+
+    /**
+     * Method is called after checksIfUsernameExist has been passed successful and changes the username to new one
+     * @param username The username provided in the main page form
+     * @param callbacks callbacks ensures that the username has been changed
+     */
+    private void changeUsername(String username, CRUDCallbacks callbacks){
+<span class="nc" id="L281">        System.out.println(&quot;changeUsername()&quot;);</span>
+<span class="nc" id="L282">        databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L285" title="All 2 branches missed.">                if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc" id="L287">                        DocumentReference userRef = databaseInstance.collection(&quot;users&quot;).document(document.getId());</span>
+<span class="nc" id="L288">                        userRef.update(&quot;username&quot;, username);</span>
+<span class="nc" id="L289">                        userInstance.setUsername(username);</span>
+<span class="nc" id="L290">                        callbacks.onSucceed();</span>
+
+<span class="nc" id="L292">                    }</span>
+                }
+<span class="nc" id="L294">            }</span>
+        });
+<span class="nc" id="L296">    }</span>
+
+    /**
+     * Method attempts to login with user email and password in Firebase auth, and if it passed
+     * method sets the user into instance and changes the view to main view
+     * @param email The user's email from login page form
+     * @param password The user's password from the login page form
+     * @param callbacks callbacks ensures that the login has been processed
+     */
+    @Override
+    public void loginUser(String email, String password, CRUDCallbacks callbacks) {
+        try {
+<span class="fc" id="L308">            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener&lt;AuthResult&gt;() {</span>
+                @Override
+                public void onComplete(@NonNull Task&lt;AuthResult&gt; task) {
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">                    if(handleTaskAuth(task)){</span>
+<span class="fc" id="L312">                        System.out.println(firebaseAuth.getCurrentUser()+&quot; LOGGED IN&quot;);</span>
+<span class="fc" id="L313">                        databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, email).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                            @Override
+                            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">                                if (handleTaskQS(task)) {</span>
+<span class="fc" id="L317">                                    Map&lt;String,Object&gt; user = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">                                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="fc" id="L319">                                        user = document.getData();</span>
+<span class="fc" id="L320">                                    }</span>
+<span class="fc" id="L321">                                    User userInstance = User.getInstance();</span>
+<span class="fc" id="L322">                                    userInstance.setFirstName((String) user.get(&quot;firstName&quot;));</span>
+<span class="fc" id="L323">                                    userInstance.setLastName((String) user.get(&quot;lastName&quot;));</span>
+<span class="fc" id="L324">                                    userInstance.setUsername((String) user.get(&quot;username&quot;));</span>
+<span class="fc" id="L325">                                    userInstance.setEmail((String) user.get(&quot;email&quot;));</span>
+<span class="fc" id="L326">                                    userInstance.setGroup((String) user.get(&quot;group&quot;));</span>
+<span class="fc" id="L327">                                    boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.get(&quot;userInGroup&quot;)));</span>
+<span class="fc" id="L328">                                    userInstance.setUserInGroup(userInGroup);</span>
+<span class="fc" id="L329">                                    System.out.println(&quot;User instance: &quot; + userInstance);</span>
+<span class="fc" id="L330">                                    retrieveExercises();</span>
+<span class="fc" id="L331">                                    callbacks.onSucceed();</span>
+<span class="fc" id="L332">                                }else{</span>
+<span class="nc" id="L333">                                    callbacks.onFailure();</span>
+                                }
+<span class="fc" id="L335">                            }</span>
+                        });
+                    }
+<span class="fc" id="L338">                }</span>
+<span class="fc" id="L339">            }).addOnFailureListener(new OnFailureListener() {</span>
+                @Override
+                public void onFailure(@NonNull Exception e) {
+<span class="nc" id="L342">                    callbacks.onFailure();</span>
+<span class="nc" id="L343">                }</span>
+            });
+<span class="nc" id="L345">        }catch (IllegalArgumentException err){</span>
+<span class="nc" id="L346">            err.printStackTrace();</span>
+<span class="nc" id="L347">            callbacks.onFailure();</span>
+<span class="fc" id="L348">        }</span>
+<span class="fc" id="L349">    }</span>
+
+    /**
+     * Method creates and adds a new group to the database
+     * @param groupName User-given name for the group from group page form
+     */
+    @Override
+    public void addNewGroupIntoDatabase(String groupName) {
+<span class="nc" id="L357">        String email = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail();</span>
+<span class="nc" id="L358">        Group newGroup = new Group();</span>
+<span class="nc" id="L359">        databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, email).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                if(handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">                        if(document.exists()){</span>
+<span class="nc" id="L365">                            newGroup.getGroupOfUserEmails().add(userInstance.getEmail());</span>
+<span class="nc" id="L366">                            newGroup.setGroupOwner(userInstance.getUsername());</span>
+<span class="nc" id="L367">                            newGroup.setGroupName(groupName);</span>
+                        }
+<span class="nc" id="L369">                        createNewGroup(newGroup, new CRUDCallbacks() {</span>
+                            @Override
+                            public void onSucceed() {
+<span class="nc" id="L372">                                addUserToTheGroup(userInstance.getEmail(), new CRUDCallbacks() {</span>
+                                    @Override
+                                    public void onSucceed() {
+<span class="nc" id="L375">                                        System.out.println(&quot;New group and owner updated&quot;);</span>
+<span class="nc" id="L376">                                    }</span>
+
+                                    @Override
+                                    public void onFailure() {
+
+<span class="nc" id="L381">                                    }</span>
+                                });
+<span class="nc" id="L383">                            }</span>
+
+                            @Override
+                            public void onFailure() {
+<span class="nc" id="L387">                                System.out.println(&quot;Error while creating a group&quot;);</span>
+<span class="nc" id="L388">                            }</span>
+                        });
+<span class="nc" id="L390">                    }</span>
+                }
+<span class="nc" id="L392">            }</span>
+        });
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * Method adds the user to a specific exercise group by group owner's email
+     * @param groupOwnerEmail The email of the group owner, obtained from the group page form
+     * @param callbacks callbacks ensures that the user has been added group
+     */
+    @Override
+    public void addUserToTheGroup(String groupOwnerEmail , CRUDCallbacks callbacks) {
+<span class="nc" id="L403">        DocumentReference docRef = databaseInstance.collection(&quot;groups&quot;).document(groupOwnerEmail);</span>
+<span class="nc" id="L404">        docRef.get().addOnCompleteListener(new OnCompleteListener&lt;DocumentSnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc bnc" id="L407" title="All 2 branches missed.">                if (task.isSuccessful()) {</span>
+<span class="nc" id="L408">                    DocumentSnapshot document = task.getResult();</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">                    if (document.exists()) {</span>
+<span class="nc" id="L410">                       databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                            @Override
+                            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L413" title="All 2 branches missed.">                                if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">                                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc" id="L415">                                        databaseInstance.collection(&quot;users&quot;).document(document.getId()).update(&quot;userInGroup&quot;,&quot;true&quot;,&quot;group&quot;,groupOwnerEmail).addOnCompleteListener(new OnCompleteListener&lt;Void&gt;() {</span>
+                                            @Override
+                                            public void onComplete(@NonNull Task&lt;Void&gt; task) {
+<span class="nc bnc" id="L418" title="All 2 branches missed.">                                                if(task.isSuccessful()){</span>
+<span class="nc" id="L419">                                                    docRef.update(&quot;groupOfUserEmails&quot;, FieldValue.arrayUnion(userInstance.getEmail())).addOnCompleteListener(new OnCompleteListener&lt;Void&gt;() {</span>
+                                                        @Override
+                                                        public void onComplete(@NonNull Task&lt;Void&gt; task) {
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                                                            if(task.isSuccessful()){</span>
+<span class="nc" id="L423">                                                                databaseInstance.collection(&quot;users&quot;).document(document.getId()).get().addOnCompleteListener(new OnCompleteListener&lt;DocumentSnapshot&gt;() {</span>
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc bnc" id="L426" title="All 2 branches missed.">                                                                        if(task.isSuccessful()){</span>
+<span class="nc" id="L427">                                                                            DocumentSnapshot user = task.getResult();</span>
+<span class="nc" id="L428">                                                                            boolean userInGroup = Boolean.parseBoolean((String) Objects.requireNonNull(user.getData()).get(&quot;userInGroup&quot;));</span>
+<span class="nc" id="L429">                                                                            userInstance.setUserInGroup(userInGroup);</span>
+<span class="nc" id="L430">                                                                            callbacks.onSucceed();</span>
+                                                                        }
+<span class="nc" id="L432">                                                                    }</span>
+<span class="nc" id="L433">                                                                }).addOnFailureListener(new OnFailureListener() {</span>
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+<span class="nc" id="L436">                                                                        e.printStackTrace();</span>
+<span class="nc" id="L437">                                                                        callbacks.onFailure();</span>
+<span class="nc" id="L438">                                                                    }</span>
+                                                                });
+                                                            }
+<span class="nc" id="L441">                                                        }</span>
+                                                    });
+
+                                                }
+<span class="nc" id="L445">                                            }</span>
+                                        });
+<span class="nc" id="L447">                                    }</span>
+                                }
+<span class="nc" id="L449">                            }</span>
+                        });
+                    }
+                }
+<span class="nc" id="L453">            }</span>
+        });
+<span class="nc" id="L455">    }</span>
+
+    /**
+     * Gets the exercise results
+     * @return Returns a HashMap containing results
+     */
+    @Override
+    public Map&lt;String, ArrayList&lt;Double&gt;&gt; getGroupResults() {
+<span class="nc" id="L463">        return groupResults;</span>
+    }
+
+    /**
+     * Method attempts to fetch a group by name from database
+     * @param groupOwnerEmail The email of the group owner, obtained from the group page form
+     * @param controllerCallback controllerCallbacks ensures that the group has been found
+     */
+    @Override
+    public void fetchGroupFromDatabase(String groupOwnerEmail, CRUDCallbacks controllerCallback){
+<span class="nc" id="L473">        groupResults = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L474">        DocumentReference joinedGroupRef = databaseInstance.collection(&quot;groups&quot;).document(groupOwnerEmail);</span>
+<span class="nc" id="L475">        joinedGroupRef.get().addOnCompleteListener(new OnCompleteListener&lt;DocumentSnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc bnc" id="L478" title="All 2 branches missed.">                if(handleTaskDS(task)){</span>
+<span class="nc" id="L479">                    DocumentSnapshot document = task.getResult();</span>
+<span class="nc" id="L480">                    Group group = document.toObject(Group.class);</span>
+                    try{
+<span class="nc bnc" id="L482" title="All 2 branches missed.">                        if(group.getGroupOfUserEmails() != null){</span>
+<span class="nc" id="L483">                            fetchGroupParticipants(group, new CRUDCallbacks() {</span>
+                                @Override
+                                public void onSucceed() {
+<span class="nc" id="L486">                                    System.out.println(&quot;Testi: &quot; + groupResults);</span>
+<span class="nc" id="L487">                                    controllerCallback.onSucceed();</span>
+<span class="nc" id="L488">                                }</span>
+
+                                @Override
+                                public void onFailure() {
+
+<span class="nc" id="L493">                                }</span>
+                            });
+                        }
+
+<span class="nc" id="L497">                    }catch (Exception e){</span>
+<span class="nc" id="L498">                        e.printStackTrace();</span>
+<span class="nc" id="L499">                    }</span>
+
+                }
+<span class="nc" id="L502">            }</span>
+        });
+<span class="nc" id="L504">    }</span>
+
+    /**
+     * Method attempts to fetch all users of the group from the database
+     * @param group The group information
+     * @param secondCallback secondCallback ensures that the group members are found
+     */
+    private void fetchGroupParticipants(Group group, CRUDCallbacks secondCallback) {
+
+<span class="nc bnc" id="L513" title="All 2 branches missed.">        for(String email : group.getGroupOfUserEmails()) {</span>
+<span class="nc" id="L514">            databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, email).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                @Override
+                public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L517" title="All 2 branches missed.">                    if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L518" title="All 2 branches missed.">                        for (QueryDocumentSnapshot q : task.getResult()) {</span>
+<span class="nc" id="L519">                            Map&lt;String, Object&gt; user = q.getData();</span>
+
+<span class="nc" id="L521">                            fetchExerciseResults(q,user, new CRUDCallbacks() {</span>
+                                @Override
+                                public void onSucceed() {
+<span class="nc" id="L524">                                    emailCount++;</span>
+<span class="nc" id="L525">                                    exerciseTime = 0;</span>
+<span class="nc" id="L526">                                    exerciseInMeters = 0;</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">                                    if(emailCount == group.getGroupOfUserEmails().size()){</span>
+<span class="nc" id="L528">                                        secondCallback.onSucceed();</span>
+<span class="nc" id="L529">                                        emailCount = 0;</span>
+                                    }
+<span class="nc" id="L531">                                }</span>
+                                @Override
+<span class="nc" id="L533">                                public void onFailure() {}</span>
+                            });
+<span class="nc" id="L535">                        }</span>
+                    }
+<span class="nc" id="L537">                }</span>
+            });
+<span class="nc" id="L539">        }</span>
+<span class="nc" id="L540">    }</span>
+
+    /**
+     * Method attempts to fetch all exercises of particular user from the database
+     * @param queryDocumentSnapshot A user reference document from the database
+     * @param user The user information
+     * @param callbacks callbacks ensures that all the exercises has been retrieved
+     */
+    private void fetchExerciseResults(QueryDocumentSnapshot queryDocumentSnapshot, Map&lt;String, Object&gt; user, CRUDCallbacks callbacks) {
+<span class="nc" id="L549">        ArrayList&lt;Double&gt; exerciseResults = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L550">        databaseInstance.collection(&quot;users/&quot; + queryDocumentSnapshot.getId() + &quot;/exercises&quot;).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L553" title="All 2 branches missed.">                if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">                    for (QueryDocumentSnapshot queryRes : task.getResult()){</span>
+<span class="nc" id="L555">                        LocalDateTime date = LocalDateTime.now();</span>
+<span class="nc" id="L556">                        DateTimeFormatter format = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;);</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">                        if(Objects.equals(queryRes.get(&quot;exerciseDate&quot;), date.format(format))){</span>
+<span class="nc" id="L558">                            exerciseTime += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get(&quot;exerciseTime&quot;))));</span>
+<span class="nc" id="L559">                            exerciseInMeters += Double.parseDouble(String.valueOf(Objects.requireNonNull(queryRes.get(&quot;exerciseInMeters&quot;))));</span>
+                        }
+<span class="nc" id="L561">                    }</span>
+                    //Index 0 = sum of exercise times
+<span class="nc" id="L563">                    exerciseResults.add(exerciseTime);</span>
+                    //Index 1 = sum of exercise meters
+<span class="nc" id="L565">                    exerciseResults.add(exerciseInMeters);</span>
+<span class="nc" id="L566">                    System.out.println(&quot;EXERLIST&quot; + exerciseResults);</span>
+<span class="nc" id="L567">                    groupResults.put((String) user.get(&quot;username&quot;),exerciseResults);</span>
+<span class="nc" id="L568">                    callbacks.onSucceed();</span>
+                }
+<span class="nc" id="L570">            }</span>
+        });
+<span class="nc" id="L572">    }</span>
+
+    /**
+     * Method removes the user from the group by group owner email
+     * @param groupOwnerEmail The email of the group owner, obtained from the group page form
+     */
+    @Override
+    public void removeUserFromTheGroup(String groupOwnerEmail) {
+<span class="nc" id="L580">        DocumentReference docRef = databaseInstance.collection(&quot;groups&quot;).document(groupOwnerEmail);</span>
+<span class="nc" id="L581">        docRef.get().addOnCompleteListener(new OnCompleteListener&lt;DocumentSnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc bnc" id="L584" title="All 2 branches missed.">                if (task.isSuccessful()) {</span>
+<span class="nc" id="L585">                    DocumentSnapshot document = task.getResult();</span>
+<span class="nc bnc" id="L586" title="All 2 branches missed.">                    if (document.exists()) {</span>
+<span class="nc" id="L587">                        databaseInstance.collection(&quot;users&quot;).whereEqualTo(&quot;email&quot;, firebaseAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</span>
+                            @Override
+                            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {
+<span class="nc bnc" id="L590" title="All 2 branches missed.">                                if (handleTaskQS(task)) {</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">                                    for (QueryDocumentSnapshot document : task.getResult()) {</span>
+<span class="nc" id="L592">                                        docRef.update(&quot;groupOfUserEmails&quot;, FieldValue.arrayRemove(userInstance.getEmail()));</span>
+<span class="nc" id="L593">                                    }</span>
+                                }
+<span class="nc" id="L595">                            }</span>
+                        });
+                    }
+                }
+<span class="nc" id="L599">            }</span>
+        });
+<span class="nc" id="L601">    }</span>
+
+    /**
+     * Method creates a new group and sets the group ID to be as the user's email
+     * @param group The group information
+     * @param callback callback ensures that the user has been removed from the group
+     */
+    @Override
+    public void createNewGroup(Group group, CRUDCallbacks callback) {
+<span class="nc" id="L610">        DocumentReference docRef = databaseInstance.collection(&quot;groups&quot;).document(Objects.requireNonNull(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail()));</span>
+<span class="nc" id="L611">        docRef.get().addOnCompleteListener(new OnCompleteListener&lt;DocumentSnapshot&gt;() {</span>
+            @Override
+            public void onComplete(@NonNull Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc bnc" id="L614" title="All 2 branches missed.">                if (task.isSuccessful()) {</span>
+<span class="nc" id="L615">                    DocumentSnapshot document = task.getResult();</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">                    if (document.exists()) {</span>
+<span class="nc" id="L617">                        callback.onFailure();</span>
+                    } else {
+<span class="nc" id="L619">                        docRef.set(group, SetOptions.merge());</span>
+<span class="nc" id="L620">                        callback.onSucceed();</span>
+                    }
+<span class="nc" id="L622">                } else {</span>
+<span class="nc" id="L623">                    System.out.println(&quot;Err: &quot; + task.getException());</span>
+                }
+<span class="nc" id="L625">            }</span>
+        });
+<span class="nc" id="L627">    }</span>
+
+    /**
+     * Method checks if a specific task has been completed
+     * @param task The task or action to be checked for completion
+     * @return boolean value
+     */
+    public Boolean handleTaskQS(Task&lt;QuerySnapshot&gt; task) {
+<span class="fc" id="L635">        return task.isSuccessful();</span>
+    }
+    /**
+     * Method checks if a specific task has been completed
+     * @param task The task or action to be checked for completion
+     * @return boolean value
+     */
+    public Boolean handleTaskDS(Task&lt;DocumentSnapshot&gt; task) {
+<span class="nc" id="L643">        return task.isSuccessful();</span>
+    }
+    /**
+     * Method checks if a specific task has been completed
+     * @param task The task or action to be checked for completion
+     * @return boolean value
+     */
+    public Boolean handleTaskAuth(Task&lt;AuthResult&gt; task){
+<span class="fc" id="L651">        return task.isSuccessful();</span>
+    }
+    }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.1.1</div></body></html>
