@@ -29,10 +29,13 @@ import java.util.Observable;
 public class LocationTracker extends Observable implements ILocationTracker {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
-    private ActivityFragment fragmentFor;
+    private ActivityFragment fragmentfor;
     private double travelledDistance;
     private ArrayList<Location> locations = new ArrayList<>();
 
+    /*
+     * Adds the requested locations into list and their latitudes and longitudes.
+     * */
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -41,12 +44,7 @@ public class LocationTracker extends Observable implements ILocationTracker {
             }
 
             if (locations.size() >= 2) {
-                calculateDistance(
-                        locations.get(locations.size() - 1).getLatitude(),
-                        locations.get(locations.size() - 1).getLongitude(),
-                        locations.get(locations.size() - 2).getLatitude(),
-                        locations.get(locations.size() - 2).getLongitude()
-                );
+                calculateDistance(locations.get(locations.size() - 1).getLatitude(), locations.get(locations.size() - 1).getLongitude(), locations.get(locations.size() - 2).getLatitude(), locations.get(locations.size() - 2).getLongitude());
             }
             System.out.println("Distance: " + getTravelledDistance());
             setChanged();
@@ -56,7 +54,7 @@ public class LocationTracker extends Observable implements ILocationTracker {
 
     public LocationTracker(ActivityFragment activityFragment) {
         addObserver(activityFragment);
-        this.fragmentFor = activityFragment;
+        this.fragmentfor = activityFragment;
         this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activityFragment.requireContext());
         initLocationRequest();
         getLastLocation();
@@ -66,6 +64,12 @@ public class LocationTracker extends Observable implements ILocationTracker {
     public LocationTracker() {
     }
 
+    ;
+
+    /*
+     * Is used to to adjust to the intervals in which the location is requested
+     * and sets a radius for the smallest displacement.
+     * */
     private void initLocationRequest() {
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(0);
@@ -74,6 +78,9 @@ public class LocationTracker extends Observable implements ILocationTracker {
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    /*
+     * Checks the settings for location requests and calls for locations updates to start.
+     * */
     private void checkSettingsAndStartGps(ActivityFragment fragment) {
         LocationSettingsRequest request = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
         SettingsClient client = LocationServices.getSettingsClient(fragment.getContext());
@@ -92,38 +99,53 @@ public class LocationTracker extends Observable implements ILocationTracker {
         });
     }
 
+    /*
+     * Starts the location updates if permissions are granted.
+     * */
     private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(fragmentFor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(fragmentFor.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(fragmentfor.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
+    /*
+     * Used for stopping the location updates.
+     * */
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
+    /*
+     * Checks the permission for location use and returns the last known location.
+     * */
     private void getLastLocation() {
-        if (ActivityCompat.checkSelfPermission(fragmentFor.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(fragmentfor.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
-                    System.out.println("Location from getLastLocation(): " + location);
+                    System.out.println("Location from getLastLocation() : " + location);
                 } else {
-                    System.out.println("Location from getLastLocation() was null: " + location);
+                    System.out.println("Location from getLastLocation() was null : " + location);
                 }
             }
         });
     }
 
+    /*
+     * Is used to stop the activity running.
+     * */
     @Override
     public void setActive(boolean stopActivity) {
         stopLocationUpdates();
     }
 
+    /*
+     * Returns the rounded value of travelled distance.
+     * */
     public double getTravelledDistance() {
         return BigDecimal.valueOf(travelledDistance).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
@@ -133,6 +155,11 @@ public class LocationTracker extends Observable implements ILocationTracker {
         travelledDistance = 0f;
     }
 
+    /*
+     * calculateDistance-method calculates distance between two locations using Haversine-formula.
+     * It takes in latitude and longitude values as parameters from the two locations it calculates the distance between,
+     * and returns the difference as double.
+     * */
     public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
