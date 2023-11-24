@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.opt_1.model.LocationTrackerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-11-21T16:58:57" hostname="ryyzen" time="0.015">
+<testsuite name="com.example.opt_1.model.LocationTrackerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-11-21T19:00:25" hostname="SAMU" time="0.007">
   <properties/>
-  <testcase name="calculateDistance" classname="com.example.opt_1.model.LocationTrackerTest" time="0.015"/>
+  <testcase name="calculateDistanceWithCorrectCoordinates" classname="com.example.opt_1.model.LocationTrackerTest" time="0.006"/>
+  <testcase name="calculateDistanceWithIncorrectCoordinates" classname="com.example.opt_1.model.LocationTrackerTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

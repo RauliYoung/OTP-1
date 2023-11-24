@@ -14,3 +14,7 @@
 .cxx
 local.properties
 /test_config.json
+/app/build/generated/
+/app/build/intermediates/
+/app/build/outputs/
+/app/build/tmp/
