@@ -1,3 +1,0 @@
-com.example.opt_1.test
-style WhiteBackgroundDialogTheme
-style WhiteBackgroundTheme

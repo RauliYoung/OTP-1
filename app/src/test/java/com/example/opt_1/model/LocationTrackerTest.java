@@ -14,13 +14,49 @@ public class LocationTrackerTest {
         locationTracker = new LocationTracker();
     }
     @Test
-    public void calculateDistanceWithCorrectCoordinates() {
-        assertEquals("Should calculate the distance between two locations", 266.2,
-                locationTracker.calculateDistance(60.21597801314619, 24.905964043814574, 60.2177206661023, 24.90265956238168), DELTA);
+    public void calculateDistanceWithValidCoordinates() {
+        double lat1 = 60.21597801314619;
+        double lon1 = 24.905964043814574;
+        double lat2 = 60.2177206661023;
+        double lon2 = 24.90265956238168;
+
+        double calculatedDistance = locationTracker.calculateDistance(lat1, lon1, lat2, lon2);
+
+        assertEquals("Should calculate the distance between two locations", 266.2,calculatedDistance,DELTA);
     }
     @Test
-    public void calculateDistanceWithIncorrectCoordinates() {
-        assertNotEquals("Should calculate the distance between two locations", 266.2,
-                locationTracker.calculateDistance(59.21597801314619, 24.905964043814574, 60.2177206661023, 24.90265956238168), DELTA);
+    public void calculateDistanceWithInvalidCoordinates() {
+        double invalidLat = 59.21597801314619;
+        double lon1 = 24.905964043814574;
+        double lat2 = 60.2177206661023;
+        double lon2 = 24.90265956238168;
+
+        double calculatedDistance = locationTracker.calculateDistance(invalidLat, lon1, lat2, lon2);
+
+        assertNotEquals("Should not calculate the distance with invalid coordinates", 266.2, calculatedDistance, DELTA);
+    }
+
+    @Test
+    public void calculateDistanceWithSameCoordinates(){
+        double lat1 = 60.21597801314619;
+        double lon1 = 24.905964043814574;
+        double lat2 = 60.21597801314619;
+        double lon2 = 24.905964043814574;
+
+        double calculatedDistance = locationTracker.calculateDistance(lat1, lon1, lat2, lon2);
+
+        assertEquals("Should calculate zero distance for the same coordinates", 0, calculatedDistance, DELTA);
+    }
+
+    @Test
+    public void calculateDistanceWithNegativeCoordinates(){
+        double lat1 = -60.2;
+        double lon1 = -24.9;
+        double lat2 = -60.2;
+        double lon2 = -25;
+
+        double calculatedDistance = locationTracker.calculateDistance(lat1, lon1, lat2, lon2);
+
+        assertEquals("Should calculate the distance between two locations with negative values", 5526.09, calculatedDistance, DELTA);
     }
 }

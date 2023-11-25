@@ -1,6 +1,0 @@
-com.example.opt_1.test.app-core-1.5.0-0 /home/tristan/.gradle/caches/transforms-3/09930cfdff744febc325fe9b862cd014/transformed/core-1.5.0/res
-com.example.opt_1.test.app-annotation-experimental-1.3.0-1 /home/tristan/.gradle/caches/transforms-3/f1655d4cc77d26de7826cea82d7ecedf/transformed/annotation-experimental-1.3.0/res
-com.example.opt_1.test.app-androidTest-2 /home/tristan/AndroidStudioProjects/OTP-1/app/build/generated/res/resValues/androidTest/debug
-com.example.opt_1.test.app-mergeDebugAndroidTestResources-3 /home/tristan/AndroidStudioProjects/OTP-1/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
-com.example.opt_1.test.app-mergeDebugAndroidTestResources-4 /home/tristan/AndroidStudioProjects/OTP-1/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
-com.example.opt_1.test.app-merged_res-5 /home/tristan/AndroidStudioProjects/OTP-1/app/build/intermediates/merged_res/debugAndroidTest
