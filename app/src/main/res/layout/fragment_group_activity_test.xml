@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient2"
+    android:background="@drawable/gradient"
     tools:context=".view.GroupActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="32dp">
@@ -24,40 +24,45 @@
             android:layout_height="48dp"
             android:layout_marginTop="150dp"
             android:inputType="text"
-            android:text="testiryhma"
+            android:text="Group name"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
             android:textAlignment="center" />
 
         <Button
             android:id="@+id/addGroupButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:backgroundTint="#5D576B"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/create_group" />
 
         <Button
             android:id="@+id/joinGroupButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:backgroundTint="#5D576B"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/join_group" />
 
         <Button
             android:id="@+id/leaveGroupButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:backgroundTint="#5D576B"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/leave_group" />
 
         <ScrollView
