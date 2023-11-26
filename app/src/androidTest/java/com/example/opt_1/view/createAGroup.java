@@ -1,6 +1,7 @@
 package com.example.opt_1.view;
 
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -13,6 +14,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -27,6 +30,7 @@ import com.example.opt_1.R;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,13 +38,24 @@ import org.junit.runner.RunWith;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class createAGroup {
+    private String test_user;
+    private String test_pass;
+    private final int timeout = 5000;
 
+    @Before
+    public void init() throws PackageManager.NameNotFoundException {
+        ApplicationInfo ai = getApplicationContext().getPackageManager()
+                .getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
+
+        test_user = (String) ai.metaData.get("test_username");
+        test_pass = (String) ai.metaData.get("test_password");
+    }
     @Rule
     public ActivityScenarioRule<LoginPage> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginPage.class);
 
     @Test
-    public void createAGroup() {
+    public void createAGroupTest() throws InterruptedException {
         ViewInteraction textInputEditText = onView(
                 allOf(withId(R.id.loginUserNameInput),
                         childAtPosition(
@@ -71,6 +86,7 @@ public class createAGroup {
                                 4),
                         isDisplayed()));
         materialButton.perform(click());
+        Thread.sleep(timeout);
 
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.groups), withContentDescription("Groups"),
@@ -82,16 +98,6 @@ public class createAGroup {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.addGroupButton), withText("Create A Group"),
-                        childAtPosition(
-                                allOf(withId(R.id.groupPage),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        materialButton2.perform(click());
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.addGroupButton), withText("Create A Group"),
@@ -103,6 +109,7 @@ public class createAGroup {
                                 1),
                         isDisplayed()));
         materialButton3.perform(click());
+        Thread.sleep(timeout);
 
         ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.leaveGroupButton), withText("Leave Group"),
