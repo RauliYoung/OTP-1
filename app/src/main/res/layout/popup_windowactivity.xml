@@ -12,6 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/material_on_surface_emphasis_medium"
             android:orientation="vertical">
 
             <TextView
@@ -21,7 +22,8 @@
                 android:layout_marginTop="40dp"
                 android:gravity="center"
                 android:text="TextView"
-                android:textSize="16sp" />
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

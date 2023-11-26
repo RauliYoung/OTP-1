@@ -77,8 +77,9 @@ public class ActivityFragment extends Fragment implements Observer {
         distance_travelled.setText(distance);
 
         fragment = this;
-
+        int a = 0;
         for (int i = 0; i < activityHistory.size(); i++) {
+
             View clonedActivitySection = inflater.inflate(R.layout.activityobject, container, false);
             TextView dateText = clonedActivitySection.findViewById(R.id.ActivityDate);
             Button activityHistoryButton = clonedActivitySection.findViewById(R.id.ActivityReadDataButton);
@@ -104,8 +105,8 @@ public class ActivityFragment extends Fragment implements Observer {
                     popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
                 }
             });
-
-            dateText.setText(activityHistory.get(i).keySet().toString().replace("]", "").replace("[", ""));
+            dateText.setText("Exercise number: " + a);
+            a++;
             activityDataHistoryScrollView.addView(clonedActivitySection);
         }
 

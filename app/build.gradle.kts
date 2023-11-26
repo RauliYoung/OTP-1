@@ -93,9 +93,9 @@ tasks.withType<JacocoReport> {
     description = "Generate Jacoco coverage reports for the 'local' debug build."
 
     reports {
-        html.required = true
-        xml.required = false
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+        //html.required = true
+        //xml.required = false
+        //html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 
     executionData.from("${layout.buildDirectory}/outputs/unit_test_code_coverage/localDebugUnitTest/testLocalDebugUnitTest.exec")

@@ -7,30 +7,35 @@
 
     <FrameLayout
         android:id="@+id/ActivityDataFrame"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="53dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/ActivityDate"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="TextView"
-                android:translationX="10dp" />
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                />
 
             <Button
                 android:id="@+id/ActivityReadDataButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Open" />
+                android:backgroundTint="#5D576B"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Open"
+                />
 
         </LinearLayout>
 
