@@ -59,7 +59,7 @@ jobs:
             ls -a
             ./gradlew test
   checkstyle:
-    - name: runner / checkstyle
+      name: runner / checkstyle
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
